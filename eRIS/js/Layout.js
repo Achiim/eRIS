@@ -238,11 +238,18 @@ function makePlatzDroppable() {
 			$(ui.draggable).appendTo( $('#' + real) );				// im Ziel ablegeb
  
 			var MarkerID = $(ui.draggable).attr('id');
-			var msg = makeEventMessage(MarkerID, real);						
-
-			postEvent(msg, ui.draggable);							// in DB speichern
+			var msg = '';
+			var erisEvent = new Object();
+			readAttributeFromEvent(MarkerID, erisEvent);				// übertrage Object -> .data
 			
-			erisEvent = new Object();
+			if (erisEvent.ID == undefined || erisEvent.ID == '') {
+				msg = makeEventMessage(MarkerID, real);						
+				postEvent(msg, ui.draggable);							// in DB speichern
+			}
+			else {
+				msg = makeEventUpdateMessage(MarkerID, real);
+				postEventUpdate(msg);
+			}
 //			createEventObject(MarkerID, erisEvent);					// 
 			storeEventToObjectData(MarkerID, erisEvent);				// übertrage Object -> .data
 			erisToolTip(MarkerID, erisEvent);
@@ -356,21 +363,23 @@ function readAttributeFromEvent(mID, eEvent) {
 function createEventObject (mID, eEvent, real) {
 	eEvent.ID = $('#'+mID).data('erisID');	
 	eEvent.TeamId = $('#'+mID).text();
-    var ww = $('#'+mID).css('width');									// Maße des gedroppten Marker
+    var ww = $('#'+mID).css('width');												// Maße des gedroppten Marker
     var hh = $('#'+mID).css('height');
     ww = parseInt(ww);
     hh = parseInt(hh);
-    eEvent.Dauer = pixelToMinutes(hh);									// Minuten aus Pixel berechnet
+    eEvent.Dauer = pixelToMinutes(hh);												// Minuten aus Pixel berechnet
 
-	var Stunde = real/AnzahlPlatzTeile/AnzahlRasterJeStunde + 8;		// volle Stunde aus Zeile berechnet 
-	StundeString = Math.floor(Stunde);									// volle Stunde aus Zeile berechnet 
+	var Stunde = real/AnzahlPlatzTeile/AnzahlRasterJeStunde + BeginnZeitLeiste;		// volle Stunde aus Zeile berechnet 
+	StundeString = Math.floor(Stunde);												// volle Stunde aus Zeile berechnet 
+	
+	var xxx = (StundeString- BeginnZeitLeiste) * AnzahlPlatzTeile * AnzahlRasterJeStunde;								
+	xxx = real - xxx ;																// 0 - 15tes Platzteilraster innerhalb einer Stunde
 
-	var MinuteString;
-	MinuteString = Stunde-StundeString;									// volle Stunde aus Zeile berechnet 
+	var MinuteString = Math.floor(xxx / AnzahlRasterJeStunde);
 	if (MinuteString == 0) MinuteString = '00';
-	if (MinuteString == 0.25) MinuteString = '15';
-	if (MinuteString == 0.5) MinuteString = '30';
-	if (MinuteString == 0.75) MinuteString = '45';
+	if (MinuteString == 1) MinuteString = '15';
+	if (MinuteString == 2) MinuteString = '30';
+	if (MinuteString == 3) MinuteString = '45';
 
 	eEvent.startDate = "13.10.2016%20" + StundeString + "%3A" + MinuteString; 
 	eEvent.description = "Training";
@@ -536,7 +545,26 @@ Zweck:		generiert die Mesage für das xmlHTTP-POST (GET)
 function makeEventMessage(id, real) {
 	var erisEvent = new Object();
 	createEventObject(id, erisEvent, real);
-	var msg = erisEvent.description + '/' + erisEvent.startDate + '/' + erisEvent.Dauer + '/' + erisEvent.TeamId + '/' + erisEvent.field
+	var ff = erisEvent.field;
+	ff = ff.replace(/\s/g,'%20');
+	var msg = erisEvent.description + '/' + erisEvent.startDate + '/' + erisEvent.Dauer + '/' + erisEvent.TeamId + '/' + ff;
+
+	return msg;
+}
+
+/*********************************************************************************
+Funktion:	makeEventUpdateMessage 
+Zweck:		generiert die Mesage für das xmlHTTP-POST (GET)
+
+			msg = /12.10.2016%2017%3A00/90/Kunstrasen'
+*/
+
+function makeEventUpdateMessage(id, real) {
+	var erisEvent = new Object();
+	createEventObject(id, erisEvent, real);
+	var ff = erisEvent.field;
+	ff = ff.replace(/\s/g,'%20');
+	var msg = erisEvent.startDate + '/' + erisEvent.Dauer + '/' + ff;
 
 	return msg;
 }
@@ -593,7 +621,7 @@ Zweck:		generiert den ToolTip-Inhalt
 
  */
 function erisToolTip(markerID, erisEvent) {
-	var tt = 'erisID = ' + erisEvent.ID + ' ';
+	var tt = 'erisID = ' + erisEvent.ID + '&lt;br&gt;';
 	tt += 'erisStart = ' + erisEvent.start + ' ';
 	tt += 'erisDauer = ' + erisEvent.Dauer + ' ';
 	tt += 'erisBeschreibung = ' + erisEvent.Beschreibung + ' ';

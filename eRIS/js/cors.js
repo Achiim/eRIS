@@ -34,43 +34,82 @@ function createCORSRequest(method, url) {
 	/*********************************************************************************
 	Funktion:	postEvent 
 	Zweck:		Speichere einen Event-Termin in den Google-Speicher
-*/
+	 */
 function postEvent(msg, ui) {
+
+//msg = 'Training/12.10.2016%2017%3A00/90/A/Kunstrasen';
 	
-//	msg = 'Training/12.10.2016%2017%3A00/90/A/Kunstrasen';
-		
 
-	// Endpoint zur Liste aller Events
-	var url = 'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/addEvent/' + msg;
+// Endpoint zur Liste aller Events
+var url = 'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/addEvent/' + msg;
 
-	var eventPost = createCORSRequest('GET', url);
-	if (!eventPost) {
-	  	alert('CORS not supported');
-		return;
-	}
+var eventPost = createCORSRequest('GET', url);
+if (!eventPost) {
+  	alert('CORS not supported');
+	return;
+}
+
+// Response handlers.
+eventPost.onload = function() {	
+		var text = eventPost.responseText;
+    	var status = eventPost.status;
+	   	if (status < 200 || status >=  300) {
+	   		alert('postEvent: HTTP-Fehler beim Schreiben der Events: ' + status + ' ' + text +  ' ' + msg);
+	   	}
+	   	else {
+//	   		alert('postEvent: ok' + text);				// debug only
+	   		var erisID = JSON.parse(text);				// return generierte ID aus der DB
+        	$(ui).data( "erisID", erisID.id ); 			// merke dir die eindeutige Nummer des Event (generiert von Tim)
+
+    		return;							
+	   	}
 	
-	// Response handlers.
-	eventPost.onload = function() {	
-			var text = eventPost.responseText;
-	    	var status = eventPost.status;
-		   	if (status < 200 || status >=  300) {
-		   		alert('postEvent: HTTP-Fehler beim Schreiben der Events: ' + status + ' ' + text);
-		   	}
-		   	else {
-//		   		alert('postEvent: ok' + text);				// debug only
-		   		var erisID = JSON.parse(text);				// return generierte ID aus der DB
-	        	$(ui).data( "erisID", erisID.id ); 			// merke dir die eindeutige Nummer des Event (generiert von Tim)
+} // Ende von eventPost.onload
 
-	    		return;							
-		   	}
-		
-	} // Ende von eventPost.onload
+eventPost.onerror = function() {
+	    alert('Woops, there was an error making the request.');
+	  };
 
-	eventPost.onerror = function() {
-		    alert('Woops, there was an error making the request.');
-		  };
+eventPost.send();
+}
 
-	eventPost.send();
+	/*********************************************************************************
+	Funktion:	postEventUpdate 
+	Zweck:		Speichere einen aktualisierten Event-Termin in den Google-Speicher
+	 */
+function postEventUpdate(msg) {
+
+	//msg = 'id/12.10.2016%2017%3A00/90/Kunstrasen'
+	
+
+// Endpoint zur Liste aller Events
+var url = 'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/event/update/' + msg;
+
+var eventPostUpdate = createCORSRequest('GET', url);
+if (!eventPostUpdate) {
+  	alert('CORS not supported');
+	return;
+}
+
+// Response handlers.
+eventPostUpdate.onload = function() {	
+		var text = eventPostUpdate.responseText;
+    	var status = eventPostUpdate.status;
+	   	if (status < 200 || status >=  300) {
+	   		alert('postEventUpdate: HTTP-Fehler beim Update des Events: ' + status + ' ' + text +  ' ' + msg);
+	   	}
+	   	else {
+//	   		alert('eventPostUpdate: ok' + text);				// debug only
+    		return;							
+	   	}
+	
+} // Ende von eventPostUpdate.onload
+
+eventPostUpdate.onerror = function() {
+	    alert('Woops, there was an error making the request.');
+	  };
+
+	  eventPostUpdate.send();
 }
 
 	/*********************************************************************************
@@ -102,7 +141,7 @@ function readAllEvents(field) {
 	eventList.onload = function() {	
 		var text = eventList.responseText;
     	var status = eventList.status;
-	   	if (status < 200 || status >=  300) alert('readAllEvents: HTTP-Fehler beim lesen der Events: ' + status);
+	   	if (status < 200 || status >=  300) alert('readAllEvents: HTTP-Fehler beim lesen der Events: ' + status+ ' ' + text);
 
 //		alert('readAllEvents:' + text);		// debugging only
 
@@ -340,6 +379,8 @@ function readAllFields() {
 			.appendTo( '#Platzkopf' );
 		}
 		
+		readAllEvents(fieldTitle[currentField]); 
+
    } // Ende fieldList.onload
 
     
