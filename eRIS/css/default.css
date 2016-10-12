@@ -170,30 +170,6 @@ Styles fuer den Belegungsplan in allen Views
 }
 
 
-/*******************************************
-Styles fuer Belegungsmarker
-*******************************************/
-.ui-resizable-handle {
-	position: absolute;
-	width: 10px;
-	height: 10px;
-}
-
-.ui-resizable-e {
-	top: 0px;
-	right: 0px;
-}
-
-.ui-resizable-s {
-	left: 0px;
-	bottom: 0px;
-}
-
-.ui-resizable-se {
-	right: 0px;
-	bottom: 0px;
-}
-
 .Marker {  
     border-radius: 5px;
     height: 37px;
@@ -252,53 +228,3 @@ div.ui-draggable-dragging {
 }
 
 
-/***********************************************************************
-	Layout für Tooltips
-************************************************************************/
-
- /* Tooltip container */
-.tooltip {
-    position: relative;
-    display: inline-block;
-    border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
-}
-
-/* Tooltip text */
-.tooltip .tooltiptext {
-    visibility: hidden;
-    width: 120px;
-    background: #555;
-    color: #fff;
-    text-align: left;
-    padding: 5px;
-    border-radius: 6px;
-
-    /* Position the tooltip text */
-    position: absolute;
-    z-index: 1;
-    bottom: 125%;
-    left: 50%;
-    margin-left: -60px;
-
-    /* Fade in tooltip */
-    opacity: 0;
-    transition: opacity 1s;
-}
-
-/* Tooltip arrow */
-.tooltip .tooltiptext::after {
-    content: "";
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border: #555;
-}
-
-/* Show the tooltip text when you mouse over the tooltip container */
-.tooltip:hover .tooltiptext {
-    visibility: visible;
-    opacity: 1;
-}
