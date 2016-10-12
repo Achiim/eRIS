@@ -40,8 +40,14 @@
 		<link rel="alternate stylesheet" type="text/css" href="css/red.css" title="red"/>
 		<link rel="alternate stylesheet" type="text/css" href="css/blue.css" title="blue"/>
 
+		<link href="css/jQueryUI/jquery-ui.css" rel="stylesheet">
+		
+		<script src="js/jquery/jquery.js"></script>
+		<script src="js/jquery/jquery-ui.js"></script>
+<!--  		
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+-->
 		<script src="js/Drag.js"></script>
 		<script src="js/Layout.js"></script>
 		<script src="js/cors.js"></script>
@@ -51,11 +57,11 @@
 					function() {
 						doPlatzview();					// baue 1-Platz-View auf
 						doTagesview();					// baue 1-Tages-View auf
-						
-						readAllEvents(fieldTitle[currentField]); 
-						
 						doEventbutton();				// generiere die Knöpfe
 						doFuss();						// zeige den "Default-Fuss" mit dem Sammler und Mülleimer
+
+						readAllEvents(fieldTitle[currentField]); 
+						
 					}
 				);
 		</script>

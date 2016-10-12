@@ -82,7 +82,7 @@ function postEvent(msg, ui) {
 					'' = hole alle Events
 */
 function readAllEvents(field) {
-	if (field == undefined) return;	
+	if (field == undefined) field=fieldTitle[0];	
 	if (field == '') {
 		// Endpoint zur Liste aller Events
 		var url = 'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/event';
