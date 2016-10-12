@@ -1,0 +1,58 @@
+@CHARSET "ISO-8859-1";
+/**
+    ****************************************
+	* Sportstaetten-Reservierungs-System   *
+	****************************************
+	
+	Autor:	Achim
+	Jahr:	2016
+	
+	Default-Layout
+	
+	Quelle fuer HTML-Farbnamen: http://www.w3schools.com/colors/colors_groups.asp
+	Style-Guide: https://material.google.com/style/color.html#color-color-palette
+
+**/
+/***********************************
+Styles fuer verwendete Farben
+***********************************/
+.Sammeleimer {  
+    background: #e3f2fd;				/* Blue 50 */
+}
+
+.Stadion, .StadionHaelfte, .StadionHaelfte1 , .StadionHaelfte2, .PlatzTeil {
+	background: #bbdefb;				/* Blue 100 */
+}
+
+.Rasen, .RasenHaelfte, .RasenHaelfte1 , .RasenHaelfte2 {
+	background: #90caf9;				/* Blue 200 */
+}
+
+.Kunst, .KunstHaelfte, .KunstHaelfte1 , .KunstHaelfte2 {
+    background: #64b5f6;				/* Blue 300 */
+}
+
+.Zeit1 {
+	background: #42a5f5;				/* Blue 400 */
+}
+
+.Zeit2 {
+	background: #2196f3;				/* Blue 500 */
+}
+
+.Zeit, .ZeitNoBorder, .Uhrzeit, .UhrzeitHalbe {
+	background: #1e88e5;				/* Blue 600 */
+}
+
+.Tag, .Tagesdatum {
+	background: #1976d2;				/* Blue 700 */
+}
+
+body {
+/*
+	background: #1565c0; 				/* Blue 800 */
+}
+
+.Belegungsplan, .Muelleimer {
+	background: #0d47a1;				/* Blue 900 */
+}

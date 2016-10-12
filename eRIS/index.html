@@ -1,0 +1,95 @@
+<!DOCTYPE html >
+<html>
+	<head>
+		<title>eRIS - 2016</title>
+
+		<meta charset="UTF-8" />
+<!--
+	****************************************
+	* eRIS                                 *
+	* Sportstaetten-Reservierungs-System   *
+	****************************************
+	Autor: 		Achim, Tim
+	Jahr:		2016
+	Version:	V0.001
+	
+	Allgemein koennen mit diesem System beliebige Sportstaetten
+	fuer die Nutzung reserviert werden.
+	
+	Eine "oeffentliche Bereitstellung" bietet die Moeglichkeit fuer:
+	
+	Nutzergruppe "Teilnehmer/Sportler"
+	- die Anzeige bereits reservierter Zeitraeume auf bestimmten Sportstaetten
+	- Identifikation von freien, nicht reservierten Zeitraeume auf bestimmten Sportstaetten
+	
+	Nutzergruppe "Sportstaetten-Verwalter"
+	- Reservierung von Sportstaetten zu bestimmten Zeitraeumen
+	- Ãnderung bestehender Reservierungen
+	
+	Oeffentliche Bereitstellung bedeutet in diesem Zusammenhang:
+	- ueber das Internet zugaengliche Webseite
+	- Anzeige des Belegungsplans auf dieser Webseite
+	- Passwortgeschuetzer Zugang fuer den Sportstaetten-Verwalter
+	
+-->
+
+		
+		<link rel="stylesheet" type="text/css" href="css/default.css"/>
+		<link rel="stylesheet" type="text/css" href="css/green.css" title="green"/>
+		<link rel="alternate stylesheet" type="text/css" href="css/gray.css" title="gray"/>
+		<link rel="alternate stylesheet" type="text/css" href="css/red.css" title="red"/>
+		<link rel="alternate stylesheet" type="text/css" href="css/blue.css" title="blue"/>
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+		<script src="js/Drag.js"></script>
+		<script src="js/Layout.js"></script>
+		<script src="js/cors.js"></script>
+		
+	</head>
+	
+	<body>
+		<p class="K1">Belegungsplan</p>
+		
+		<div class="Belegungsplan" id="Belegungsplan">
+			<script>
+			
+			
+			$(document).ready(							// sobald die Seite geladen ist (jQuery)
+					function() {
+						doPlatzview();					// baue 1-Platz-View auf
+						doTagesview();					// baue 1-Tages-View auf
+						
+						readAllEvents(fieldTitle[currentField]); 
+					}
+				);
+			</script>
+		</div>
+		
+		<p class="K2">neue Belegung</p>
+		<div class="Buttonlist" id="Buttonlist">
+			<script>
+				$(document).ready(						// sobald die Seite geladen ist (jQuery)
+					function() {
+						doEventbutton();				// generiere die Knöpfe
+					}
+				);
+				
+			</script>
+
+		</div>
+
+		<div class="Sammler" id="Container">
+			<script>
+				$(document).ready(						// sobald die Seite geladen ist (jQuery)
+					function() {
+						doFuss();						// zeige den "Default-Fuss" mit dem Sammler und Mülleimer
+					}
+				
+				);
+				
+			</script>
+		</div>
+		
+	</body>
+</html>

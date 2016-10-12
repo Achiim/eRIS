@@ -1,0 +1,304 @@
+@CHARSET "ISO-8859-1";
+/**
+    ****************************************
+	* Sportstaetten-Reservierungs-System   *
+	****************************************
+	
+	Autor:	Achim
+	Jahr:	2016
+	
+	Default-Layout
+	
+	Quelle fuer HTML-Farbnamen: http://www.w3schools.com/colors/colors_groups.asp
+	Style-Guide: https://material.google.com/style/color.html#color-color-palette
+
+**/
+
+/****************************************
+Styles fuer Schriftgrößen, -ausrichtung
+****************************************/
+
+body {
+	
+	font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+}
+
+.K1 {	
+	font-size: 1.5rem;
+	font-weight: bold;
+}  
+
+.K2 {	
+	font-size: 1rem;
+	font-weight: bold;
+}
+
+.Uhrzeit {
+	font-size: 1.0rem;
+	text-align: right;	
+}
+
+.Muelleimer, .Sammeleimer {  
+	text-align: center;
+}
+
+.Marker {  
+ 	font-size: 1.0rem;
+    font-weight: bold;   
+	color: white;
+}
+
+.tooltip .tooltiptext {
+	font-size: 0.7rem;
+}
+
+/**************************************
+Styles fuer Schriftfarben ...
+**************************************/
+
+
+.Sammeleimer {  
+    color: #616161;						/* Gray 700 */
+}
+
+.Uhrzeit {
+	color: #fafafa;						/* Gray 50 */
+}
+
+.Muelleimer {
+	color: #fafafa;						/* Gray 50 */
+}
+
+
+/*******************************************
+Styles fuer den Belegungsplan in allen Views
+*******************************************/
+
+.Belegungsplan, .K2, .Buttonlist, .Sammler{
+	margin-left: 100px;
+	float: left;
+}
+
+.Belegungsplan {
+	height: 784px;
+	width: 480px;
+}
+
+.Platzkopf {
+	width: 480px;
+	float: left;
+}
+
+.PlatzLinks, .PlatzRechts {
+	width: 30px;
+	height: 40px;
+	color: white;
+	text-align: center;
+	float: left;
+}
+
+.Platzname {
+	width: 360px;
+	color: white;
+	float: left;
+}
+
+.Platzteil{
+	width: 89px;
+	float: left;
+	margin-top: 1px;
+	margin-right: 1px;
+	color: white;
+}
+
+.foot, .K2, .Sammler {
+	width: 600px;
+}
+
+.Muelleimer, .Sammeleimer {
+	float: left;
+}
+
+#Zeitleiste {
+	width: 60px;
+	float: left;
+}
+
+#Platzleiste {
+	width: 360px;
+	float: left;
+}
+
+.PlatzTeil {
+	width: 89px;
+	float: left;
+	margin-top: 1px;
+	margin-right: 1px;
+	height: 10px;
+}
+
+#Buttonlist {
+	height: 70px;
+	width: 600px;
+	float: left;
+}
+
+.Buttongroup {
+	width: 40px;
+}
+
+
+.Uhrzeit {
+	margin-top: 1px;
+	height: 21px;
+}
+.UhrzeitHalbe {
+	height: 22px;
+}
+	
+.ZeitFoot, .foot {
+	height: 60px;
+}
+
+#Eimertitel, #Sammlertitel {
+    height: 20px;
+}
+
+.Muelleimer, .Sammeleimer {  
+    height: 40px;
+	width: 300px;
+}
+
+
+/*******************************************
+Styles fuer Belegungsmarker
+*******************************************/
+.ui-resizable-handle {
+	position: absolute;
+	width: 10px;
+	height: 10px;
+}
+
+.ui-resizable-e {
+	top: 0px;
+	right: 0px;
+}
+
+.ui-resizable-s {
+	left: 0px;
+	bottom: 0px;
+}
+
+.ui-resizable-se {
+	right: 0px;
+	bottom: 0px;
+}
+
+.Marker {  
+    border-radius: 5px;
+    height: 37px;
+	width: 169px;
+	position: relative;
+	float: left;
+	padding: 5px;
+}
+
+div.ui-draggable-dragging {
+  -moz-box-shadow: 0 0 .5em rgba(0, 0, 0, .8);
+  -webkit-box-shadow: 0 0 .5em rgba(0, 0, 0, .8);
+  box-shadow: 0 0 .5em rgba(0, 0, 0, .8);
+}
+
+.EventAH, .AH, .alteHerren  {
+   background: #BDB76B;
+}
+
+.EventAk, .Aktive {
+    background: #2F4F4F;
+}
+
+.EventA, .A-Jugend, .A-Junioren {
+    background: #92B6D5;
+}
+
+.EventB, .B-Jugend, .B-Junioren {
+   background: #AD5D5D;
+}
+
+.EventC, .C-Jugend, .C-Junioren {
+   background: #AF9483;
+}
+
+.EventD, .D-Jugend, .D-Junioren {
+   background: #D8AE47;
+}
+
+.EventE, .E-Jugend, .E-Junioren {
+   background: #B76BA3;
+}
+
+.EventF, .F-Jugend, .F-Junioren {
+   background: #F7786B;
+}
+
+.EventG, .Bambini, .G-Junioren {
+   background: #F3386B;
+}
+
+.Eventbutton {
+	float: left;
+	position: relative;
+	color: white;
+}
+
+
+/***********************************************************************
+	Layout für Tooltips
+************************************************************************/
+
+ /* Tooltip container */
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background: #555;
+    color: #fff;
+    text-align: left;
+    padding: 5px;
+    border-radius: 6px;
+
+    /* Position the tooltip text */
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -60px;
+
+    /* Fade in tooltip */
+    opacity: 0;
+    transition: opacity 1s;
+}
+
+/* Tooltip arrow */
+.tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border: #555;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
