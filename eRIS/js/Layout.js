@@ -291,8 +291,21 @@ function newEvent(erisEvent) {
 			    					- MarkerPadding - PlatzTeilMargin ;
 			    ui.size.width = (Math.round( ui.size.width / innerMarkerWidth ) * (PlatzTeilWidth + PlatzTeilMargin)) 
 			    					- MarkerPadding - PlatzTeilMargin;
-			  }
-			})
+			    
+
+			}
+	})	
+	.resizable({
+			stop: function( event, ui ) { 
+				var MarkerID = $(ui.element).attr('id');
+				var msg = '';
+				var erisEvent = new Object();
+				readAttributeFromEvent(MarkerID, erisEvent);				// übertrage Object -> .data
+				msg = makeEventUpdateMessage(MarkerID, real);
+				postEventUpdate(msg);
+			}
+	})			
+
 	.resizable( "option", "minWidth", MarkerMinWidth )	
 	.resizable( "option", "maxWidth", MarkerMaxWidth )	
 	.resizable( "option", "minHeight", MarkerMinHeight );
@@ -564,7 +577,7 @@ function makeEventUpdateMessage(id, real) {
 	createEventObject(id, erisEvent, real);
 	var ff = erisEvent.field;
 	ff = ff.replace(/\s/g,'%20');
-	var msg = erisEvent.startDate + '/' + erisEvent.Dauer + '/' + ff;
+	var msg = erisEvent.ID + '/' + erisEvent.startDate + '/' + erisEvent.Dauer + '/' + ff;
 
 	return msg;
 }
