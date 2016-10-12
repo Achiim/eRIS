@@ -46,49 +46,33 @@
 		<script src="js/Layout.js"></script>
 		<script src="js/cors.js"></script>
 		
-	</head>
-	
-	<body>
-		<p class="K1">Belegungsplan</p>
-		
-		<div class="Belegungsplan" id="Belegungsplan">
-			<script>
-			
-			
+		<script>
 			$(document).ready(							// sobald die Seite geladen ist (jQuery)
 					function() {
 						doPlatzview();					// baue 1-Platz-View auf
 						doTagesview();					// baue 1-Tages-View auf
 						
 						readAllEvents(fieldTitle[currentField]); 
+						
+						doEventbutton();				// generiere die Knöpfe
+						doFuss();						// zeige den "Default-Fuss" mit dem Sammler und Mülleimer
 					}
 				);
-			</script>
+		</script>
+
+	</head>
+	
+	<body>
+		<p class="K1">Belegungsplan</p>
+		
+		<div class="Belegungsplan" id="Belegungsplan">
 		</div>
 		
 		<p class="K2">neue Belegung</p>
 		<div class="Buttonlist" id="Buttonlist">
-			<script>
-				$(document).ready(						// sobald die Seite geladen ist (jQuery)
-					function() {
-						doEventbutton();				// generiere die Knöpfe
-					}
-				);
-				
-			</script>
-
 		</div>
 
 		<div class="Sammler" id="Container">
-			<script>
-				$(document).ready(						// sobald die Seite geladen ist (jQuery)
-					function() {
-						doFuss();						// zeige den "Default-Fuss" mit dem Sammler und Mülleimer
-					}
-				
-				);
-				
-			</script>
 		</div>
 		
 	</body>
