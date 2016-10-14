@@ -121,10 +121,32 @@ function doPlatzview() {
     } )
 	.appendTo( '#Platzkopf' );
 
+	doPlatzteilview();				// Plattzeile anzeigen
 	$(document).ready( readAllFields() );				// hier werden dann auch der Platzname und alle Platzteile angelegt
 		
 }
 		
+/*********************************************************************************
+Funktion:	doPlatzteilview 
+Zweck:		Erzeugt einen Kopf über dem Tagesview für einen Platz.
+ */
+function doPlatzteilview() {
+
+	// Löschen alter Platzview-Komponenten
+	$('#Platzteil0').remove();
+	$('#Platzteil1').remove();
+	$('#Platzteil2').remove();
+	$('#Platzteil3').remove();
+
+	for ( var pl=0; pl<fieldPortions[currentField]; pl++) {
+	$('<div>'+fieldPartTitle[currentField][pl]+'</div>')		
+	.addClass('Platzteil')
+	.attr( 'id', 'Platzteil' + pl )
+	.appendTo( '#Platzkopf' );
+	}
+	
+}
+	
 	/*********************************************************************************
 	Funktion:	doTagesview 
 	Zweck:		Erzeugt alle Bestandteile des Layouts des Tagebelegungsplans.
@@ -491,7 +513,7 @@ function prevField() {
 	if (AnzahlPlatzTeile != fieldPortions[currentField]) {
 		rebuildPlatzteile(AnzahlPlatzTeile, fieldPortions[currentField]);
 		AnzahlPlatzTeile = fieldPortions[currentField];
-		doPlatzview();
+		doPlatzteilview();
 		makePlatzDroppable();
 	}
 
@@ -510,7 +532,7 @@ function nextField() {
 	if (AnzahlPlatzTeile != fieldPortions[currentField]) {
 		rebuildPlatzteile(AnzahlPlatzTeile, fieldPortions[currentField]);
 		AnzahlPlatzTeile = fieldPortions[currentField];
-		doPlatzview();
+		doPlatzteilview();
 		makePlatzDroppable();
 	}
 	
