@@ -249,7 +249,15 @@ function makePlatzDroppable() {
 
         var Ziel = parseInt($(this).attr('id'));					// ID des PlatzTeil in das gedroppt wird
 
-        var ww = $(ui.draggable).css('width');						// Maße des gedroppten Marker
+		var MarkerID = $(ui.draggable).attr('id');					// ID des Markers der gedropped wird
+
+		var erisEvent = new Object();
+		readAttributeFromEvent(MarkerID, erisEvent);				// übertrage Object -> .data
+
+		var Dauer = erisEvent.Dauer;									// ersetzt hh
+		var PlatzTeile = erisEvent.Platzteile;							// ersetzt ww
+		
+		var ww = $(ui.draggable).css('width');						// Maße des gedroppten Marker
         var hh = $(ui.draggable).css('height');
         ww = parseInt(ww);
         hh = parseInt(hh);
@@ -258,12 +266,7 @@ function makePlatzDroppable() {
         if ( real >=0  ) {
         	
 			$(ui.draggable).appendTo( $('#' + real) );				// im Ziel ablegeb
- 
-			var MarkerID = $(ui.draggable).attr('id');
 			var msg = '';
-			var erisEvent = new Object();
-			readAttributeFromEvent(MarkerID, erisEvent);				// übertrage Object -> .data
-			
 			if (erisEvent.ID == undefined || erisEvent.ID == '') {
 				msg = makeEventMessage(MarkerID, real);						
 				postEvent(msg, ui.draggable);							// in DB speichern
@@ -368,10 +371,10 @@ function storeEventToObjectData(mID, eEvent) {
 	.data('erisDauer', eEvent.Dauer)
 	.data('erisBeschreibung', eEvent.Beschreibung)
 	.data('erisTeamID', eEvent.TeamID)
-	.data('erisSpiel', eEvent.TeamID)
-	.data('erisSerie', eEvent.TeamID)
-	.data('erisPlatz', eEvent.TeamID)
-	.data('erisPlatzteil', eEvent.TeamID)
+	.data('erisSpiel', eEvent.Spiel)
+	.data('erisSerie', eEvent.Serie)
+	.data('erisPlatz', eEvent.Platz)
+	.data('erisPlatzteil', eEvent.Platzteil)
 //	.data('erisGroup', eEvent.Team)
 	.data('erisDateStart', eEvent.dateStart);
 
@@ -389,6 +392,7 @@ function readAttributeFromEvent(mID, eEvent) {
 	eEvent.Team = $('#'+mID).data('erisGroup');
 	eEvent.dateStart = $('#'+mID).data('erisDateStart' );
 	eEvent.Dauer = $('#'+mID).data('erisDauer' );
+	eEvent.Platzteil = $('#'+mID).data('erisPlatzteil' );
 }
 
 	/*********************************************************************************
@@ -631,7 +635,7 @@ function pixelToMinutes(hh) {
 }
 
 /*********************************************************************************
-Funktion:	pixelToMinutes 
+Funktion:	minutesToPixel 
 Zweck:		rechnet Minuten in Pixel um
  */
 function minutesToPixel(hh) {
