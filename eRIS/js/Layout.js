@@ -254,37 +254,37 @@ function makePlatzDroppable() {
 	$( '.PlatzTeil').droppable({
         drop: function( event, ui ) {								// Funktion, die beim droppen aufgerufen wird
 
-        var Ziel = parseInt($(this).attr('id'));					// ID des PlatzTeil in das gedroppt wird
-
-		var MarkerID = $(ui.draggable).attr('id');					// ID des Markers der gedropped wird
-
-		var erisEvent = new Object();
-		readAttributeFromEvent(MarkerID, erisEvent);				// übertrage Object -> .data
-
-		var Dauer = erisEvent.Dauer;									// ersetzt hh
-		var PlatzTeile = erisEvent.Platzteile;							// ersetzt ww
-		
-		var ww = $(ui.draggable).css('width');						// Maße des gedroppten Marker
-        var hh = $(ui.draggable).css('height');
-        ww = parseInt(ww);
-        hh = parseInt(hh);
-         
-        var real = realZiel(Ziel,hh,ww);							// ermittle reales Ziel das unter der linken, oberen Ecke liegt
-        if ( real >=0  ) {
-        	
-			$(ui.draggable).appendTo( $('#' + real) );				// im Ziel ablegeb
-			var msg = '';
-			if (erisEvent.ID == undefined || erisEvent.ID == '') {
-				msg = makeEventMessage(MarkerID, real);						
-				postEvent(msg, ui.draggable);							// in DB speichern
-			}
-			else {
-				msg = makeEventUpdateMessage(MarkerID, real);
-				postEventUpdate(msg);
-			}
-//			createEventObject(MarkerID, erisEvent);					// 
-			storeEventToObjectData(MarkerID, erisEvent);				// übertrage Object -> .data
-			erisToolTip(MarkerID, erisEvent);
+	        var Ziel = parseInt($(this).attr('id'));					// ID des PlatzTeil in das gedroppt wird
+	
+			var MarkerID = $(ui.draggable).attr('id');					// ID des Markers der gedropped wird
+	
+			var erisEvent = new Object();
+			readAttributeFromEvent(MarkerID, erisEvent);				// übertrage Object -> .data
+	
+			var Dauer = erisEvent.Dauer;									// ersetzt hh
+			var PlatzTeile = erisEvent.Platzteile;							// ersetzt ww
+			
+			var ww = $(ui.draggable).css('width');						// Maße des gedroppten Marker
+	        var hh = $(ui.draggable).css('height');
+	        ww = parseInt(ww);
+	        hh = parseInt(hh);
+	         
+	        var real = realZiel(Ziel,hh,ww);							// ermittle reales Ziel das unter der linken, oberen Ecke liegt
+	        if ( real >=0  ) {
+	        	
+				$(ui.draggable).appendTo( $('#' + real) );				// im Ziel ablegeb
+				var msg = '';
+				if (erisEvent.ID == undefined || erisEvent.ID == '') {
+					msg = makeEventMessage(MarkerID);						
+					postEvent(msg, ui.draggable);							// in DB speichern
+				}
+				else {
+					msg = makeEventUpdateMessage(MarkerID);
+					postEventUpdate(msg);
+				}
+	//			createEventObject(MarkerID, erisEvent);					// 
+				storeEventToObjectData(MarkerID, erisEvent);				// übertrage Object -> .data
+				erisToolTip(MarkerID, erisEvent);
 		}
         
 		$(ui.draggable).css({'top' : 0, 'left' : 0});        		// Position im Ziel oben links
@@ -329,7 +329,7 @@ function newEvent(erisEvent) {
 				var msg = '';
 				var erisEvent = new Object();
 				readAttributeFromEvent(MarkerID, erisEvent);				// übertrage Object -> .data
-				msg = makeEventUpdateMessage(MarkerID, real);
+				msg = makeEventUpdateMessage(MarkerID);
 				postEventUpdate(msg);
 			}
 	})			
@@ -402,7 +402,8 @@ function readAttributeFromEvent(mID, eEvent) {
 	Funktion:	createEventObject 
 	Zweck:		.
 	 */
-function createEventObject (mID, eEvent, real) {
+function createEventObject (mID, eEvent) {
+	var real = parseInt($('#'+mID).parent().attr('id'));
 	eEvent.ID = $('#'+mID).data('erisID');	
 	eEvent.TeamId = $('#'+mID).text();
     var ww = $('#'+mID).css('width');												// Maße des gedroppten Marker
@@ -584,9 +585,9 @@ Funktion:	makeEventMessage
 Zweck:		generiert die Mesage für das xmlHTTP-POST (GET)
 */
 
-function makeEventMessage(id, real) {
+function makeEventMessage(id) {
 	var erisEvent = new Object();
-	createEventObject(id, erisEvent, real);
+	createEventObject(id, erisEvent);
 	var ff = erisEvent.field;
 	ff = ff.replace(/\s/g,'%20');
 	var msg = erisEvent.description + '/' + erisEvent.startDate + '/' + erisEvent.Dauer + '/' + erisEvent.TeamId + '/' + ff;
@@ -601,9 +602,9 @@ Zweck:		generiert die Mesage für das xmlHTTP-POST (GET)
 			msg = /12.10.2016%2017%3A00/90/Kunstrasen'
 */
 
-function makeEventUpdateMessage(id, real) {
+function makeEventUpdateMessage(id) {
 	var erisEvent = new Object();
-	createEventObject(id, erisEvent, real);
+	createEventObject(id, erisEvent);
 	var ff = erisEvent.field;
 	ff = ff.replace(/\s/g,'%20');
 	var msg = erisEvent.ID + '/' + erisEvent.startDate + '/' + erisEvent.Dauer + '/' + ff;
