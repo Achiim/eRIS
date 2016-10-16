@@ -67,6 +67,7 @@
 	const MarkerMinWidth = PlatzTeilWidth-MarkerPadding;
 	const MarkerMinHeight = innerMarkerHeight*2+PlatzTeilMargin;
 	const MarkerHeightjePlatzteil = MarkerMinHeight;
+	const MarkerWidthjePlatzteil = MarkerMinWidth;
 	
 	// Zeitleistenkonstanten
 	const StundeInMinuten = 60;															// eine Stunde hat 60 Minuten
@@ -318,12 +319,8 @@ function newEvent(erisEvent) {
 	
 	.resizable({
 		  resize: function( event, ui ) {
-			    ui.size.height = (Math.round( ui.size.height / innerMarkerHeight ) * (PlatzTeilHeight + PlatzTeilMargin))  
-			    					- MarkerPadding - PlatzTeilMargin ;
-			    ui.size.width = (Math.round( ui.size.width / innerMarkerWidth ) * (PlatzTeilWidth + PlatzTeilMargin)) 
-			    					- MarkerPadding - PlatzTeilMargin;
-			    
-
+			  ui.size.width = (Math.round( ui.size.width / innerMarkerWidth ) * (PlatzTeilWidth + PlatzTeilMargin)) - MarkerPadding - PlatzTeilMargin;
+			  ui.size.height = Math.round( ui.size.height / MarkerHeightjePlatzteil)*MarkerHeightjePlatzteil;
 			}
 	})	
 	.resizable({
