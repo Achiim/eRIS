@@ -53,29 +53,95 @@
 //*********************************************************************************
 // 	Konstanten für Layout
 	
-	const PlatzTeilWidth = 89;
-	const PlatzTeilHeight = 10;
+	// Platzkonstanten
+	const PlatzTeilWidth = 59;															// Width = Width + Margin
 	const PlatzTeilMargin = 1;
+	const PlatzTeilHeight = 10;															// Height 
+	const AnzahlPlatzteileJeStunde = 4;													// kleinstes Reservierungsraster 1/4-tel Stunde
 	
+	// Markerkostanten
 	const MarkerPadding = 5+5;
-	
 	const innerMarkerWidth = PlatzTeilWidth-MarkerPadding;								// abzgl. padding links und rechts und margin oben
 	const innerMarkerHeight = 5;														// abzgl. padding oben und unten und margin rechts
+	const MarkerMaxWidth = (AnzahlPlatzTeile*(PlatzTeilWidth+PlatzTeilMargin))-MarkerPadding-PlatzTeilMargin;
+	const MarkerMinWidth = PlatzTeilWidth-MarkerPadding;
+	const MarkerMinHeight = innerMarkerHeight*2+PlatzTeilMargin;
+	const MarkerHeightjePlatzteil = MarkerMinHeight;
 	
-	const AnzahlRasterJeStunde = 4;														// kleinstes Reservierungsraster 1/4-tel Stunde
-	
+	// Zeitleistenkonstanten
 	const StundeInMinuten = 60;															// eine Stunde hat 60 Minuten
-	const StundeInPixel = AnzahlRasterJeStunde*(PlatzTeilHeight + PlatzTeilMargin);		// eine Stunde hat z.B. 48 Pixel
-	
+	const StundeInPixel = AnzahlPlatzteileJeStunde*(PlatzTeilHeight + PlatzTeilMargin);		// eine Stunde hat z.B. 48 Pixel
 	const BeginnZeitLeiste = 8;															// Zeitleiste beginnt um 8:00 Uhr
 	const EndeZeitLeiste = 22;															// Zeitleiste endet um 22:00 Uhr
 	
-	const MarkerMaxWidth = (AnzahlPlatzTeile*(PlatzTeilWidth+PlatzTeilMargin))-MarkerPadding-PlatzTeilMargin;
-	const MarkerMinWidth = PlatzTeilWidth-MarkerPadding;
-	const MarkerMinHeight = innerMarkerHeight*2;
+
+	/*********************************************************************************
+	Funktion:	doLayout 
+	Zweck:		Erzeugt alle Bestandteile des Layouts.
+	 */
+function doLayout() {
+	
+	doTagesview();					// baue 1-Tages-View auf
+	doPlatzview();					// baue 1-Platz-View auf
+	doEventbutton();				// generiere die Knöpfe
+	doFuss();						// zeige den "Default-Fuss" mit dem Sammler und Mülleimer
+
+}
+
+	/*********************************************************************************
+	Funktion:	doTagesview 
+	Zweck:		Erzeugt alle Bestandteile des Layouts des Tagebelegungsplans.
+	 */
+function doTagesview() {
 
 	
-	/*********************************************************************************
+	$('<div></div>')													// Erzeuge die Ortsleiste
+	.addClass('Datumsleiste')
+	.attr( 'id', 'Datumsleiste' )
+	.appendTo( '#Belegungsplan' );
+	
+	$('<div>&nbsp</div>')												// Navigation innerhalb von Orten
+	.addClass('Datumsnavigation')
+	.attr( 'id', 'Datumsnavigation')
+	.appendTo( '#Datumsleiste' );
+	
+	$('<div></div>')													// Erzeuge die Ortsleiste
+	.addClass('Ortsleiste')
+	.attr( 'id', 'Ortsleiste' )
+	.appendTo( '#Belegungsplan' );
+	
+	$('<div>&nbsp</div>')												// Navigation innerhalb von Orten
+	.addClass('Ortsnavigation')
+	.attr( 'id', 'Ortsnavigation')
+	.appendTo( '#Ortsleiste' );
+	
+	$('<div></div>')													// Erzeuge die Zeitleiste
+	.addClass('Zeitleiste')
+	.attr( 'id', 'Zeitleiste' )
+	.appendTo( '#Belegungsplan' );
+	
+	$('<div>&nbsp</div>')												// Navigation innerhalb von Plätzen
+	.addClass('Platznavigation')
+	.attr( 'id', 'Platznavigation')
+	.appendTo( '#Zeitleiste' );
+	
+	$('<div>ganz</div>')												// Zeile für ganztags-Ereignisse
+	.addClass('Uhrzeit')
+	.attr( 'id', 'ganztags')
+	.appendTo( '#Zeitleiste' );
+	
+	for ( var uhr=BeginnZeitLeiste; uhr<EndeZeitLeiste; uhr++ ) {		// Zeitspalte
+		$('<div>'+ uhr + '<sup>00</sup></div>')		
+		.addClass('Uhrzeit')
+		.attr( 'id', 'U'+ uhr )
+		.css({'height' :StundeInPixel-PlatzTeilMargin})
+		.appendTo( '#Zeitleiste' );
+	}
+
+
+}
+
+/*********************************************************************************
 	Funktion:	doPlatzview 
 	Zweck:		Erzeugt einen Kopf über dem Tagesview für einen Platz.
 	 */
@@ -85,10 +151,6 @@ function doPlatzview() {
 	$('.PlatzLinks').remove();
 	$('.PlatzRechts').remove();
 	$('.Platzname').remove();
-	$('#Platzteil0').remove();
-	$('#Platzteil1').remove();
-	$('#Platzteil2').remove();
-	$('#Platzteil3').remove();
 	
 	// falls es noch keinen Platzkopf gibt, diesen anlegen, alle Platzview-Komponenten liegen im Platzkopf
 	var pk = '';
@@ -99,30 +161,14 @@ function doPlatzview() {
 		.attr( 'id', 'Platzkopf' )
 		.appendTo( '#Belegungsplan' );
 
-	// Navigation im Platzview nach links
-	$('<div><</div>')		
-	.addClass('PlatzLinks')
-	.attr( 'id', 'PlatzLinks' )
-	.click( function( event ) {
-      event.preventDefault();
-      prevField();
-      readAllEvents(fieldTitle[currentField]);
-    } )
+	
+	$('<div></div>')		
+	.addClass('Platzname')
+	.attr( 'id', 'Platzname' )
 	.appendTo( '#Platzkopf' );
 
-	// Navigation im Platzview nach rechts
-	$('<div>></div>')		
-	.addClass('PlatzRechts')
-	.attr( 'id', 'PlatzRechts' )
-	.click( function( event ) {
-      event.preventDefault();
-      nextField();
-      readAllEvents(fieldTitle[currentField]);
-    } )
-	.appendTo( '#Platzkopf' );
-
-	doPlatzteilview();				// Plattzeile anzeigen
 	$(document).ready( readAllFields() );				// hier werden dann auch der Platzname und alle Platzteile angelegt
+	doPlatzteilview();				// Platzteile anzeigen
 		
 }
 		
@@ -133,60 +179,19 @@ Zweck:		Erzeugt einen Kopf über dem Tagesview für einen Platz.
 function doPlatzteilview() {
 
 	// Löschen alter Platzview-Komponenten
-	$('#Platzteil0').remove();
-	$('#Platzteil1').remove();
-	$('#Platzteil2').remove();
-	$('#Platzteil3').remove();
+	$('.Platzteil').remove();									// Lösche alle Platzbestandteile
 
-	for ( var pl=0; pl<fieldPortions[currentField]; pl++) {
-	$('<div>'+fieldPartTitle[currentField][pl]+'</div>')		
-	.addClass('Platzteil')
-	.attr( 'id', 'Platzteil' + pl )
-	.appendTo( '#Platzkopf' );
-	}
-	
-}
-	
-	/*********************************************************************************
-	Funktion:	doTagesview 
-	Zweck:		Erzeugt alle Bestandteile des Layouts des Tagebelegungsplans.
-	 */
-function doTagesview() {
-	
-	// Erzeuge die Zeitleiste
-	$('<div></div>')		
-	.addClass('Zeitleiste')
-	.attr( 'id', 'Zeitleiste' )
-	.appendTo( '#Belegungsplan' );
-
-	
-	$('<div>&nbsp</div>')		
-	.addClass('Uhrzeit')
-	.attr( 'id', 'ganztags')
-	.appendTo( '#Zeitleiste' );
-
-	for ( var uhr=BeginnZeitLeiste; uhr<EndeZeitLeiste; uhr++ ) {
-		$('<div>'+ uhr + '<sup>00</sup></div>')		
-		.addClass('Uhrzeit')
-		.attr( 'id', 'U'+ uhr )
-		.appendTo( '#Zeitleiste' );
-		$('<div>&nbsp</div>')		
-		.addClass('UhrzeitHalbe')
-		.attr( 'id', 'U'+ uhr + ':30')
-		.appendTo( '#Zeitleiste' );
-	}
-	
-	// Erzeuge Platzspalte
+	// Erzeuge Platzspalten
 	$('<div></div>')		
 	.addClass('Platzleiste')
 	.attr( 'id', 'Platzleiste' )
 	.appendTo( '#Belegungsplan' );
 
-	$('<div>&nbsp</div>')		
-	.addClass('Uhrzeit')
+	$('<div>&nbsp</div>')										// ganztags
+	.addClass('Platzganztags')
 	.appendTo( '#Platzleiste' );
 
-	for ( var uhr=BeginnZeitLeiste; uhr<EndeZeitLeiste; uhr=uhr+(1/AnzahlRasterJeStunde)) {
+	for ( var uhr=BeginnZeitLeiste*AnzahlPlatzteileJeStunde; uhr<EndeZeitLeiste*AnzahlPlatzteileJeStunde; uhr++) {
 		for ( var pl=0; pl<AnzahlPlatzTeile; pl++ ) {
 			$('<div></div>')		
 			.addClass('PlatzTeil')
@@ -198,6 +203,7 @@ function doTagesview() {
 	makePlatzDroppable();
 
 }
+	
 
 	/*********************************************************************************
 	Funktion:	realZiel 
@@ -338,7 +344,7 @@ function newEvent(erisEvent) {
 	if (beginn.length > 0) {
     	var hour = parseInt(beginn[1].split(':')[0]);
     	var minute = parseInt(beginn[1].split(':')[1]);
-    	var zielID = (hour-BeginnZeitLeiste) * AnzahlRasterJeStunde*AnzahlPlatzTeile + (minute/(StundeInMinuten/AnzahlRasterJeStunde)*AnzahlPlatzTeile);		// je Stunde x Raster; Beginn allerdings bei 8:00 Uhr (8*x Raster versetzt)
+    	var zielID = (hour-BeginnZeitLeiste) * AnzahlPlatzteileJeStunde*AnzahlPlatzTeile + (minute/(StundeInMinuten/AnzahlPlatzteileJeStunde)*AnzahlPlatzTeile);		// je Stunde x Raster; Beginn allerdings bei 8:00 Uhr (8*x Raster versetzt)
     	$('#' + markerID)
     	.appendTo( '#' + zielID );	
 	}
@@ -408,13 +414,13 @@ function createEventObject (mID, eEvent, real) {
     hh = parseInt(hh);
     eEvent.Dauer = pixelToMinutes(hh);												// Minuten aus Pixel berechnet
 
-	var Stunde = real/AnzahlPlatzTeile/AnzahlRasterJeStunde + BeginnZeitLeiste;		// volle Stunde aus Zeile berechnet 
+	var Stunde = real/AnzahlPlatzTeile/AnzahlPlatzteileJeStunde + BeginnZeitLeiste;		// volle Stunde aus Zeile berechnet 
 	StundeString = Math.floor(Stunde);												// volle Stunde aus Zeile berechnet 
 	
-	var xxx = (StundeString- BeginnZeitLeiste) * AnzahlPlatzTeile * AnzahlRasterJeStunde;								
+	var xxx = (StundeString- BeginnZeitLeiste) * AnzahlPlatzTeile * AnzahlPlatzteileJeStunde;								
 	xxx = real - xxx ;																// 0 - 15tes Platzteilraster innerhalb einer Stunde
 
-	var MinuteString = Math.floor(xxx / AnzahlRasterJeStunde);
+	var MinuteString = Math.floor(xxx / AnzahlPlatzteileJeStunde);
 	if (MinuteString == 0) MinuteString = '00';
 	if (MinuteString == 1) MinuteString = '15';
 	if (MinuteString == 2) MinuteString = '30';
@@ -566,7 +572,7 @@ function rebuildPlatzteile(alt, neu) {
 	$('#Platzleiste').width((PlatzTeilWidth+PlatzTeilMargin)*neu);		// Breite der Platzleiste anpassen
 
 	pid = 0;
-	for ( var uhr=BeginnZeitLeiste; uhr<EndeZeitLeiste; uhr=uhr+(1/AnzahlRasterJeStunde)) {
+	for ( var uhr=BeginnZeitLeiste; uhr<EndeZeitLeiste; uhr=uhr+(1/AnzahlPlatzteileJeStunde)) {
 		for ( var pl=0; pl<neu; pl++ ) {
 			$('<div></div>')		
 			.addClass('PlatzTeil')

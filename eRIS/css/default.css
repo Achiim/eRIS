@@ -81,30 +81,30 @@ Styles fuer den Belegungsplan in allen Views
 
 .Belegungsplan {
 	height: 784px;
-	width: 480px;
+	width: 300px;
 }
 
 .Platzkopf {
-	width: 480px;
+	width: 240px;
+	height: 41px;
 	float: left;
 }
 
 .PlatzLinks, .PlatzRechts {
 	width: 30px;
-	height: 40px;
 	color: white;
 	text-align: center;
 	float: left;
 }
 
 .Platzname {
-	width: 360px;
+	width: 240px;
 	color: white;
 	float: left;
 }
 
 .Platzteil{
-	width: 89px;
+	width: 59px;
 	float: left;
 	margin-top: 1px;
 	margin-right: 1px;
@@ -124,13 +124,23 @@ Styles fuer den Belegungsplan in allen Views
 	float: left;
 }
 
-#Platzleiste {
-	width: 360px;
+.Platznavigation {
+	height: 40px;
+	
+}
+
+.Platznavigation, .Datumsnavigation, .Ortsnavigation {
+	width: 60px;
+	
+}
+
+#Platzleiste { 
+	width: 240px;
 	float: left;
 }
 
 .PlatzTeil {
-	width: 89px;
+	width: 59px;
 	float: left;
 	margin-top: 1px;
 	margin-right: 1px;
@@ -150,10 +160,6 @@ Styles fuer den Belegungsplan in allen Views
 
 .Uhrzeit {
 	margin-top: 1px;
-	height: 21px;
-}
-.UhrzeitHalbe {
-	height: 22px;
 }
 	
 .ZeitFoot, .foot {

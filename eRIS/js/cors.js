@@ -366,17 +366,26 @@ function readAllFields() {
      			fieldPartTitle[a][pl] = Fields[a].portionName+pl;	// Platzkürzel + lfd. Nummer
     		}
       	}
-
+/*
 		$('<div>'+fieldTitle[currentField]+'</div>')		
 		.addClass('Platzname')
 		.attr( 'id', 'Platzname' )
 		.appendTo( '#Platzkopf' );
-
+*/
+		$('#Platzname')
+		.text(fieldTitle[currentField]);
+		
 		for ( var pl=0; pl<fieldPortions[currentField]; pl++) {
+/*
+			
+			$('#Platzteil'+pl)
+			.text(fieldPartTitle[currentField][pl]);
+*/			
 			$('<div>'+fieldPartTitle[currentField][pl]+'</div>')		
 			.addClass('Platzteil')
 			.attr( 'id', 'Platzteil' + pl )
 			.appendTo( '#Platzkopf' );
+
 		}
 		
 		readAllEvents(fieldTitle[currentField]); 

@@ -8,25 +8,70 @@
   <script src="https://code.jquery.com/qunit/qunit-2.0.1.js"></script>
   <script src="js/Layout.js"></script>
  
+ <!-- 
+	pixelToMinutes - Test
+	---------------------
+	const MarkerHeightjePlatzteil = 11 Pixel
+	const AnzahlPlatzteileJeStunde = 4 ~ 1 Platzteil = 1/4 Stunde 
+	
+	Beispile: 11 Pixel je 1/4-Stunde
+	 0 Pixel = 15 Minuten
+	33 Pixel = 60 Minuten
+	.... 
+  -->
   <script>
   QUnit.test("pixelToMinutes 56 Tests a 11 Pixel hoch (minimal 0 Pixel; maximal 605 Pixel)", function( assert ) {
+		minuten = StundeInMinuten / AnzahlPlatzteileJeStunde;
 		for (var tt = 0; tt< 56; tt++ ) {
-		    assert.equal(pixelToMinutes(tt*11), tt*15+15);
+		    assert.equal(pixelToMinutes(tt*MarkerHeightjePlatzteil), tt*minuten+minuten);
 		}
 	  });
   </script>
   
+ <!-- 
+	minutesToPixel - Test
+	---------------------
+	Beispile: je 15 Minuten ensprechen 11 Pixel
+	 15 Minuten = 0 Pixel
+	 60 Minuten = 33 Pixel
+	.... 
+  -->
   <script>
   QUnit.test("minutesToPixel 56 Test a 15 Minuten (minimal 30 Minuten; maximal 840 Minuten (14h))", function( assert ) {
 
+		minuten = StundeInMinuten / AnzahlPlatzteileJeStunde;
 		for (var tt = 0; tt< 56; tt++ ) {
-			assert.equal(minutesToPixel(tt*15+15), 11*tt);
+			assert.equal(minutesToPixel(tt*minuten+minuten), MarkerHeightjePlatzteil*tt);
 		}
 	  });
   </script>
 
-<!-- 
+ <!-- 
+	minutesToPixel und pixelToMinutes - Kombinationstest
+	----------------------------------------------------
+	Beispile: je 15 Minuten in Pixel wandeln und wieder zurück
+	.... 
+  -->
+  <script>
+  
+  QUnit.test("minutesToPixel und pixelToMinutes - Kombinationstest", function( assert ) {
 
+		minuten = StundeInMinuten / AnzahlPlatzteileJeStunde;
+		for (var tt = 0; tt< 56; tt++ ) {
+			pp = minutesToPixel(tt*minuten+minuten);
+			mm = pixelToMinutes(pp)
+			assert.equal(tt*minuten+minuten, mm);
+		}
+	  });
+  </script>
+
+
+
+<!-- 
+	realZiel - Test
+	---------------
+	Beispiel: 4 Platzteile + 4 Raster je Stunde = 16 Platzteile je Stunde reservierbar (0..15)
+	
 	0	1	2	3			hh bis Reihe 1 = nicht zulässig, da Mindesthöhe unterschritten
 	4	5	6	7			hh bis Reihe 2 = 21px
 	8	9	10	11			hh bis Reihe 3 = 32px
