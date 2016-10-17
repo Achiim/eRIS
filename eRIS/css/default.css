@@ -79,36 +79,59 @@ Styles fuer den Belegungsplan in allen Views
 	float: left;
 }
 
-.Belegungsplan {
-	height: 784px;
-	width: 300px;
+.Belegungsplan, .Zeitleiste {
+
+	width: 320px;
 }
 
+.Platzname, .Platzleiste {
+	width: 200px;
+}
+	
 .Platzkopf {
-	width: 240px;
-	height: 41px;
-	float: left;
-}
-
-.PlatzLinks, .PlatzRechts {
-	width: 30px;
-	color: white;
-	text-align: center;
 	float: left;
 }
 
 .Platzname {
-	width: 240px;
 	color: white;
-	float: left;
+}
+
+.Platzteil, .PlatzTeil {
+	width: 49px;
 }
 
 .Platzteil{
-	width: 59px;
 	float: left;
 	margin-top: 1px;
 	margin-right: 1px;
 	color: white;
+}
+
+#Platzleiste { 
+	float: left;
+}
+
+.PlatzTeil {
+	float: left;
+	margin-top: 1px;
+	margin-right: 1px;
+	height: 10px;
+}
+
+.Links, .Rechts {
+	width: 60px;
+	float: left;
+	color: white;
+}
+
+.Mitte {
+	width: 200px;
+	float: left;
+	color: white;
+}
+
+#PlatzMitte {
+	text-align: center;
 }
 
 .foot, .K2, .Sammler {
@@ -120,7 +143,6 @@ Styles fuer den Belegungsplan in allen Views
 }
 
 #Zeitleiste {
-	width: 60px;
 	float: left;
 }
 
@@ -132,19 +154,6 @@ Styles fuer den Belegungsplan in allen Views
 .Platznavigation, .Datumsnavigation, .Ortsnavigation {
 	width: 60px;
 	
-}
-
-#Platzleiste { 
-	width: 240px;
-	float: left;
-}
-
-.PlatzTeil {
-	width: 59px;
-	float: left;
-	margin-top: 1px;
-	margin-right: 1px;
-	height: 10px;
 }
 
 #Buttonlist {

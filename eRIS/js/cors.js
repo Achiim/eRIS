@@ -384,7 +384,7 @@ function readAllFields() {
 			$('<div>'+fieldPartTitle[currentField][pl]+'</div>')		
 			.addClass('Platzteil')
 			.attr( 'id', 'Platzteil' + pl )
-			.appendTo( '#Platzkopf' );
+			.appendTo( '#PlatzMitte' );
 
 		}
 		
