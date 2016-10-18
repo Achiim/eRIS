@@ -10,29 +10,38 @@
 	
 	Das Layout wird grundsätzlich nach folgenden Schema aufgebaut
 
-	.Belegungsplan
-	+--------------------------------------------------------------------------
-	|  .Platz
-	|  +-----------------------------------------------------------------------
-	|  | PlatzLinks | PlatzRechts       | Platzname
-	|  |                                | Platzteil0 | Platzteil1 | Platzteil3 | ...
-	|  +---------------------------------------------------------------------------
+	.Belegungsplan (TagesView)
+	+---------------------------------------------------------------------------------------------------------------
+	|  .Datumsleiste
+	|  +--------------------------------+--------------------------------------+------------------------------+
+	|  | .DatumLinks                    | .DatumMitte                          | .DatumRechts                 |
+	|  +-----------------------------------------------------------------------+------------------------------+
+	|  .Ortsleiste
+	|  +--------------------------------+--------------------------------------+------------------------------+
+	|  | .OrtLinks                      | .OrtMitte                            | .OrtRechts                   |
+	|  +-----------------------------------------------------------------------+------------------------------+
+	|  .Platzleiste
+	|  +--------------------------------+--------------------------------------+------------------------------+
+	|  | .PlatzLinks                    | .PlatzMitte                          | .PlatzRechts                 |
+	|  +-----------------------------------------------------------------------+------------------------------+
+	|  |                      			| Platzname
+	|  |                                | Platzteil0 | Platzteil1 | Platzteil3 | 
+	|  +------------------------------------------------------------------------------------------------------+
 	+------------------------------------------------------------------------------
 	|  .Zeitleiste                      | .Platz
-	|  +------------------+----------------------------------------------------+
-	|  | #ganztags                                                             |
-	|  | .Uhrzeit                       | .PlatzTeil | .PlatzTeil | .PlatzTeil | ....
-	|  | .UhrzeitHalbe    |             |            |            |
+	|  +--------------------------------+--------------------------------------+------------------------------+
+	|  | .ZeitLinks                     | .ZeitMitte                           | .ZeitRechts                  |
+	|  | #ganztags                      | .Platzganztags                       | #ganztags                    |
+	|  | .Uhrzeit                       | .PlatzTeil | .PlatzTeil | .PlatzTeil | .Uhrzeit
 	|  |  ...
-	|  +------------------+-------------+------------+------------+------------+ ....
-	+---------------------------------------------------------------------------
+	|  +--------------------------------+--------------------------------------+------------------------------+
+	+-----------------------------------------------------------------------------------------------------------------
 	|  .Buttonleiste
 	|  +------------------------+
 	|  | .Buttongroup           |
 	|  | .Eventbutton           |
 	|  +------------------------+
 	+---------------------------------------------------------------------------	
-	
 	
  */
 //*********************************************************************************
@@ -126,7 +135,6 @@ function doTagesview() {
     	event.preventDefault();
     	prevDatum();
     	} )	
-	.css({'padding': 0, 'width': 40})
     .appendTo( '#DatumLinks' );
 
 	$('<div>></div>')											// Datum nach rechts
@@ -137,7 +145,6 @@ function doTagesview() {
     	event.preventDefault();
     	nextDatum();
     	} )	
-	.css({'padding': 0, 'width': 40})
     .appendTo( '#DatumRechts' );
 
 	// Ort
@@ -171,7 +178,6 @@ function doTagesview() {
     	event.preventDefault();
     	prevOrt();
     	} )	
-	.css({'padding': 0, 'width': 40})
     .appendTo( '#OrtLinks' );
 
 	$('<div>></div>')											// Ort nach rechts
@@ -182,7 +188,6 @@ function doTagesview() {
     	event.preventDefault();
     	nextOrt();
     	} )	
-	.css({'padding': 0, 'width': 40})
     .appendTo( '#OrtRechts' );
 
 	
@@ -217,7 +222,6 @@ function doTagesview() {
     	event.preventDefault();
     	prevField();
     	} )	
-	.css({'padding': 0, 'width': 40})
     .appendTo( '#PlatzLinks' );
 
 	$('<div>></div>')											// Platz nach rechts
@@ -228,7 +232,6 @@ function doTagesview() {
     	event.preventDefault();
     	nextField();
     	} )	
-	.css({'padding': 0, 'width': 40})
     .appendTo( '#PlatzRechts' );
 
 	
@@ -330,7 +333,7 @@ function doPlatzteilview() {
 		.attr( 'id', 'Platz' )
 		.appendTo( '#ZeitMitte' );
 
-	$('<div/>')										// ganztags
+	$('<div/>')													// ganztags
 	.addClass('Platzganztags')
 	.attr( 'id', 'Platzganztags' )
 	.appendTo( '#Platz' );
@@ -344,24 +347,23 @@ function doPlatzteilview() {
 		}
 	}
 
-
 	makePlatzDroppable();
 
 }
 	
 
-	/*********************************************************************************
-	Funktion:	realZiel 
-	Zweck:		Marker werden normalerweise in das Objekt gelegt, das unter der "Mitte" des Markers liegt.
-				Diese Funktion liefert das Objekt unter der linken, oberen Ecke als return-Werk,
-				damit der Marker dort abgelegt werden kann.
+/*********************************************************************************
+Funktion:	realZiel 
+Zweck:		Marker werden normalerweise in das Objekt gelegt, das unter der "Mitte" des Markers liegt.
+			Diese Funktion liefert das Objekt unter der linken, oberen Ecke als return-Werk,
+			damit der Marker dort abgelegt werden kann.
 			
-				In
-					Ziel 	= lfd. Nummer des Objekts unter der Mitte des Markers
-					h		= Höhe des Markers, der abgelegt werden soll
-					w		= Breite des Markers, der abgelegt werden soll
+			In
+				Ziel 	= lfd. Nummer des Objekts unter der Mitte des Markers
+				h		= Höhe des Markers, der abgelegt werden soll
+				w		= Breite des Markers, der abgelegt werden soll
 			
-				return		= lfd. Nummer des Objekts unter der linken, oberen Ecke des Markers
+			return		= lfd. Nummer des Objekts unter der linken, oberen Ecke des Markers
 							= -1, wenn unter der linken, oberen Ecke kein Objekt liegt
 				
 */
@@ -405,8 +407,8 @@ function makePlatzDroppable() {
 			var erisEvent = new Object();
 			readAttributeFromEvent(MarkerID, erisEvent);				// übertrage Object -> .data
 	
-			var Dauer = erisEvent.Dauer;									// ersetzt hh
-			var PlatzTeile = erisEvent.Platzteile;							// ersetzt ww
+			var Dauer = erisEvent.Dauer;								// ersetzt hh
+			var PlatzTeile = erisEvent.Platzteile;						// ersetzt ww
 			
 			var ww = $(ui.draggable).css('width');						// Maße des gedroppten Marker
 	        var hh = $(ui.draggable).css('height');
@@ -420,14 +422,14 @@ function makePlatzDroppable() {
 				var msg = '';
 				if (erisEvent.ID == undefined || erisEvent.ID == '') {
 					msg = makeEventMessage(MarkerID);						
-					postEvent(msg, ui.draggable);							// in DB speichern
+					postEvent(msg, ui.draggable);						// in DB speichern
 				}
 				else {
 					msg = makeEventUpdateMessage(MarkerID);
 					postEventUpdate(msg);
 				}
-	//			createEventObject(MarkerID, erisEvent);					// 
-				storeEventToObjectData(MarkerID, erisEvent);				// übertrage Object -> .data
+
+				storeEventToObjectData(MarkerID, erisEvent);			// übertrage Object -> .data
 				erisToolTip(MarkerID, erisEvent);
 		}
         
@@ -436,10 +438,10 @@ function makePlatzDroppable() {
 
 };
 
-	/*********************************************************************************
-	Funktion:	newEvent 
-	Zweck:		erzeugt einen neuen Marker, entweder aud der DB oder bei betätigen eines Eventbutton
-	 */
+/*********************************************************************************
+Funktion:	newEvent 
+Zweck:		erzeugt einen neuen Marker, entweder aud der DB oder bei betätigen eines Eventbutton
+ */
 function newEvent(erisEvent) {
 	var marker = erisEvent.TeamID;
 	var dauer = erisEvent.Dauer;
@@ -499,9 +501,9 @@ function newEvent(erisEvent) {
 }
 
 
-	/*********************************************************************************
-	Funktion:	storeEventToObjectData 
-	Zweck:	
+/*********************************************************************************
+Funktion:	storeEventToObjectData 
+Zweck:	
 	
 	erisID 			= 	Event.ID 			= interner Schlüssel
 	erisStart		= 	Event.start			= Datum und Uhrzeit des Beginns
@@ -513,8 +515,8 @@ function newEvent(erisEvent) {
 	erisPlatz		=	Event.Platz			= Platz
 	erisPlatzteil	=	Event.Platzteil		= Platzteile Array [1,2,3,4]
 	erisDateStart	=	Event.dateStart		= Array [0] = Datum, [1] = Zeit
-	.
-	 */
+
+ */
 function storeEventToObjectData(mID, eEvent) {
 
 	$('#'+mID)
@@ -533,10 +535,10 @@ function storeEventToObjectData(mID, eEvent) {
 
 }
 
-	/*********************************************************************************
-	Funktion:	readAttributeFromEvent 
-	Zweck:		.
-	 */
+/*********************************************************************************
+Funktion:	readAttributeFromEvent 
+Zweck:		.
+*/
 function readAttributeFromEvent(mID, eEvent) {
 
 	eEvent.ID = $('#'+mID).data('erisID');
@@ -547,10 +549,10 @@ function readAttributeFromEvent(mID, eEvent) {
 	eEvent.Platzteil = $('#'+mID).data('erisPlatzteil' );
 }
 
-	/*********************************************************************************
-	Funktion:	createEventObject 
-	Zweck:		.
-	 */
+/*********************************************************************************
+Funktion:	createEventObject 
+Zweck:		.
+ */
 function createEventObject (mID, eEvent) {
 	var real = parseInt($('#'+mID).parent().attr('id'));
 	eEvent.ID = $('#'+mID).data('erisID');	
@@ -561,7 +563,7 @@ function createEventObject (mID, eEvent) {
     hh = parseInt(hh);
     eEvent.Dauer = pixelToMinutes(hh);												// Minuten aus Pixel berechnet
 
-	var Stunde = real/AnzahlPlatzTeile/AnzahlPlatzteileJeStunde + BeginnZeitLeiste;		// volle Stunde aus Zeile berechnet 
+	var Stunde = real/AnzahlPlatzTeile/AnzahlPlatzteileJeStunde + BeginnZeitLeiste;	// volle Stunde aus Zeile berechnet 
 	StundeString = Math.floor(Stunde);												// volle Stunde aus Zeile berechnet 
 	
 	var xxx = (StundeString- BeginnZeitLeiste) * AnzahlPlatzTeile * AnzahlPlatzteileJeStunde;								
@@ -579,10 +581,10 @@ function createEventObject (mID, eEvent) {
     
 }
 
-	/*********************************************************************************
-	Funktion:	doEventbutton 
-	Zweck:		.
-	 */
+/*********************************************************************************
+Funktion:	doEventbutton 
+Zweck:		.
+ */
 function doEventbutton() {
 
 	doClearEventbuttons();
@@ -698,12 +700,12 @@ function nextField() {
 
 /*********************************************************************************
 Funktion:	setFieldPartTitle 
-Zweck:		setzt die Plätzteile-Bezeichung für einen Platz
+Zweck:		setzt die Platzteile-Bezeichung für einen Platz
 */
 function setFieldPartTitle(a) {
-	$( '.Platzteil').remove();
+	$( '.Platzteil').remove();										// alte Bezeichung der Platzteile entfernen
 	for ( var pl=0; pl<fieldPortions[a]; pl++) {
-		$('<div>'+fieldPartTitle[currentField][pl]+'</div>')		
+		$('<div>'+fieldPartTitle[currentField][pl]+'</div>')		// neue Bezeichung der Platzteile erzeugen
 		.addClass('Platzteil')
 		.attr( 'id', 'Platzteil' + pl )
 		.appendTo( '#PlatzMitte' );
@@ -712,16 +714,16 @@ function setFieldPartTitle(a) {
 
 /*********************************************************************************
 Funktion:	makeEventMessage 
-Zweck:		generiert die Mesage für das xmlHTTP-POST (GET)
+Zweck:		generiert die Message für das xmlHTTP-POST (GET)
 */
 
 function makeEventMessage(id) {
 	var erisEvent = new Object();
 	createEventObject(id, erisEvent);
 	var ff = erisEvent.field;
-	ff = ff.replace(/\s/g,'%20');
+	ff = ff.replace(/\s/g,'%20');									// maskiere Blank durch %20
+	
 	var msg = erisEvent.description + '/' + erisEvent.startDate + '/' + erisEvent.Dauer + '/' + erisEvent.TeamId + '/' + ff;
-
 	return msg;
 }
 
@@ -736,9 +738,9 @@ function makeEventUpdateMessage(id) {
 	var erisEvent = new Object();
 	createEventObject(id, erisEvent);
 	var ff = erisEvent.field;
-	ff = ff.replace(/\s/g,'%20');
+	ff = ff.replace(/\s/g,'%20');									// maskiere Blank durch %20
+	
 	var msg = erisEvent.ID + '/' + erisEvent.startDate + '/' + erisEvent.Dauer + '/' + ff;
-
 	return msg;
 }
 
@@ -794,7 +796,7 @@ Zweck:		generiert den ToolTip-Inhalt
 
  */
 function erisToolTip(markerID, erisEvent) {
-	var tt = 'erisID = ' + erisEvent.ID + '&lt;br&gt;';
+	var tt = 'erisID = ' + erisEvent.ID + ' ';
 	tt += 'erisStart = ' + erisEvent.start + ' ';
 	tt += 'erisDauer = ' + erisEvent.Dauer + ' ';
 	tt += 'erisBeschreibung = ' + erisEvent.Beschreibung + ' ';

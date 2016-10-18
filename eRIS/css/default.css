@@ -145,8 +145,14 @@ Styles fuer den Belegungsplan in allen Views
 	color: white;
 }
 
-#PlatzMitte, #OrtMitte, #DatumMitte {
+#PlatzLinks, #PlatzMitte, PlatzRechts, #OrtLinks, #OrtMitte, #OrtRechts, #DatumLinks, #DatumMitte, #DatumRechts {
 	text-align: center;
+}
+
+#DatumButtonLinks, #DatumButtonRechts, #OrtButtonLinks, #OrtButtonRechts, #PlatzButtonLinks, #PlatzButtonRechts {
+	background: #c5e1a5;				/* Light Green 200 */
+	padding: 0px;
+	border: 0px;
 }
 
 .foot, .K2, .Sammler {
