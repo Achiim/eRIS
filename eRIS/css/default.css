@@ -84,7 +84,15 @@ Styles fuer den Belegungsplan in allen Views
 	width: 320px;
 }
 
-.Platzname, .Platzleiste {
+.Datumsleiste, #DatumLinks, #DatumMitte, #DatumRechts {
+	height: 20px;
+}
+
+.Ortsleiste, #OrtLinks, #OrtMitte, #OrtRechts {
+	height: 20px;
+}
+
+.Platzname, .Platz {
 	width: 200px;
 }
 	
@@ -95,6 +103,13 @@ Styles fuer den Belegungsplan in allen Views
 .Platzname {
 	color: white;
 }
+
+.Platzganztags {
+	height: 20px;
+	margin-right: 1px;
+	margin-top: 1px;
+}
+
 
 .Platzteil, .PlatzTeil {
 	width: 49px;
@@ -107,7 +122,7 @@ Styles fuer den Belegungsplan in allen Views
 	color: white;
 }
 
-#Platzleiste { 
+#Platz { 
 	float: left;
 }
 
@@ -130,7 +145,7 @@ Styles fuer den Belegungsplan in allen Views
 	color: white;
 }
 
-#PlatzMitte {
+#PlatzMitte, #OrtMitte, #DatumMitte {
 	text-align: center;
 }
 
