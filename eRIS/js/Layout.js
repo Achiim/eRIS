@@ -303,7 +303,7 @@ function doPlatzview() {
 	.attr( 'id', 'Platzname' )
 	.appendTo( '#PlatzMitte' );
 
-	$(document).ready( readAllFields() );				// hier werden dann auch der Platzname und alle Platzteile angelegt
+	readAllFields();									// hier werden dann auch der Platzname und alle Platzteile angelegt
 
 	doPlatzteilview();									// Platzteile anzeigen
 		
@@ -320,7 +320,6 @@ function doPlatzteilview() {
 	$('.Platzganztags').remove();								// Lösche den Ganztas-Bereich
 	$('.PlatzTeil').remove();									// Lösche alle Platzbestandteile
 
-	$('#Platz').width((PlatzTeilWidth+PlatzTeilMargin)*fieldPortions[currentField]);	// Breite der Platz anpassen
 	pid = 0;													// Nummerierung für PlatzElemente
 	
 	// falls es noch keinen Platz gibt, diesen anlegen
@@ -332,6 +331,8 @@ function doPlatzteilview() {
 		.addClass('Platz')
 		.attr( 'id', 'Platz' )
 		.appendTo( '#ZeitMitte' );
+
+	$('#Platz').width((PlatzTeilWidth+PlatzTeilMargin)*fieldPortions[currentField]);	// Breite der Platz anpassen
 
 	$('<div/>')													// ganztags
 	.addClass('Platzganztags')
@@ -405,7 +406,7 @@ function makePlatzDroppable() {
 			var MarkerID = $(ui.draggable).attr('id');					// ID des Markers der gedropped wird
 	
 			var erisEvent = new Object();
-			readAttributeFromEvent(MarkerID, erisEvent);				// übertrage Object -> .data
+			readAttributeFromEvent(MarkerID, erisEvent);				// übertrage .data -> Objekt
 	
 			var Dauer = erisEvent.Dauer;								// ersetzt hh
 			var PlatzTeile = erisEvent.Platzteile;						// ersetzt ww
@@ -429,8 +430,8 @@ function makePlatzDroppable() {
 					postEventUpdate(msg);
 				}
 
+				readAttributeFromEvent(MarkerID, erisEvent);			// übertrage .data -> Objekt
 				storeEventToObjectData(MarkerID, erisEvent);			// übertrage Object -> .data
-				erisToolTip(MarkerID, erisEvent);
 		}
         
 		$(ui.draggable).css({'top' : 0, 'left' : 0});        		// Position im Ziel oben links
@@ -474,7 +475,7 @@ function newEvent(erisEvent) {
 				var MarkerID = $(ui.element).attr('id');
 				var msg = '';
 				var erisEvent = new Object();
-				readAttributeFromEvent(MarkerID, erisEvent);				// übertrage Object -> .data
+				readAttributeFromEvent(MarkerID, erisEvent);				// übertrage .data -> Objekt
 				msg = makeEventUpdateMessage(MarkerID);
 				postEventUpdate(msg);
 			}
@@ -482,8 +483,53 @@ function newEvent(erisEvent) {
 
 	.resizable( "option", "minWidth", MarkerMinWidth )	
 	.resizable( "option", "maxWidth", MarkerMaxWidth )	
-	.resizable( "option", "minHeight", MarkerMinHeight );
+	.resizable( "option", "minHeight", MarkerMinHeight)
 
+	.on({
+		click: function ( ) {
+		var mmID = this.id;
+		
+	    $('<div></div>').dialog({
+	        modal: true,
+	        title: "Event-Info" ,
+	        open: function (event, ui ) {
+	        	var MarkerID = mmID;
+				var erisEvent = new Object();
+				readAttributeFromEvent(MarkerID, erisEvent);				// übertrage .data -> Objekt
+	            var markup = erisToolTip(markerID, erisEvent);
+	            $(this).html(markup);
+	        },
+	        buttons: {
+	            Ok: function () {
+	                $(this).dialog("close");
+	            }
+	        }
+	    }) //end confirm dialog
+	   }
+
+	})
+	
+	.hover(function ( ) {
+		var mmID = this.id;
+		
+	    $('<div/>')
+	    .dialog({
+	        modal: true,
+	        title: "Event-Info" ,
+	        open: function (event, ui ) {
+	        	var MarkerID = mmID;
+				var erisEvent = new Object();
+				readAttributeFromEvent(MarkerID, erisEvent);				// übertrage .data -> Objekt
+	            var markup = erisToolTip(markerID, erisEvent);
+	            $(this).html(markup);
+	        }
+        })
+        .addClass('EventInfo');
+	},  function () {
+        	$('.EventInfo').dialog("close");
+    	}
+	);
+	
 	if (beginn.length > 0) {
     	var hour = parseInt(beginn[1].split(':')[0]);
     	var minute = parseInt(beginn[1].split(':')[1]);
@@ -497,7 +543,6 @@ function newEvent(erisEvent) {
     	}
 	}
 	storeEventToObjectData(markerID, erisEvent);
-	erisToolTip(markerID, erisEvent);
 }
 
 
@@ -542,11 +587,16 @@ Zweck:		.
 function readAttributeFromEvent(mID, eEvent) {
 
 	eEvent.ID = $('#'+mID).data('erisID');
-	eEvent.TeamId = $('#'+mID).data('erisTeamID');
-	eEvent.Team = $('#'+mID).data('erisGroup');
-	eEvent.dateStart = $('#'+mID).data('erisDateStart' );
+	eEvent.start = $('#'+mID).data('erisStart');
 	eEvent.Dauer = $('#'+mID).data('erisDauer' );
+	eEvent.Beschreibung = $('#'+mID).data('erisBeschreibung' );
+	eEvent.TeamID = $('#'+mID).data('erisTeamID');
+	eEvent.Spiel = $('#'+mID).data('erisSpiel' );
+	eEvent.Serie = $('#'+mID).data('erisSerie' );
+	eEvent.Platz = $('#'+mID).data('erisPlatz' );
 	eEvent.Platzteil = $('#'+mID).data('erisPlatzteil' );
+//	eEvent.Team = $('#'+mID).data('erisGroup');
+	eEvent.dateStart = $('#'+mID).data('erisDateStart' );
 }
 
 /*********************************************************************************
@@ -723,7 +773,7 @@ function makeEventMessage(id) {
 	var ff = erisEvent.field;
 	ff = ff.replace(/\s/g,'%20');									// maskiere Blank durch %20
 	
-	var msg = erisEvent.description + '/' + erisEvent.startDate + '/' + erisEvent.Dauer + '/' + erisEvent.TeamId + '/' + ff;
+	var msg = erisEvent.description + '/' + erisEvent.startDate + '/' + erisEvent.Dauer + '/' + erisEvent.TeamId + '/' + ff + '/' + "1%2B2";
 	return msg;
 }
 
@@ -796,18 +846,16 @@ Zweck:		generiert den ToolTip-Inhalt
 
  */
 function erisToolTip(markerID, erisEvent) {
-	var tt = 'erisID = ' + erisEvent.ID + ' ';
-	tt += 'erisStart = ' + erisEvent.start + ' ';
-	tt += 'erisDauer = ' + erisEvent.Dauer + ' ';
-	tt += 'erisBeschreibung = ' + erisEvent.Beschreibung + ' ';
-	tt += 'erisTeamID = ' + erisEvent.TeamID + ' ';
-	tt += 'erisSpiel = ' + erisEvent.Spiel + ' ';
-	tt += 'erisSerie = ' + erisEvent.Serie + ' ';
-	tt += 'erisPlatz = ' + erisEvent.Platz + ' ';
-	tt += 'erisPlatzteil = ' + erisEvent.Platzteil + ' ';
-	tt += 'erisDateStart = ' + erisEvent.dateStart + ' ';
+	var tt = 'erisID = ' + erisEvent.ID + '<br\>';
+	tt += 'erisStart = ' + erisEvent.start + '<br\>';
+	tt += 'erisDauer = ' + erisEvent.Dauer + '<br\>';
+	tt += 'erisBeschreibung = ' + erisEvent.Beschreibung + '<br\>';
+	tt += 'erisTeamID = ' + erisEvent.TeamID + '<br\>';
+	tt += 'erisSpiel = ' + erisEvent.Spiel + '<br\>';
+	tt += 'erisSerie = ' + erisEvent.Serie + '<br\>';
+	tt += 'erisPlatz = ' + erisEvent.Platz + '<br\>';
+	tt += 'erisPlatzteil = ' + erisEvent.Platzteil + '<br\>';
+	tt += 'erisDateStart = ' + erisEvent.dateStart;
 
-	$('#' + markerID)
-	.attr('title', tt )
-	.tooltip();
+	return tt;
 }
