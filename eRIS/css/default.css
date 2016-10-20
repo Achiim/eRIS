@@ -145,7 +145,7 @@ Styles fuer den Belegungsplan in allen Views
 	color: white;
 }
 
-#PlatzLinks, #PlatzMitte, PlatzRechts, #OrtLinks, #OrtMitte, #OrtRechts, #DatumLinks, #DatumMitte, #DatumRechts {
+#PlatzLinks, #PlatzMitte, #PlatzRechts, #OrtLinks, #OrtMitte, #OrtRechts, #DatumLinks, #DatumMitte, #DatumRechts {
 	text-align: center;
 }
 

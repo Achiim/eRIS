@@ -3,7 +3,8 @@
 	* Sportstaetten-Reservierungs-System   *
 	****************************************
 	
-	@author		Achim, Jahr	2016
+	@author		Achim
+	@version	2016
 	@copyright 	alle Rechte vorbehalten
 
 	@description
