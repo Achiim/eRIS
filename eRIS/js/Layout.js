@@ -3,10 +3,12 @@
 	* Sportstaetten-Reservierungs-System   *
 	****************************************
 	
-	Autor:	Achim 
-	Jahr:	2016
-	
-	Sammlung von Funktionen zum Aufbau des Layouts des Reservierungs-Systems
+	@author		Achim, Jahr	2016
+	@copyright 	alle Rechte vorbehalten
+
+	@fileOverview
+
+	Sammlung von Funktionen zum Aufbau des Layouts des Reservierungssystems
 	
 	Das Layout wird grundsätzlich nach folgenden Schema aufgebaut
 
@@ -43,6 +45,12 @@
 	|  +------------------------+
 	+---------------------------------------------------------------------------	
 	
+*/
+//*********************************************************************************
+
+/**
+ * @global
+ * 
  */
 //*********************************************************************************
 //	globale Variablen
@@ -59,6 +67,10 @@
 	
 	var AnzahlPlatzTeile = 4;	// aktuelle Anzahl der reservierbaren Platzteile
 
+/**
+ * @constant
+ * 
+ */
 //*********************************************************************************
 // 	Konstanten für Layout
 	
@@ -85,10 +97,11 @@
 	const EndeZeitLeiste = 22;															// Zeitleiste endet um 22:00 Uhr
 	const AnzahlStunden	= EndeZeitLeiste - BeginnZeitLeiste;							// z.B. 14 h
 
-	/*********************************************************************************
-	Funktion:	doLayout 
-	Zweck:		Erzeugt alle Bestandteile des Layouts.
-	 */
+//*********************************************************************************
+/**
+	@description:	Erzeugt alle Bestandteile des Layouts.
+	@param:			none
+ */
 function doLayout() {
 	
 	doTagesview();					// baue 1-Tages-View auf
@@ -97,11 +110,12 @@ function doLayout() {
 	doFuss();						// zeige den "Default-Fuss" mit dem Sammler und Mülleimer
 
 }
+//*********************************************************************************
 
-	/*********************************************************************************
-	Funktion:	doTagesview 
-	Zweck:		Erzeugt alle Bestandteile des Layouts des Tagebelegungsplans.
-	 */
+/**
+	@description:	Erzeugt alle Bestandteile des Layouts des Tagesbelegungsplans.
+	@param:			none
+ */
 function doTagesview() {
 
 	// Datum
@@ -259,7 +273,7 @@ function doTagesview() {
 	.attr( 'id', 'ZeitRechts')
 	.appendTo( '#Zeitleiste' );
 	
-	// Zeit
+	// ganztags
 	// ---------------------------------------------------
 	$('<div>sonst</div>')												// Zeile für ganztags-Ereignisse
 	.addClass('Uhrzeit')
@@ -290,10 +304,11 @@ function doTagesview() {
 
 }
 
-/*********************************************************************************
-	Funktion:	doPlatzview 
-	Zweck:		Erzeugt einen Kopf über dem Tagesview für einen Platz.
-	 */
+/**
+ 	@description:		Erzeugt einen Titel mit dem Platznamen über dem Tagesview für einen Platz.
+						Liest alle Platznamen ein. Baut den Platz mit @function: doPlatzteilview auf.
+	@param:				none
+ */
 function doPlatzview() {
 	
 	// Löschen alter Platzview-Komponenten
