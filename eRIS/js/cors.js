@@ -12,14 +12,15 @@
 
 	/*********************************************************************************
 	Funktion:	createCORSRequest 
-	Zweck:		Generiert eine Cross-Origin Ressource Sharing Request, damit auf den 
-				Google-Server zugegriffen werden kann.
+	Zweck:		Generiert einen Cross-Origin Ressource Sharing Request, damit auf den 
+				Google-Cloud-Server zugegriffen werden kann.
 */
 function createCORSRequest(method, url) {
   var xhr = new XMLHttpRequest();
   if ("withCredentials" in xhr) {
     // XHR for Chrome/Firefox/Opera/Safari.
-    xhr.open(method, url, true);
+	var mode = false; // false = synchroner Aufruf der url | true = asynchroner Aufruf
+    xhr.open(method, url, mode);						
   } else if (typeof XDomainRequest != "undefined") {
     // XDomainRequest for IE.
     xhr = new XDomainRequest();
@@ -119,16 +120,27 @@ eventPostUpdate.onerror = function() {
 	In:
 			field = Name des Platzes, für das Events gelesen werden sollen
 					'' = hole alle Events
+			datum = Tagesdatum das gelesen werden soll
+	
+	url-Format : https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/event/field/Stadion/time/21.10.2016%2008%3A00/21.10.2016%2022%3A00
 */
-function readAllEvents(field) {
-	if (field == undefined) field=fieldTitle[0];	
+function readAllEvents(field, datum) {
+	if (field == undefined || field == 'undefined') field=fieldTitle[0];	
 	if (field == '') {
 		// Endpoint zur Liste aller Events
 		var url = 'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/event';
 	}
 	else {
-		// Endpoint zur Liste aller Events eines Fields
-		var url = 'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/event/field/'+ field;
+		if (datum == '') {
+			
+			// Endpoint zur Liste aller Events eines Fields
+			var url = 'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/event/field/'+ field;
+		}
+		else {
+			// Endpoint zur Liste aller Events eines Fields an einem Tag
+			var url = 'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/event/field/'+ field;
+			url += '/time/' + datum + '%2008%3A00/' + datum + '%2022%3A00';
+		}
 	}
 
 	var eventList = createCORSRequest('GET', url);
@@ -160,12 +172,7 @@ function readAllEvents(field) {
 		   "match": false,
 		   "partOfSeries": false,
 		   "field": "Unterer Platz",
-		   "portion": [
-		    1,
-		    2,
-		    3,
-		    4
-		   ],
+		   "portion": [1,2,3,4]
 *		
 *		
 ***********************************************/
@@ -379,7 +386,7 @@ function readAllFields() {
 
 		}
 		
-		readAllEvents(fieldTitle[currentField]); 
+////////////////////////////		readAllEvents(fieldTitle[currentField]); 
 
    } // Ende fieldList.onload
 

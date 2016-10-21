@@ -56,3 +56,7 @@ body {
 .Belegungsplan, .Muelleimer {
 	background: #33691e;				/* Light Green 900 */
 }
+
+#DatumButtonLinks, #DatumButtonRechts, #OrtButtonLinks, #OrtButtonRechts, #PlatzButtonLinks, #PlatzButtonRechts {
+	background: #c5e1a5;				/* Light Green 200 */
+}

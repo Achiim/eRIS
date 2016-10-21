@@ -63,7 +63,8 @@ var fieldPortions = [] // Anzahl der belegbaren Platzteile
 var fieldPartTitle = []; // Array für Platzteilbezeichungen jedes Platzes [Platz][Platzteil]
 var currentField = 0; // Pointer auf den aktuellen Platz
 
-var AnzahlPlatzTeile = 4; // aktuelle Anzahl der reservierbaren Platzteile
+var AnzahlPlatzTeile; // aktuelle Anzahl der reservierbaren Platzteile
+var currentDatum = erisHeute();; // aktuelles Datum in der Tagesanzeige
 
 //*********************************************************************************
 /**
@@ -106,7 +107,7 @@ function doLayout() {
     doPlatzview(); // baue 1-Platz-View auf
     doEventbutton(); // generiere die Knöpfe
     doFuss(); // zeige den "Default-Fuss" mit dem Sammler und Mülleimer
-
+    $(document).ready(readAllEvents(fieldTitle[currentField], currentDatum)); // Zeige alle Events des aktuellen Platzes an
 }
 //*********************************************************************************
 
@@ -115,49 +116,6 @@ function doLayout() {
 	@param:			none
  */
 function doTagesview() {
-
-    // Datum
-    // ---------------------------------------------------
-
-    $('<div/>') // Erzeuge die Datumsleiste
-        .addClass('Datumsleiste')
-        .attr('id', 'Datumsleiste')
-        .appendTo('#Belegungsplan');
-
-    $('<div/>') // Navigation links innerhalb von Datum
-        .addClass('Links')
-        .attr('id', 'DatumLinks')
-        .appendTo('#Datumsleiste');
-
-    $('<div>Tag - Datum</div>') // Anzeige von Datum / Tag
-        .addClass('Mitte')
-        .attr('id', 'DatumMitte')
-        .appendTo('#Datumsleiste');
-
-    $('<div/>') // Navigation rechts innerhalb von Datum
-        .addClass('Rechts')
-        .attr('id', 'DatumRechts')
-        .appendTo('#Datumsleiste');
-
-    $('<div><</div>') // Datum nach links
-        .addClass('Links')
-        .attr('id', 'DatumButtonLinks')
-        .button()
-        .click(function(event) {
-            event.preventDefault();
-            prevDatum();
-        })
-        .appendTo('#DatumLinks');
-
-    $('<div>></div>') // Datum nach rechts
-        .addClass('Rechts')
-        .attr('id', 'DatumButtonRechts')
-        .button()
-        .click(function(event) {
-            event.preventDefault();
-            nextDatum();
-        })
-        .appendTo('#DatumRechts');
 
     // Ort
     // ---------------------------------------------------
@@ -202,6 +160,49 @@ function doTagesview() {
         })
         .appendTo('#OrtRechts');
 
+
+    // Datum
+    // ---------------------------------------------------
+
+    $('<div/>') // Erzeuge die Datumsleiste
+        .addClass('Datumsleiste')
+        .attr('id', 'Datumsleiste')
+        .appendTo('#Belegungsplan');
+
+    $('<div/>') // Navigation links innerhalb von Datum
+        .addClass('Links')
+        .attr('id', 'DatumLinks')
+        .appendTo('#Datumsleiste');
+
+    $('<div>' + erisHeute() + '</div>') // Anzeige des aktuellen Datums
+        .addClass('Mitte')
+        .attr('id', 'DatumMitte')
+        .appendTo('#Datumsleiste');
+
+    $('<div/>') // Navigation rechts innerhalb von Datum
+        .addClass('Rechts')
+        .attr('id', 'DatumRechts')
+        .appendTo('#Datumsleiste');
+
+    $('<div><</div>') // Datum nach links
+        .addClass('Links')
+        .attr('id', 'DatumButtonLinks')
+        .button()
+        .click(function(event) {
+            event.preventDefault();
+            prevDatum();
+        })
+        .appendTo('#DatumLinks');
+
+    $('<div>></div>') // Datum nach rechts
+        .addClass('Rechts')
+        .attr('id', 'DatumButtonRechts')
+        .button()
+        .click(function(event) {
+            event.preventDefault();
+            nextDatum();
+        })
+        .appendTo('#DatumRechts');
 
     // Platz
     // ---------------------------------------------------
@@ -320,7 +321,7 @@ function doPlatzview() {
         .attr('id', 'Platzname')
         .appendTo('#PlatzMitte');
 
-    readAllFields(); // hier werden dann auch der Platzname und alle Platzteile angelegt
+    $(document).ready(readAllFields()); // hier werden dann auch der Platzname und alle Platzteile angelegt
 
     doPlatzteilview(); // Platzteile anzeigen
 
@@ -448,8 +449,9 @@ function makePlatzDroppable() {
                     postEventUpdate(msg);
                 }
 
-                readAttributeFromEvent(MarkerID, erisEvent); // übertrage .data -> Objekt
-                storeEventToObjectData(MarkerID, erisEvent); // übertrage Object -> .data
+                createEventObject(MarkerID, erisEvent);      // erzeuge Objekt + .data aus Position und Größe des Marker
+ //               readAttributeFromEvent(MarkerID, erisEvent); // übertrage .data -> Objekt
+ //               storeEventToObjectData(MarkerID, erisEvent); // übertrage Object -> .data
             }
 
             $(ui.draggable).css({
@@ -502,6 +504,7 @@ function newEvent(erisEvent) {
                 var MarkerID = $(ui.element).attr('id');
                 var msg = '';
                 var erisEvent = new Object();
+                createEventObject(MarkerID, erisEvent);
                 readAttributeFromEvent(MarkerID, erisEvent); // übertrage .data -> Objekt
                 msg = makeEventUpdateMessage(MarkerID);
                 postEventUpdate(msg);
@@ -522,6 +525,7 @@ function newEvent(erisEvent) {
                     open: function(event, ui) {
                         var MarkerID = mmID;
                         var erisEvent = new Object();
+                        createEventObject(MarkerID, erisEvent);
                         readAttributeFromEvent(MarkerID, erisEvent); // übertrage .data -> Objekt
                         var markup = erisToolTip(markerID, erisEvent);
                         $(this).html(markup);
@@ -534,8 +538,8 @@ function newEvent(erisEvent) {
                 }) //end confirm dialog
         }
 
-    })
-
+    });
+/*
     .hover(function() {
         var mmID = this.id;
 
@@ -555,7 +559,7 @@ function newEvent(erisEvent) {
     }, function() {
         $('.EventInfo').dialog("close");
     });
-
+*/
     if (beginn.length > 0) {
         var hour = parseInt(beginn[1].split(':')[0]);
         var minute = parseInt(beginn[1].split(':')[1]);
@@ -646,15 +650,36 @@ function createEventObject(mID, eEvent) {
     var xxx = (StundeString - BeginnZeitLeiste) * AnzahlPlatzTeile * AnzahlPlatzteileJeStunde;
     xxx = real - xxx; // 0 - 15tes Platzteilraster innerhalb einer Stunde
 
-    var MinuteString = Math.floor(xxx / AnzahlPlatzteileJeStunde);
+    var MinuteString = Math.floor(xxx / AnzahlPlatzTeile);
     if (MinuteString == 0) MinuteString = '00';
     if (MinuteString == 1) MinuteString = '15';
     if (MinuteString == 2) MinuteString = '30';
     if (MinuteString == 3) MinuteString = '45';
 
-    eEvent.startDate = "13.10.2016%20" + StundeString + "%3A" + MinuteString;
+    var DatumString = $('#DatumMitte').text();	// Datum aus der Anzeige
+    
+    eEvent.start = DatumString + " " + StundeString + ":" + MinuteString;
+    
+    var dd = [];
+    dd[0] = DatumString;
+    dd[1] = StundeString + ":" + MinuteString;
+    eEvent.startDate = dd;
+    
     eEvent.description = "Training";
     eEvent.field = $('#Platzname').text();
+
+    $('#' + mID)
+    .data('erisID', eEvent.ID)
+    .data('erisStart', eEvent.start)
+    .data('erisDauer', eEvent.Dauer)
+//    .data('erisBeschreibung', eEvent.Beschreibung)
+//    .data('erisTeamID', eEvent.TeamID)
+//    .data('erisSpiel', eEvent.Spiel)
+//    .data('erisSerie', eEvent.Serie)
+//    .data('erisPlatz', eEvent.Platz)
+ //   .data('erisPlatzteil', eEvent.Platzteil)
+    //	.data('erisGroup', eEvent.Team)
+    .data('erisDateStart', eEvent.dateStart);
 
 }
 //*********************************************************************************
@@ -754,10 +779,37 @@ function doFuss() {
 //*********************************************************************************
 
 /**
-		Blättern der Anzeige für Plätze
+		Blättern der Anzeige für Datum
 */
-function prevField() {
+function prevDatum() {
+	var aktDat = $('#DatumMitte').text();
+	currentDatum = erisBerechneDatum(aktDat, -1);
+	$('#DatumMitte').text(currentDatum);
+    doClearEvents(); // alle Events von der Anzeige entfernen
+    $(document).ready(readAllEvents(fieldTitle[currentField], currentDatum)); // alle Events des neuen Datums anzeigen
+	return;
+}
+//*********************************************************************************
+
+/**
+		Blättern der Anzeige für Datum
+*/
+function nextDatum() {
+	var aktDat = $('#DatumMitte').text();
+	currentDatum = erisBerechneDatum(aktDat, +1);
+	$('#DatumMitte').text(currentDatum);
+    doClearEvents(); // alle Events von der Anzeige entfernen
+    $(document).ready(readAllEvents(fieldTitle[currentField], currentDatum)); // alle Events des neuen Datums anzeigen
+	return;
+}
+	//*********************************************************************************
+
+	/**
+			Blättern der Anzeige für Plätze
+	*/
+	function prevField() {
     currentField--;
+    currentDatum = $('#DatumMitte').text();	// Datum aus der Anzeige
     if (currentField < 0) currentField = fieldAmount - 1; // In Kreis blättern
     if (AnzahlPlatzTeile != fieldPortions[currentField]) { // falls Platzteileanzahl abweicht, muss der Platz neu aufgebaut werden
         AnzahlPlatzTeile = fieldPortions[currentField]; // neu Platzportionierung merken
@@ -767,7 +819,7 @@ function prevField() {
     doClearEvents(); // alle Events von der Anzeige entfernen
     $('#Platzname').text(fieldTitle[currentField]); // neuen Platznamen in den Titel
     setFieldPartTitle(currentField); // neue Bezeichnung der Platzteile
-    $(document).ready(readAllEvents(fieldTitle[currentField])); // alle Events des neuen Platzes anzeigen
+    $(document).ready(readAllEvents(fieldTitle[currentField], currentDatum)); // alle Events des neuen Platzes anzeigen
 }
 //*********************************************************************************
 
@@ -777,6 +829,7 @@ function prevField() {
 */
 function nextField() {
     currentField++;
+    currentDatum = $('#DatumMitte').text();	// Datum aus der Anzeige
     if (currentField >= fieldAmount) currentField = 0; // In Kreis blättern
     if (AnzahlPlatzTeile != fieldPortions[currentField]) { // falls Platzteileanzahl abweicht, muss der Platz neu aufgebaut werden
         AnzahlPlatzTeile = fieldPortions[currentField]; // neu Platzportionierung merken
@@ -786,7 +839,7 @@ function nextField() {
     doClearEvents(); // alle Events von der Anzeige entfernen
     $('#Platzname').text(fieldTitle[currentField]); // neuen Platznamen in den Titel
     setFieldPartTitle(currentField); // neue Bezeichnung der Platzteile
-    $(document).ready(readAllEvents(fieldTitle[currentField])); // alle Events des neuen Platzes anzeigen
+    $(document).ready(readAllEvents(fieldTitle[currentField], currentDatum)); // alle Events des neuen Platzes anzeigen
 }
 //*********************************************************************************
 
@@ -815,13 +868,16 @@ function makeEventMessage(id) {
     var ff = erisEvent.field;
     ff = ff.replace(/\s/g, '%20'); // maskiere Blank durch %20
 
-    var msg = erisEvent.description + '/' + erisEvent.startDate + '/' + erisEvent.Dauer + '/' + erisEvent.TeamId + '/' + ff + '/' + "1%2B2";
+    var dd = erisEvent.start;
+    dd = dd.replace(/\./g, '%2E'); // maskiere . durch %2E
+
+    var msg = erisEvent.description + '/' + dd + '/' + erisEvent.Dauer + '/' + erisEvent.TeamId + '/' + ff + '/' + "1%2B2";
     return msg;
 }
 //*********************************************************************************
 
 /**
-		generiert die Mesage für das xmlHTTP-POST (GET)
+		generiert die Message für das xmlHTTP-POST (GET)
 
 		msg = /12.10.2016%2017%3A00/90/Kunstrasen'
 */
@@ -832,7 +888,7 @@ function makeEventUpdateMessage(id) {
     var ff = erisEvent.field;
     ff = ff.replace(/\s/g, '%20'); // maskiere Blank durch %20
 
-    var msg = erisEvent.ID + '/' + erisEvent.startDate + '/' + erisEvent.Dauer + '/' + ff;
+    var msg = erisEvent.ID + '/' + erisEvent.start + '/' + erisEvent.Dauer + '/' + ff + '/' + "1%2B2";
     return msg;
 }
 //*********************************************************************************
