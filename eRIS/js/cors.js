@@ -125,6 +125,8 @@ eventPostUpdate.onerror = function() {
 	url-Format : https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/event/field/Stadion/time/21.10.2016%2008%3A00/21.10.2016%2022%3A00
 */
 function readAllEvents(field, datum) {
+	$('.Platz').addClass( 'verschwommen' );
+
 	if (field == undefined || field == 'undefined') field=fieldTitle[0];	
 	if (field == '') {
 		// Endpoint zur Liste aller Events
@@ -151,6 +153,9 @@ function readAllEvents(field, datum) {
 
 	// Response handlers.
 	eventList.onload = function() {	
+//		setTimeout(function(){
+			$('.Platz').removeClass( 'verschwommen' );
+//		}, 2000);
 		var text = eventList.responseText;
     	var status = eventList.status;
 	   	if (status < 200 || status >=  300) alert('readAllEvents: HTTP-Fehler beim lesen der Events: ' + status+ ' ' + text);

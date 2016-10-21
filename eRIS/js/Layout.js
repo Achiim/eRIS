@@ -15,13 +15,13 @@
 
 	.Belegungsplan (TagesView)
 	+---------------------------------------------------------------------------------------------------------------
-	|  .Datumsleiste
-	|  +--------------------------------+--------------------------------------+------------------------------+
-	|  | .DatumLinks                    | .DatumMitte                          | .DatumRechts                 |
-	|  +-----------------------------------------------------------------------+------------------------------+
 	|  .Ortsleiste
 	|  +--------------------------------+--------------------------------------+------------------------------+
 	|  | .OrtLinks                      | .OrtMitte                            | .OrtRechts                   |
+	|  +-----------------------------------------------------------------------+------------------------------+
+	|  .Datumsleiste
+	|  +--------------------------------+--------------------------------------+------------------------------+
+	|  | .DatumLinks                    | .DatumMitte                          | .DatumRechts                 |
 	|  +-----------------------------------------------------------------------+------------------------------+
 	|  .Platzleiste
 	|  +--------------------------------+--------------------------------------+------------------------------+
@@ -30,13 +30,15 @@
 	|  |                      			| Platzname
 	|  |                                | Platzteil0 | Platzteil1 | Platzteil3 | 
 	|  +------------------------------------------------------------------------------------------------------+
-	+------------------------------------------------------------------------------
-	|  .Zeitleiste                      | .Platz
+	+----------------------------------------------------------------------------------------------------------
+	|  .Zeitleiste                     
 	|  +--------------------------------+--------------------------------------+------------------------------+
 	|  | .ZeitLinks                     | .ZeitMitte                           | .ZeitRechts                  |
-	|  | #ganztags                      | .Platzganztags                       | #ganztags                    |
-	|  | .Uhrzeit                       | .PlatzTeil | .PlatzTeil | .PlatzTeil | .Uhrzeit
-	|  |  ...
+	|  | #ganztags                      | .Platz                               | #ganztags                    |
+	|  | .Uhrzeit                       |   .Platzganztags                     | .Uhrzeit
+	|  |  ...                           |   .PlatzTeil                         |
+	|  |                                |   .PlatzTeil                         |
+	|  |                                |   .PlatzTeil                         |
 	|  +--------------------------------+--------------------------------------+------------------------------+
 	+-----------------------------------------------------------------------------------------------------------------
 	|  .Buttonleiste
@@ -254,6 +256,11 @@ function doTagesview() {
         .addClass('Zeitleiste')
         .attr('id', 'Zeitleiste')
         .appendTo('#Belegungsplan');
+    
+    $('#Zeitleiste').scroll();
+    $('#Zeitleiste').animate({
+      scrollTop: 240
+    }, 2000);
 
     $('<div/>') // Anzeige der Zeit links
         .addClass('Links')
@@ -272,10 +279,15 @@ function doTagesview() {
 
     // ganztags
     // ---------------------------------------------------
+    $('<div>Teil</div>') // Zeile für ganztags-Ereignisse
+    .addClass('Uhrzeit')
+    .attr('id', 'ganztags')
+    .appendTo('#PlatzLinks');
+
     $('<div>sonst</div>') // Zeile für ganztags-Ereignisse
-        .addClass('Uhrzeit')
-        .attr('id', 'ganztags')
-        .appendTo('#ZeitLinks');
+    .addClass('Uhrzeit')
+    .attr('id', 'ganztags')
+    .appendTo('#PlatzLinks');
 
     for (var uhr = BeginnZeitLeiste; uhr < EndeZeitLeiste; uhr++) { // Zeitspalte links
         $('<div>' + uhr + '<sup>00</sup></div>')
@@ -287,10 +299,15 @@ function doTagesview() {
             .appendTo('#ZeitLinks');
     }
 
+    $('<div>Teil</div>') // Zeile für ganztags-Ereignisse
+    .addClass('Uhrzeit')
+    .attr('id', 'ganztags')
+    .appendTo('#PlatzRechts');
+
     $('<div>sonst</div>') // Zeile für ganztags-Ereignisse
-        .addClass('Uhrzeit')
-        .attr('id', 'ganztags')
-        .appendTo('#ZeitRechts');
+    .addClass('Uhrzeit')
+    .attr('id', 'ganztags')
+    .appendTo('#PlatzRechts');
 
     for (var uhr = BeginnZeitLeiste; uhr < EndeZeitLeiste; uhr++) { // Zeitspalte rechts
         $('<div>' + uhr + '<sup>00</sup></div>')
@@ -356,7 +373,7 @@ function doPlatzteilview() {
     $('<div/>') // ganztags
         .addClass('Platzganztags')
         .attr('id', 'Platzganztags')
-        .appendTo('#Platz');
+        .appendTo('#PlatzMitte');
 
     for (var uhr = BeginnZeitLeiste * AnzahlPlatzteileJeStunde; uhr < EndeZeitLeiste * AnzahlPlatzteileJeStunde; uhr++) {
         for (var pl = 0; pl < AnzahlPlatzTeile; pl++) {

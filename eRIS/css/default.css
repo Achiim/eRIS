@@ -73,16 +73,29 @@ Styles fuer Schriftfarben ...
 /*******************************************
 Styles fuer den Belegungsplan in allen Views
 *******************************************/
+.verschwommen {
+  	filter: blur(2px);
+	-webkit-filter: blur(2px);
+	-moz-filter: blur(2px);
+	-o-filter: blur(2px);
+	-ms-filter: blur(2px);
+	cursor: progress;
+}
 
 .Belegungsplan, .K2, .Buttonlist, .Sammler{
 	margin-left: 100px;
 	float: left;
 }
 
-.Belegungsplan, .Zeitleiste {
+.Belegungsplan{
 
 	width: 320px;
 }
+
+.Zeitleiste{
+
+	width: 340px;
+} 
 
 .Datumsleiste, #DatumLinks, #DatumMitte, #DatumRechts {
 	height: 20px;
@@ -92,7 +105,7 @@ Styles fuer den Belegungsplan in allen Views
 	height: 20px;
 }
 
-.Platzname, .Platz {
+.Platzname, .Platz, .Platzganztags{
 	width: 200px;
 }
 	
@@ -105,6 +118,7 @@ Styles fuer den Belegungsplan in allen Views
 }
 
 .Platzganztags {
+	float: left;
 	height: 20px;
 	margin-right: 1px;
 	margin-top: 1px;
@@ -152,6 +166,9 @@ Styles fuer den Belegungsplan in allen Views
 #DatumButtonLinks, #DatumButtonRechts, #OrtButtonLinks, #OrtButtonRechts, #PlatzButtonLinks, #PlatzButtonRechts {
 	padding: 0px;
 	border: 0px;
+	border-radius: 0px;
+	height: 19px;
+	margin-bottom: 1px;
 }
 
 .foot, .K2, .Sammler {
@@ -164,6 +181,8 @@ Styles fuer den Belegungsplan in allen Views
 
 #Zeitleiste {
 	float: left;
+	overflow: scroll;
+	height: 400px;
 }
 
 .Platznavigation {
