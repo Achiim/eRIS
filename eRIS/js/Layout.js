@@ -14,7 +14,7 @@
 	Das Layout wird grundsätzlich nach folgenden Schema aufgebaut
 
 	.Belegungsplan (TagesView)
-	+---------------------------------------------------------------------------------------------------------------
+	+-----------------------------------------------------------------------------------------------------------------+
 	|  .Ortsleiste
 	|  +--------------------------------+--------------------------------------+------------------------------+
 	|  | .OrtLinks                      | .OrtMitte                            | .OrtRechts                   |
@@ -27,24 +27,35 @@
 	|  +--------------------------------+--------------------------------------+------------------------------+
 	|  | .PlatzLinks                    | .PlatzMitte                          | .PlatzRechts                 |
 	|  +-----------------------------------------------------------------------+------------------------------+
-	|  |                      			| Platzname
-	|  |                                | Platzteil0 | Platzteil1 | Platzteil3 | 
+	|  |                      			| .Platzname
+	|  | #ganztags                      | .Platzganztags                       | #ganztags                    |
+	|  |                                |  .Platzteil0  
+	|  |                                |  .Platzteil1  
+	|  |                                |  .Platzteil2  
+	|  |                                |  .Platzteil3  
 	|  +------------------------------------------------------------------------------------------------------+
-	+----------------------------------------------------------------------------------------------------------
 	|  .Zeitleiste                     
 	|  +--------------------------------+--------------------------------------+------------------------------+
 	|  | .ZeitLinks                     | .ZeitMitte                           | .ZeitRechts                  |
-	|  | #ganztags                      | .Platz                               | #ganztags                    |
-	|  | .Uhrzeit                       |   .Platzganztags                     | .Uhrzeit
+	|  | .Uhrzeit                       | .Platz                               | .Uhrzeit                     |
+	|  |  ...                           |   .PlatzTeil                         | 
 	|  |  ...                           |   .PlatzTeil                         |
 	|  |                                |   .PlatzTeil                         |
-	|  |                                |   .PlatzTeil                         |
+	|  |                                |                                      |
 	|  +--------------------------------+--------------------------------------+------------------------------+
-	+-----------------------------------------------------------------------------------------------------------------
-	|  .Buttonleiste
+	+-----------------------------------------------------------------------------------------------------------------+
+    .Buttonlist
+	+---------------------------------------------------------------------------  
 	|  +------------------------+
 	|  | .Buttongroup           |
 	|  | .Eventbutton           |
+	|  +------------------------+
+	+---------------------------------------------------------------------------	
+    .Container
+	+---------------------------------------------------------------------------  
+	|  +------------------------+
+	|  | .Sammeleimer           |
+	|  | .Muelleimer            |
 	|  +------------------------+
 	+---------------------------------------------------------------------------	
 	
@@ -65,7 +76,7 @@ var fieldPortions = [] // Anzahl der belegbaren Platzteile
 var fieldPartTitle = []; // Array für Platzteilbezeichungen jedes Platzes [Platz][Platzteil]
 var currentField = 0; // Pointer auf den aktuellen Platz
 
-var AnzahlPlatzTeile; // aktuelle Anzahl der reservierbaren Platzteile
+var AnzahlPlatzTeile = 4; // aktuelle Anzahl der reservierbaren Platzteile
 var currentDatum = erisHeute();; // aktuelles Datum in der Tagesanzeige
 
 //*********************************************************************************
@@ -76,7 +87,7 @@ var currentDatum = erisHeute();; // aktuelles Datum in der Tagesanzeige
 // 	Konstanten für Layout
 
 // Platzkonstanten
-const PlatzTeilWidth = 49; // Width = Width + Margin
+const PlatzTeilWidth = 44; // Width = Width + Margin
 const PlatzTeilMargin = 1;
 const PlatzTeilHeight = 10; // Height 
 const AnzahlPlatzteileJeStunde = 4; // kleinstes Reservierungsraster 1/4-tel Stunde
@@ -105,6 +116,7 @@ const AnzahlStunden = EndeZeitLeiste - BeginnZeitLeiste; // z.B. 14 h
  */
 function doLayout() {
 
+    $( "#erisViews" ).tabs(); // Tabs erzeugen
     doTagesview(); // baue 1-Tages-View auf
     doPlatzview(); // baue 1-Platz-View auf
     doEventbutton(); // generiere die Knöpfe
@@ -230,26 +242,26 @@ function doTagesview() {
         .appendTo('#Platzleiste');
 
     $('<div><</div>') // Platz nach links
-        .addClass('Links')
-        .attr('id', 'PlatzButtonLinks')
-        .button()
-        .click(function(event) {
-            event.preventDefault();
-            prevField();
-        })
-        .appendTo('#PlatzLinks');
+    .addClass('Links')
+    .attr('id', 'PlatzButtonLinks')
+    .button()
+    .click(function(event) {
+        event.preventDefault();
+        prevField();
+    })
+    .appendTo('#PlatzLinks');
 
     $('<div>></div>') // Platz nach rechts
-        .addClass('Rechts')
-        .attr('id', 'PlatzButtonRechts')
-        .button()
-        .click(function(event) {
-            event.preventDefault();
-            nextField();
-        })
-        .appendTo('#PlatzRechts');
+    .addClass('Rechts')
+    .attr('id', 'PlatzButtonRechts')
+    .button()
+    .click(function(event) {
+        event.preventDefault();
+        nextField();
+    })
+    .appendTo('#PlatzRechts');
 
-    // Zeit
+   // Zeit
     // ---------------------------------------------------
 
     $('<div/>') // Erzeuge die Zeitleiste
@@ -259,7 +271,7 @@ function doTagesview() {
     
     $('#Zeitleiste').scroll();
     $('#Zeitleiste').animate({
-      scrollTop: 240
+      scrollTop: 160
     }, 2000);
 
     $('<div/>') // Anzeige der Zeit links
@@ -279,16 +291,28 @@ function doTagesview() {
 
     // ganztags
     // ---------------------------------------------------
+    $('<div>ganz</div>') // Zeile für ganztags-Ereignisse
+    .addClass('Uhrzeit Rand')
+    .attr('id', 'ganztags')
+    .appendTo('#PlatzLinks');
+
     $('<div>Teil</div>') // Zeile für ganztags-Ereignisse
-    .addClass('Uhrzeit')
+    .addClass('Uhrzeit Rand')
     .attr('id', 'ganztags')
     .appendTo('#PlatzLinks');
 
-    $('<div>sonst</div>') // Zeile für ganztags-Ereignisse
-    .addClass('Uhrzeit')
+    $('<div>ganz</div>') // Zeile für ganztags-Ereignisse
+    .addClass('Uhrzeit Rand')
     .attr('id', 'ganztags')
-    .appendTo('#PlatzLinks');
+    .appendTo('#PlatzRechts');
 
+    $('<div>Teil</div>') // Zeile für ganztags-Ereignisse
+    .addClass('Uhrzeit Rand')
+    .attr('id', 'ganztags')
+    .appendTo('#PlatzRechts');
+
+    // Linke Zeitskala
+    // --------------------------------------------------
     for (var uhr = BeginnZeitLeiste; uhr < EndeZeitLeiste; uhr++) { // Zeitspalte links
         $('<div>' + uhr + '<sup>00</sup></div>')
             .addClass('Uhrzeit')
@@ -299,16 +323,8 @@ function doTagesview() {
             .appendTo('#ZeitLinks');
     }
 
-    $('<div>Teil</div>') // Zeile für ganztags-Ereignisse
-    .addClass('Uhrzeit')
-    .attr('id', 'ganztags')
-    .appendTo('#PlatzRechts');
-
-    $('<div>sonst</div>') // Zeile für ganztags-Ereignisse
-    .addClass('Uhrzeit')
-    .attr('id', 'ganztags')
-    .appendTo('#PlatzRechts');
-
+    // Rechte Zeitskala
+    // --------------------------------------------------
     for (var uhr = BeginnZeitLeiste; uhr < EndeZeitLeiste; uhr++) { // Zeitspalte rechts
         $('<div>' + uhr + '<sup>00</sup></div>')
             .addClass('Uhrzeit')
@@ -318,7 +334,6 @@ function doTagesview() {
             })
             .appendTo('#ZeitRechts');
     }
-
 
 }
 //*********************************************************************************
@@ -338,6 +353,11 @@ function doPlatzview() {
         .attr('id', 'Platzname')
         .appendTo('#PlatzMitte');
 
+    $('<div/>') // ganztags
+	    .addClass('Platzganztags')
+	    .attr('id', 'Platzganztags')
+	    .appendTo('#PlatzMitte');
+
     $(document).ready(readAllFields()); // hier werden dann auch der Platzname und alle Platzteile angelegt
 
     doPlatzteilview(); // Platzteile anzeigen
@@ -353,9 +373,7 @@ function doPlatzteilview() {
 
 
     // Löschen alter Platzview-Komponenten
-    $('.Platzganztags').remove(); // Lösche den Ganztas-Bereich
     $('.PlatzTeil').remove(); // Lösche alle Platzbestandteile
-
     pid = 0; // Nummerierung für PlatzElemente
 
     // falls es noch keinen Platz gibt, diesen anlegen
@@ -369,11 +387,6 @@ function doPlatzteilview() {
         .appendTo('#ZeitMitte');
 
     $('#Platz').width((PlatzTeilWidth + PlatzTeilMargin) * fieldPortions[currentField]); // Breite der Platz anpassen
-
-    $('<div/>') // ganztags
-        .addClass('Platzganztags')
-        .attr('id', 'Platzganztags')
-        .appendTo('#PlatzMitte');
 
     for (var uhr = BeginnZeitLeiste * AnzahlPlatzteileJeStunde; uhr < EndeZeitLeiste * AnzahlPlatzteileJeStunde; uhr++) {
         for (var pl = 0; pl < AnzahlPlatzTeile; pl++) {

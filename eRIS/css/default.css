@@ -35,7 +35,6 @@ body {
 
 .Uhrzeit {
 	font-size: 1.0rem;
-	text-align: right;	
 }
 
 .Muelleimer, .Sammeleimer {  
@@ -88,13 +87,30 @@ Styles fuer den Belegungsplan in allen Views
 }
 
 .Belegungsplan{
+	overflow: hidden;
+	width: 300px;
+}
 
-	width: 320px;
+#erisViews {
+	width: 600px;
+}
+
+
+#Tagesplan, #Wochenplan, #Monatsplan {
+
+	height: 570px;
 }
 
 .Zeitleiste{
-
 	width: 340px;
+} 
+
+#ZeitLinks{
+		text-align: right;	
+} 
+
+#ZeitRechts{
+		text-align: left;	
 } 
 
 .Datumsleiste, #DatumLinks, #DatumMitte, #DatumRechts {
@@ -105,16 +121,21 @@ Styles fuer den Belegungsplan in allen Views
 	height: 20px;
 }
 
-.Platzname, .Platz, .Platzganztags{
-	width: 200px;
+.Platzname, .Platz, .Platzganztags, .Platzlogo {
+	width: 180px;
 }
 	
+.Platzlogo {
+	position: relative;
+}
+
 .Platzkopf {
 	float: left;
 }
 
 .Platzname {
 	color: white;
+	height: 20px;
 }
 
 .Platzganztags {
@@ -124,9 +145,12 @@ Styles fuer den Belegungsplan in allen Views
 	margin-top: 1px;
 }
 
+.Rand {
+	vertical-align: middle;
+}
 
 .Platzteil, .PlatzTeil {
-	width: 49px;
+	width: 44px;
 }
 
 .Platzteil{
@@ -138,6 +162,8 @@ Styles fuer den Belegungsplan in allen Views
 
 #Platz { 
 	float: left;
+	opacity: 0.8;
+	background-image: url(../images/erisPlatz.png);
 }
 
 .PlatzTeil {
@@ -154,7 +180,7 @@ Styles fuer den Belegungsplan in allen Views
 }
 
 .Mitte {
-	width: 200px;
+	width: 180px;
 	float: left;
 	color: white;
 }
@@ -181,8 +207,12 @@ Styles fuer den Belegungsplan in allen Views
 
 #Zeitleiste {
 	float: left;
-	overflow: scroll;
 	height: 400px;
+	overflow: auto;
+}
+
+#ZeitMitte {
+
 }
 
 .Platznavigation {
