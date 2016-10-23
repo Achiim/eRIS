@@ -98,7 +98,7 @@ const MarkerPadding = 5 + 5;
 const innerMarkerWidth = PlatzTeilWidth - MarkerPadding; // abzgl. padding links und rechts und margin oben
 const innerMarkerHeight = 5; // abzgl. padding oben und unten und margin rechts
 const MarkerMaxWidth = PlatzWidth - PlatzTeilMargin;
-const MarkerMinWidth = PlatzTeilWidth - MarkerPadding;
+var MarkerMinWidth = PlatzTeilWidth - MarkerPadding;
 const MarkerMinHeight = innerMarkerHeight * 2 + PlatzTeilMargin;
 const MarkerHeightjePlatzteil = MarkerMinHeight;
 const MarkerWidthjePlatzteil = MarkerMinWidth;
@@ -893,6 +893,7 @@ function setFieldPartTitle(a) {
         $('<div>' + fieldPartTitle[currentField][pl] + '</div>') // neue Bezeichung der Platzteile erzeugen
             .addClass('Platzteil')
             .attr('id', 'Platzteil' + pl)
+            .css('width', PlatzTeilWidth)
             .appendTo('#PlatzMitte');
     }
 }

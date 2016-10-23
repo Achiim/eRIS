@@ -386,6 +386,8 @@ function readAllFields() {
 		PlatzTeilWidth = PlatzWidth / AnzahlPlatzTeile - PlatzTeilMargin;
 		MarkerMinWidth = PlatzTeilWidth - MarkerPadding;
 
+		setFieldPartTitle(currentField); // neue Bezeichnung der Platzteile
+		
 //		for ( var pl=0; pl<AnzahlPlatzTeile; pl++) {
 //			$('<div>'+fieldPartTitle[currentField][pl]+'</div>')		
 //			.addClass('Platzteil')

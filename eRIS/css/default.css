@@ -57,7 +57,6 @@ body {
 Styles fuer Schriftfarben ...
 **************************************/
 
-
 .Sammeleimer {  
     color: #616161;						/* Gray 700 */
 }
@@ -99,7 +98,6 @@ Styles fuer den Belegungsplan in allen Views
 
 
 #Tagesplan, #Wochenplan, #Monatsplan {
-
 	height: 570px;
 }
 
@@ -152,7 +150,6 @@ Styles fuer den Belegungsplan in allen Views
 }
 
 .Platzteil, .PlatzTeil {
-	width: 44px;
 }
 
 .Platzteil{
@@ -219,12 +216,10 @@ Styles fuer den Belegungsplan in allen Views
 
 .Platznavigation {
 	height: 40px;
-	
 }
 
 .Platznavigation, .Datumsnavigation, .Ortsnavigation {
 	width: 60px;
-	
 }
 
 #Buttonlist {
