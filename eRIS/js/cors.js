@@ -382,14 +382,17 @@ function readAllFields() {
 		$('#Platzname')
 		.text(fieldTitle[currentField]);
 		
-		AnzahlPlatzTeile =fieldPortions[currentField];
-		for ( var pl=0; pl<AnzahlPlatzTeile; pl++) {
-			$('<div>'+fieldPartTitle[currentField][pl]+'</div>')		
-			.addClass('Platzteil')
-			.attr( 'id', 'Platzteil' + pl )
-			.appendTo( '#PlatzMitte' );
+		AnzahlPlatzTeile = fieldPortions[currentField];
+		PlatzTeilWidth = PlatzWidth / AnzahlPlatzTeile - PlatzTeilMargin;
+		MarkerMinWidth = PlatzTeilWidth - MarkerPadding;
 
-		}
+//		for ( var pl=0; pl<AnzahlPlatzTeile; pl++) {
+//			$('<div>'+fieldPartTitle[currentField][pl]+'</div>')		
+//			.addClass('Platzteil')
+//			.attr( 'id', 'Platzteil' + pl )
+//			.css('width', PlatzTeilWidth)
+//			.appendTo( '#Platz' );
+//		}
 		
 ////////////////////////////		readAllEvents(fieldTitle[currentField]); 
 

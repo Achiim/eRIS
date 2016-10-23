@@ -162,7 +162,7 @@ Styles fuer den Belegungsplan in allen Views
 
 #Platz { 
 	float: left;
-	opacity: 0.8;
+	opacity: 1;
 	background-image: url(../images/erisPlatz.png);
 }
 

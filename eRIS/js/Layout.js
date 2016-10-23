@@ -76,7 +76,7 @@ var fieldPortions = [] // Anzahl der belegbaren Platzteile
 var fieldPartTitle = []; // Array für Platzteilbezeichungen jedes Platzes [Platz][Platzteil]
 var currentField = 0; // Pointer auf den aktuellen Platz
 
-var AnzahlPlatzTeile = 4; // aktuelle Anzahl der reservierbaren Platzteile
+var AnzahlPlatzTeile = 2; // aktuelle Anzahl der reservierbaren Platzteile
 var currentDatum = erisHeute();; // aktuelles Datum in der Tagesanzeige
 
 //*********************************************************************************
@@ -87,21 +87,23 @@ var currentDatum = erisHeute();; // aktuelles Datum in der Tagesanzeige
 // 	Konstanten für Layout
 
 // Platzkonstanten
-const PlatzTeilWidth = 44; // Width = Width + Margin
+const PlatzWidth = 180;
 const PlatzTeilMargin = 1;
 const PlatzTeilHeight = 10; // Height 
+var PlatzTeilWidth = PlatzWidth / AnzahlPlatzTeile - PlatzTeilMargin; // Width = Width + Margin
 const AnzahlPlatzteileJeStunde = 4; // kleinstes Reservierungsraster 1/4-tel Stunde
 
 // Markerkostanten
 const MarkerPadding = 5 + 5;
 const innerMarkerWidth = PlatzTeilWidth - MarkerPadding; // abzgl. padding links und rechts und margin oben
 const innerMarkerHeight = 5; // abzgl. padding oben und unten und margin rechts
-const MarkerMaxWidth = (AnzahlPlatzTeile * (PlatzTeilWidth + PlatzTeilMargin)) - MarkerPadding - PlatzTeilMargin;
+const MarkerMaxWidth = PlatzWidth - PlatzTeilMargin;
 const MarkerMinWidth = PlatzTeilWidth - MarkerPadding;
 const MarkerMinHeight = innerMarkerHeight * 2 + PlatzTeilMargin;
 const MarkerHeightjePlatzteil = MarkerMinHeight;
 const MarkerWidthjePlatzteil = MarkerMinWidth;
-
+var MarkerWidth = (PlatzTeilWidth + PlatzTeilMargin) * AnzahlPlatzTeile - PlatzTeilMargin - MarkerPadding;
+	
 // Zeitleistenkonstanten
 const StundeInMinuten = 60; // eine Stunde hat 60 Minuten
 const StundeInPixel = AnzahlPlatzteileJeStunde * (PlatzTeilHeight + PlatzTeilMargin); // eine Stunde hat z.B. 48 Pixel
@@ -375,16 +377,18 @@ function doPlatzteilview() {
     // Löschen alter Platzview-Komponenten
     $('.PlatzTeil').remove(); // Lösche alle Platzbestandteile
     pid = 0; // Nummerierung für PlatzElemente
-
+    
+    PlatzTeilWidth = PlatzWidth / AnzahlPlatzTeile - PlatzTeilMargin; // Width = Width + Margin
+    
     // falls es noch keinen Platz gibt, diesen anlegen
     var pk = '';
     pk = $('.Platz').attr('id');
     if (pk == undefined)
     // Erzeuge Platz
-        $('<div/>')
-        .addClass('Platz')
-        .attr('id', 'Platz')
-        .appendTo('#ZeitMitte');
+    $('<div/>')
+	    .addClass('Platz')
+	    .attr('id', 'Platz')
+	    .appendTo('#ZeitMitte');
 
     $('#Platz').width((PlatzTeilWidth + PlatzTeilMargin) * fieldPortions[currentField]); // Breite der Platz anpassen
 
@@ -393,6 +397,7 @@ function doPlatzteilview() {
             $('<div/>')
                 .addClass('PlatzTeil')
                 .attr('id', pid++)
+                .css('width', PlatzTeilWidth)
                 .appendTo('#Platz')
         }
     }
@@ -480,8 +485,6 @@ function makePlatzDroppable() {
                 }
 
                 createEventObject(MarkerID, erisEvent);      // erzeuge Objekt + .data aus Position und Größe des Marker
- //               readAttributeFromEvent(MarkerID, erisEvent); // übertrage .data -> Objekt
- //               storeEventToObjectData(MarkerID, erisEvent); // übertrage Object -> .data
             }
 
             $(ui.draggable).css({
@@ -506,7 +509,7 @@ function newEvent(erisEvent) {
     var id = erisEvent.ID;
 
     var hoehe = minutesToPixel(dauer);
-    var breite = innerMarkerWidth * AnzahlPlatzTeile + MarkerPadding * (AnzahlPlatzTeile - 1) + (PlatzTeilMargin * (AnzahlPlatzTeile - 1));
+    var breite = MarkerWidth; 
     var markerID = marker + mid++;
     $('<div>' + marker + '</div>')
         .addClass(altersKlasse(marker) + ' Marker')
@@ -525,7 +528,13 @@ function newEvent(erisEvent) {
 
     .resizable({
             resize: function(event, ui) {
-                ui.size.width = (Math.round(ui.size.width / innerMarkerWidth) * (PlatzTeilWidth + PlatzTeilMargin)) - MarkerPadding - PlatzTeilMargin;
+            	var breite = PlatzWidth / AnzahlPlatzTeile - MarkerPadding;
+                breite = (Math.round(ui.size.width / breite) * PlatzTeilWidth-MarkerPadding);
+                if (breite < MarkerMinWidth) 
+                	ui.size.width = MarkerMinWidth;
+                else
+                	ui.size.width = breite;
+                	
                 ui.size.height = Math.round(ui.size.height / MarkerHeightjePlatzteil) * MarkerHeightjePlatzteil;
             }
         })
@@ -607,6 +616,7 @@ function newEvent(erisEvent) {
 //*********************************************************************************
 
 /**
+	storeEventToObjectData: 
 	Überträgt die Eigenschaften eines Event in .data des jQuery-Elements
 	
 	@param	erisID 			= 	Event.ID 			= interner Schlüssel
@@ -740,19 +750,19 @@ function altersKlasse(TeamID) {
     Ak = ['Ak', '1.', '2.'];
     if ($.inArray(TeamID, Ak) > -1) return 'Aktive';
 
-    A = ['A', 'A1', 'A2'];
+    A = ['A', 'A1', 'A2', 'AM'];
     if ($.inArray(TeamID, A) > -1) return 'A-Junioren';
 
-    B = ['B', 'B1', 'B2'];
+    B = ['B', 'B1', 'B2', 'BM'];
     if ($.inArray(TeamID, B) > -1) return 'B-Junioren';
 
-    C = ['C', 'C1', 'C2'];
+    C = ['C', 'C1', 'C2', 'CM'];
     if ($.inArray(TeamID, C) > -1) return 'C-Junioren';
 
-    D = ['D', 'D1', 'D2', 'D3', 'D4', 'D5'];
+    D = ['D', 'D1', 'D2', 'D3', 'D4', 'D5', 'DM'];
     if ($.inArray(TeamID, D) > -1) return 'D-Junioren';
 
-    E = ['E', 'E1', 'E2', 'E3', 'E4', 'E5'];
+    E = ['E', 'E1', 'E2', 'E3', 'E4', 'E5', 'EM'];
     if ($.inArray(TeamID, E) > -1) return 'E-Junioren';
 
     F = ['F', 'F1', 'F2', 'F3', 'F4', 'F5'];
