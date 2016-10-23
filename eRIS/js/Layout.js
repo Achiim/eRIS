@@ -97,7 +97,7 @@ const AnzahlPlatzteileJeStunde = 4; // kleinstes Reservierungsraster 1/4-tel Stu
 const MarkerPadding = 5 + 5;
 const innerMarkerWidth = PlatzTeilWidth - MarkerPadding; // abzgl. padding links und rechts und margin oben
 const innerMarkerHeight = 5; // abzgl. padding oben und unten und margin rechts
-const MarkerMaxWidth = PlatzWidth - PlatzTeilMargin;
+const MarkerMaxWidth = PlatzWidth - MarkerPadding;
 var MarkerMinWidth = PlatzTeilWidth - MarkerPadding;
 const MarkerMinHeight = innerMarkerHeight * 2 + PlatzTeilMargin;
 const MarkerHeightjePlatzteil = MarkerMinHeight;
@@ -854,7 +854,8 @@ function nextDatum() {
     if (AnzahlPlatzTeile != fieldPortions[currentField]) { // falls Platzteileanzahl abweicht, muss der Platz neu aufgebaut werden
         AnzahlPlatzTeile = fieldPortions[currentField]; // neu Platzportionierung merken
         doPlatzteilview(); // Platzeile neu aufbauen
-    }
+        MarkerMinWidth = PlatzTeilWidth - MarkerPadding; // neue kleinste Markergröße
+   }
 
     doClearEvents(); // alle Events von der Anzeige entfernen
     $('#Platzname').text(fieldTitle[currentField]); // neuen Platznamen in den Titel
@@ -874,6 +875,7 @@ function nextField() {
     if (AnzahlPlatzTeile != fieldPortions[currentField]) { // falls Platzteileanzahl abweicht, muss der Platz neu aufgebaut werden
         AnzahlPlatzTeile = fieldPortions[currentField]; // neu Platzportionierung merken
         doPlatzteilview(); // Platzeile neu aufbauen
+        MarkerMinWidth = PlatzTeilWidth - MarkerPadding; // neue kleinste Markergröße
     }
 
     doClearEvents(); // alle Events von der Anzeige entfernen
@@ -888,6 +890,7 @@ function nextField() {
 		setzt die Platzteile-Bezeichung für einen Platz
 */
 function setFieldPartTitle(a) {
+	var plz = 0;
     $('.Platzteil').remove(); // alte Bezeichung der Platzteile entfernen
     for (var pl = 0; pl < fieldPortions[a]; pl++) {
         $('<div>' + fieldPartTitle[currentField][pl] + '</div>') // neue Bezeichung der Platzteile erzeugen

@@ -375,7 +375,8 @@ function readAllFields() {
     		fieldPartTitle[a] = new Array(fieldPortions[a]);		// dynamisches Array generieren für die Plazteilbezeichungen je Platz
     		
     		for ( var pl=0; pl<fieldPortions[a]; pl++) {
-     			fieldPartTitle[a][pl] = Fields[a].portionName+pl;	// Platzkürzel + lfd. Nummer
+    			var plz=pl+1;
+     			fieldPartTitle[a][pl] = Fields[a].portionName+plz;	// Platzkürzel + lfd. Nummer
     		}
       	}
 
