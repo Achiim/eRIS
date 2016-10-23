@@ -45,6 +45,8 @@ body {
  	font-size: 1.0rem;
     font-weight: bold;   
 	color: white;
+	opacity: 0.8;	
+/*  background-image: url(../images/marker.png); */	
 }
 
 .tooltip .tooltiptext {
@@ -163,7 +165,7 @@ Styles fuer den Belegungsplan in allen Views
 #Platz { 
 	float: left;
 	opacity: 1;
-	background-image: url(../images/erisPlatz.png);
+/* background-image: url(../images/erisPlatz.png); */	
 }
 
 .PlatzTeil {
