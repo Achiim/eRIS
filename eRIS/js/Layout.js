@@ -87,7 +87,7 @@ var currentDatum = erisHeute();; // aktuelles Datum in der Tagesanzeige
 // 	Konstanten für Layout
 
 // Platzkonstanten
-const PlatzWidth = 180;
+const PlatzWidth = 120;
 const PlatzTeilMargin = 1;
 const PlatzTeilHeight = 10; // Height 
 var PlatzTeilWidth = PlatzWidth / AnzahlPlatzTeile - PlatzTeilMargin; // Width = Width + Margin
@@ -97,7 +97,7 @@ const AnzahlPlatzteileJeStunde = 4; // kleinstes Reservierungsraster 1/4-tel Stu
 const MarkerPadding = 5 + 5;
 const innerMarkerWidth = PlatzTeilWidth - MarkerPadding; // abzgl. padding links und rechts und margin oben
 const innerMarkerHeight = 5; // abzgl. padding oben und unten und margin rechts
-const MarkerMaxWidth = PlatzWidth - MarkerPadding;
+const MarkerMaxWidth = PlatzWidth - MarkerPadding - PlatzTeilMargin;
 var MarkerMinWidth = PlatzTeilWidth - MarkerPadding;
 const MarkerMinHeight = innerMarkerHeight * 2 + PlatzTeilMargin;
 const MarkerHeightjePlatzteil = MarkerMinHeight;
@@ -132,7 +132,19 @@ function doLayout() {
 	@param:			none
  */
 function doTagesview() {
+	doOrtsleiste();
+	doDatumsleiste();
+	doPlatzleiste();
+	doZeitleiste();
+	
 
+}
+//*********************************************************************************
+/**
+ * Erzeuge die Elemente in der Ortsleiste
+ */
+
+function doOrtsleiste() {
     // Ort
     // ---------------------------------------------------
 
@@ -175,8 +187,14 @@ function doTagesview() {
             nextOrt();
         })
         .appendTo('#OrtRechts');
+}
 
+//*********************************************************************************
+/**
+ * Erzeuge die Elemente in der Datumsleiste
+ */
 
+function doDatumsleiste() {
     // Datum
     // ---------------------------------------------------
 
@@ -220,6 +238,14 @@ function doTagesview() {
         })
         .appendTo('#DatumRechts');
 
+
+}
+//*********************************************************************************
+/**
+ * Erzeuge die Elemente in der Platzleiste
+ */
+
+function doPlatzleiste() {
     // Platz
     // ---------------------------------------------------
 
@@ -234,9 +260,9 @@ function doTagesview() {
         .appendTo('#Platzleiste');
 
     $('<div/>') // Anzeige von Plätzen
-        .addClass('Mitte')
-        .attr('id', 'PlatzMitte')
-        .appendTo('#Platzleiste');
+    .addClass('Mitte')
+    .attr('id', 'PlatzMitte')
+    .appendTo('#Platzleiste');
 
     $('<div/>') // Navigation innerhalb von Plätzen
         .addClass('Rechts')
@@ -244,102 +270,110 @@ function doTagesview() {
         .appendTo('#Platzleiste');
 
     $('<div><</div>') // Platz nach links
-    .addClass('Links')
-    .attr('id', 'PlatzButtonLinks')
-    .button()
-    .click(function(event) {
-        event.preventDefault();
-        prevField();
-    })
-    .appendTo('#PlatzLinks');
+	    .addClass('Links')
+	    .attr('id', 'PlatzButtonLinks')
+	    .button()
+	    .click(function(event) {
+	        event.preventDefault();
+	        prevField();
+	    })
+	    .appendTo('#PlatzLinks');
 
     $('<div>></div>') // Platz nach rechts
-    .addClass('Rechts')
-    .attr('id', 'PlatzButtonRechts')
-    .button()
-    .click(function(event) {
-        event.preventDefault();
-        nextField();
-    })
-    .appendTo('#PlatzRechts');
-
-   // Zeit
-    // ---------------------------------------------------
-
-    $('<div/>') // Erzeuge die Zeitleiste
-        .addClass('Zeitleiste')
-        .attr('id', 'Zeitleiste')
-        .appendTo('#Belegungsplan');
-    
-    $('#Zeitleiste').scroll();
-    $('#Zeitleiste').animate({
-      scrollTop: 160
-    }, 2000);
-
-    $('<div/>') // Anzeige der Zeit links
-        .addClass('Links')
-        .attr('id', 'ZeitLinks')
-        .appendTo('#Zeitleiste');
-
-    $('<div/>') // Anzeige von Plätzteilen
-        .addClass('Mitte')
-        .attr('id', 'ZeitMitte')
-        .appendTo('#Zeitleiste');
-
-    $('<div/>') // Anzeige der Zeit rechts
-        .addClass('Rechts')
-        .attr('id', 'ZeitRechts')
-        .appendTo('#Zeitleiste');
-
-    // ganztags
-    // ---------------------------------------------------
-    $('<div>ganz</div>') // Zeile für ganztags-Ereignisse
-    .addClass('Uhrzeit Rand')
-    .attr('id', 'ganztags')
-    .appendTo('#PlatzLinks');
-
-    $('<div>Teil</div>') // Zeile für ganztags-Ereignisse
-    .addClass('Uhrzeit Rand')
-    .attr('id', 'ganztags')
-    .appendTo('#PlatzLinks');
-
-    $('<div>ganz</div>') // Zeile für ganztags-Ereignisse
-    .addClass('Uhrzeit Rand')
-    .attr('id', 'ganztags')
-    .appendTo('#PlatzRechts');
-
-    $('<div>Teil</div>') // Zeile für ganztags-Ereignisse
-    .addClass('Uhrzeit Rand')
-    .attr('id', 'ganztags')
-    .appendTo('#PlatzRechts');
-
-    // Linke Zeitskala
-    // --------------------------------------------------
-    for (var uhr = BeginnZeitLeiste; uhr < EndeZeitLeiste; uhr++) { // Zeitspalte links
-        $('<div>' + uhr + '<sup>00</sup></div>')
-            .addClass('Uhrzeit')
-            .attr('id', 'LU' + uhr)
-            .css({
-                'height': StundeInPixel - PlatzTeilMargin
-            })
-            .appendTo('#ZeitLinks');
-    }
-
-    // Rechte Zeitskala
-    // --------------------------------------------------
-    for (var uhr = BeginnZeitLeiste; uhr < EndeZeitLeiste; uhr++) { // Zeitspalte rechts
-        $('<div>' + uhr + '<sup>00</sup></div>')
-            .addClass('Uhrzeit')
-            .attr('id', 'RU' + uhr)
-            .css({
-                'height': StundeInPixel - PlatzTeilMargin
-            })
-            .appendTo('#ZeitRechts');
-    }
-
+	    .addClass('Rechts')
+	    .attr('id', 'PlatzButtonRechts')
+	    .button()
+	    .click(function(event) {
+	        event.preventDefault();
+	        nextField();
+	    })
+	    .appendTo('#PlatzRechts');
 }
-//*********************************************************************************
 
+//*********************************************************************************
+/**
+ * Erzeuge die Elemente in der Zeitleiste
+ */
+
+function doZeitleiste() {
+	
+	// Zeit
+	// ---------------------------------------------------
+	
+	$('<div/>') // Erzeuge die Zeitleiste
+	    .addClass('Zeitleiste')
+	    .attr('id', 'Zeitleiste')
+	    .appendTo('#Belegungsplan');
+	
+	$('<div/>') // Anzeige der Zeit links
+	    .addClass('Links')
+	    .attr('id', 'ZeitLinks')
+	    .appendTo('#Zeitleiste');
+	
+	$('<div/>') // Anzeige von Plätzteilen
+	    .addClass('Mitte')
+	    .attr('id', 'ZeitMitte')
+	    .appendTo('#Zeitleiste');
+	
+	$('<div/>') // Anzeige der Zeit rechts
+	    .addClass('Rechts')
+	    .attr('id', 'ZeitRechts')
+	    .appendTo('#Zeitleiste');
+	
+	// ganztags
+	// ---------------------------------------------------
+	$('<div>ganz</div>') // Beschriftung links für ganztags-Ereignisse
+	.addClass('Uhrzeit Rand')
+	.attr('id', 'ganztags')
+	.appendTo('#PlatzLinks');
+	
+	$('<div>Teil</div>') // Beschriftung links für Platzteile-Bezeichnung
+	.addClass('Uhrzeit Rand')
+	.attr('id', 'ganztags')
+	.appendTo('#PlatzLinks');
+	
+	$('<div>ganz</div>') // Beschriftung rechts für ganztags-Ereignisse
+	.addClass('Uhrzeit Rand')
+	.attr('id', 'ganztags')
+	.appendTo('#PlatzRechts');
+	
+	$('<div>Teil</div>') // Beschriftung rechts für Platzteile-Bezeichnung
+	.addClass('Uhrzeit Rand')
+	.attr('id', 'ganztags')
+	.appendTo('#PlatzRechts');
+	
+	// Linke Zeitskala erzeugen 8:00 - 22:00 Uhr
+	// --------------------------------------------------
+	for (var uhr = BeginnZeitLeiste; uhr < EndeZeitLeiste; uhr++) { // Zeitspalte links
+	    $('<div>' + uhr + '<sup>00</sup></div>')
+	        .addClass('Uhrzeit')
+	        .attr('id', 'LU' + uhr)
+	        .css({
+	            'height': StundeInPixel - PlatzTeilMargin
+	        })
+	        .appendTo('#ZeitLinks');
+	}
+	
+	// Rechte Zeitskala erzeugen 8:00 - 22:00 Uhr
+	// --------------------------------------------------
+	for (var uhr = BeginnZeitLeiste; uhr < EndeZeitLeiste; uhr++) { // Zeitspalte rechts
+	    $('<div>' + uhr + '<sup>00</sup></div>')
+	        .addClass('Uhrzeit')
+	        .attr('id', 'RU' + uhr)
+	        .css({
+	            'height': StundeInPixel - PlatzTeilMargin
+	        })
+	        .appendTo('#ZeitRechts');
+	}
+	
+
+	// Bewege die Zeitskala ziemlich ans Ende
+	// --------------------------------------------------
+	$('#Zeitleiste').animate({scrollTop: 176}, 2000);
+	
+}
+
+//*********************************************************************************
 /**
  	Erzeugt einen Titel mit dem Platznamen über dem Tagesview für einen Platz.
 	Liest alle Platznamen ein. Baut den Platz auf mit doPlatzteilview @function: doPlatzteilview 
@@ -348,57 +382,76 @@ function doTagesview() {
  */
 function doPlatzview() {
 
-    // Löschen alter Platzview-Komponenten
-
+    // Beschriftung des Platzes
+	// ------------------------
     $('<div/>')
         .addClass('Platzname')
         .attr('id', 'Platzname')
         .appendTo('#PlatzMitte');
 
+    // Container für ganztags-Ereignisse
+	// ---------------------------------
     $('<div/>') // ganztags
 	    .addClass('Platzganztags')
 	    .attr('id', 'Platzganztags')
 	    .appendTo('#PlatzMitte');
 
+    // Container für Platzteilbeschrifungen
+	// ------------------------------------
+    $('<div/>') // Platzteile
+	    .addClass('Platzteile')
+	    .attr('id', 'Platzteile')
+	    .appendTo('#PlatzMitte');
+
     $(document).ready(readAllFields()); // hier werden dann auch der Platzname und alle Platzteile angelegt
 
-    doPlatzteilview(); // Platzteile anzeigen
+    doPlatzteilview('PLATZA'); // Platzteile anzeigen
 
 }
 //*********************************************************************************
 
 /**
 	Erzeugt einen Kopf über dem Tagesview für einen Platz.
-	@param: none
+	@param: PlatzNummer = Nummer es anzuzeigenden Platzes
  */
-function doPlatzteilview() {
+function doPlatzteilview(PlatzNummer) {
 
 
     // Löschen alter Platzview-Komponenten
+	// -----------------------------------
     $('.PlatzTeil').remove(); // Lösche alle Platzbestandteile
-    pid = 0; // Nummerierung für PlatzElemente
+    pid = 0; // Nummerierung für Platzelemente 0..N
     
+    // neue Breiten für Platzteile und Marker bestimmen
+    // ------------------------------------------------
     PlatzTeilWidth = PlatzWidth / AnzahlPlatzTeile - PlatzTeilMargin; // Width = Width + Margin
+    MarkerMinWidth = PlatzTeilWidth - MarkerPadding; // neue kleinste Markergröße
     
-    // falls es noch keinen Platz gibt, diesen anlegen
+    // falls es noch keinen Container für den Platz gibt, diesen anlegen
+    // -----------------------------------------------------------------
     var pk = '';
     pk = $('.Platz').attr('id');
     if (pk == undefined)
-    // Erzeuge Platz
-    $('<div/>')
-	    .addClass('Platz')
-	    .attr('id', 'Platz')
-	    .appendTo('#ZeitMitte');
+	    // Erzeuge Platz
+	    $('<div/>')
+		    .addClass('Platz')
+		    .attr('id', 'Platz'+ PlatzNummer)
+		    .appendTo('#ZeitMitte');
 
-    $('#Platz').width((PlatzTeilWidth + PlatzTeilMargin) * fieldPortions[currentField]); // Breite der Platz anpassen
+    // Breite des Platz-Containers festlegen
+    // --------------------------------------
+//    $('#Platz').width((PlatzTeilWidth + PlatzTeilMargin) * fieldPortions[currentField]); // Breite der Platz anpassen
+    $('#Platz').width(PlatzWidth); // Breite der Platz anpassen
 
+    // erzeuge das Belegungsraster im Platz
+    // ------------------------------------
     for (var uhr = BeginnZeitLeiste * AnzahlPlatzteileJeStunde; uhr < EndeZeitLeiste * AnzahlPlatzteileJeStunde; uhr++) {
         for (var pl = 0; pl < AnzahlPlatzTeile; pl++) {
             $('<div/>')
                 .addClass('PlatzTeil')
-                .attr('id', pid++)
+                .attr('id', pid++ + PlatzNummer)
                 .css('width', PlatzTeilWidth)
-                .appendTo('#Platz')
+                .appendTo('#Platz'+PlatzNummer);
         }
     }
 
@@ -474,7 +527,7 @@ function makePlatzDroppable() {
             var real = realZiel(Ziel, hh, ww); // ermittle reales Ziel das unter der linken, oberen Ecke liegt
             if (real >= 0) {
 
-                $(ui.draggable).appendTo($('#' + real)); // im Ziel ablegeb
+                $(ui.draggable).appendTo($('#' + real + 'PLATZA')); // im Ziel ablegeb
                 var msg = '';
                 if (erisEvent.ID == undefined || erisEvent.ID == '') {
                     msg = makeEventMessage(MarkerID);
@@ -511,36 +564,57 @@ function newEvent(erisEvent) {
     var hoehe = minutesToPixel(dauer);
     var breite = MarkerWidth; 
     var markerID = marker + mid++;
+    
     $('<div>' + marker + '</div>')
         .addClass(altersKlasse(marker) + ' Marker')
         .attr('id', markerID)
         .height(hoehe)
         .width(breite)
-
-    .appendTo('#Sammler')
-
-    .draggable()
+	    .appendTo('#Sammler')
+	    .draggable()
         .draggable("option", "revert", "invalid")
         .draggable("option", "cursorAt", {
             left: 0,
             top: 0
         })
 
-    .resizable({
+        .resizable({
             resize: function(event, ui) {
-            	var breite = PlatzWidth / AnzahlPlatzTeile - MarkerPadding;
-                breite = (Math.round(ui.size.width / breite) * PlatzTeilWidth-MarkerPadding);
+            	var breite = (PlatzWidth / AnzahlPlatzTeile) - MarkerPadding;
+                anz = Math.round(ui.size.width / breite);
+                breite = anz * PlatzTeilWidth-MarkerPadding;
+                breite += anz * PlatzTeilMargin;
+                
                 if (breite < MarkerMinWidth) 
                 	ui.size.width = MarkerMinWidth;
                 else
                 	ui.size.width = breite;
                 	
+                if (breite > MarkerMaxWidth) 
+                	ui.size.width = MarkerMaxWidth;
+                else
+                	ui.size.width = breite;
+                
                 ui.size.height = Math.round(ui.size.height / MarkerHeightjePlatzteil) * MarkerHeightjePlatzteil;
+                
+                var MarkerID = $(ui.element).attr('id');
+
+                eEvent = new Object();
+                readAttributeFromEvent(MarkerID, eEvent);
+                
+                // belegte Platzteile ermitteln
+                if (anz == 1) eEvent.Platzteil = [1];
+                if (anz == 2) eEvent.Platzteil = [1,2];
+                if (anz == 3) eEvent.Platzteil = [1,2,3];
+                if (anz == 4) eEvent.Platzteil = [1,2,3,4];
+                
+                storeEventToObjectData(MarkerID, eEvent);
             }
         })
         .resizable({
             stop: function(event, ui) {
                 var MarkerID = $(ui.element).attr('id');
+
                 var msg = '';
                 var erisEvent = new Object();
                 createEventObject(MarkerID, erisEvent);
@@ -550,15 +624,16 @@ function newEvent(erisEvent) {
             }
         })
 
-    .resizable("option", "minWidth", MarkerMinWidth)
-        .resizable("option", "maxWidth", MarkerMaxWidth)
-        .resizable("option", "minHeight", MarkerMinHeight)
+	    .resizable("option", "minWidth", MarkerMinWidth)
+	        .resizable("option", "maxWidth", MarkerMaxWidth)
+	        .resizable("option", "minHeight", MarkerMinHeight)
 
-    .on({
-        click: function() {
-            var mmID = this.id;
+	    .on({
+	        click: function() {
+	            var mmID = this.id;
 
-            $('<div></div>').dialog({
+
+	            $('<div></div>').dialog({
                     modal: true,
                     title: "Event-Info",
                     open: function(event, ui) {
@@ -605,7 +680,7 @@ function newEvent(erisEvent) {
         var zielID = (hour - BeginnZeitLeiste) * AnzahlPlatzteileJeStunde * AnzahlPlatzTeile + (minute / (StundeInMinuten / AnzahlPlatzteileJeStunde) * AnzahlPlatzTeile); // je Stunde x Raster; Beginn allerdings bei 8:00 Uhr (8*x Raster versetzt)
         if (zielID >= 0 && zielID < AnzahlPlatzteileJeStunde * AnzahlPlatzTeile * AnzahlStunden) {
             $('#' + markerID)
-                .appendTo('#' + zielID);
+                .appendTo('#' + zielID + 'PLATZA');
         } else {
             alert('Event außerhalb des darstellbaren Bereiches ' + marker + ' ' + beginn);
         }
@@ -853,9 +928,8 @@ function nextDatum() {
     if (currentField < 0) currentField = fieldAmount - 1; // In Kreis blättern
     if (AnzahlPlatzTeile != fieldPortions[currentField]) { // falls Platzteileanzahl abweicht, muss der Platz neu aufgebaut werden
         AnzahlPlatzTeile = fieldPortions[currentField]; // neu Platzportionierung merken
-        doPlatzteilview(); // Platzeile neu aufbauen
-        MarkerMinWidth = PlatzTeilWidth - MarkerPadding; // neue kleinste Markergröße
-   }
+        doPlatzteilview('PLATZA'); // Platzeile neu aufbauen
+    }
 
     doClearEvents(); // alle Events von der Anzeige entfernen
     $('#Platzname').text(fieldTitle[currentField]); // neuen Platznamen in den Titel
@@ -874,8 +948,7 @@ function nextField() {
     if (currentField >= fieldAmount) currentField = 0; // In Kreis blättern
     if (AnzahlPlatzTeile != fieldPortions[currentField]) { // falls Platzteileanzahl abweicht, muss der Platz neu aufgebaut werden
         AnzahlPlatzTeile = fieldPortions[currentField]; // neu Platzportionierung merken
-        doPlatzteilview(); // Platzeile neu aufbauen
-        MarkerMinWidth = PlatzTeilWidth - MarkerPadding; // neue kleinste Markergröße
+        doPlatzteilview('PLATZA'); // Platzeile neu aufbauen
     }
 
     doClearEvents(); // alle Events von der Anzeige entfernen
@@ -897,7 +970,7 @@ function setFieldPartTitle(a) {
             .addClass('Platzteil')
             .attr('id', 'Platzteil' + pl)
             .css('width', PlatzTeilWidth)
-            .appendTo('#PlatzMitte');
+            .appendTo('#Platzteile');
     }
 }
 //*********************************************************************************

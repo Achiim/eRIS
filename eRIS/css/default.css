@@ -44,7 +44,7 @@ body {
 }
 
 .Marker {  
- 	font-size: 1.0rem;
+ 	font-size: 1rem;
     font-weight: bold;   
 	color: white;
 	opacity: 1.0;	
@@ -85,13 +85,13 @@ Styles fuer den Belegungsplan in allen Views
 }
 
 .Belegungsplan, .K2, .Buttonlist, .Sammler{
-	margin-left: 100px;
+	margin-left: 0px;
 	float: left;
 }
 
 .Belegungsplan{
 	overflow: hidden;
-	width: 300px;
+	width: 480px;
 }
 
 #erisViews {
@@ -104,7 +104,7 @@ Styles fuer den Belegungsplan in allen Views
 }
 
 .Zeitleiste{
-	width: 340px;
+	width: 520px;
 } 
 
 #ZeitLinks{
@@ -123,8 +123,11 @@ Styles fuer den Belegungsplan in allen Views
 	height: 20px;
 }
 
-.Platzname, .Platz, .Platzganztags, .Platzlogo {
-	width: 180px;
+.Mitte {
+	width: 360px;
+}
+.Platzname, .Platz, .Platzganztags, .Platzlogo, .Platzteile {
+	width: 120px;
 }
 	
 .Platzlogo {
@@ -181,7 +184,6 @@ Styles fuer den Belegungsplan in allen Views
 }
 
 .Mitte {
-	width: 180px;
 	float: left;
 	color: white;
 }
@@ -260,6 +262,8 @@ Styles fuer den Belegungsplan in allen Views
 	position: relative;
 	float: left;
 	padding: 5px;
+	text-align: center;
+	vertical-align: middle;
 }
 
 div.ui-draggable-dragging {
@@ -270,47 +274,56 @@ div.ui-draggable-dragging {
 
 .EventAH, .AH, .alteHerren  {
    background: #BDB76B;
-   background: linear-gradient(to bottom, rgba(212,194,36,1) 0%, rgba(184,178,118,1) 59%, rgba(189,184,107,1) 100%);
+/*   background: linear-gradient(to top, #bdb86b 0%, #454327 100%); */ 
+   opacity: 0.9;
 }
 
 .EventAk, .Aktive {
-    background: #2F4F4F;
-    background: linear-gradient(to bottom, rgba(105,199,199,1) 0%, rgba(79,128,128,1) 59%, rgba(47,79,79,1) 100%);
+   background: #2F4F4F;
+/*   background: linear-gradient(to top, #9bbcd8 0%, #28323b 100%); */ 
+   opacity: 0.9;
 }
 
 .EventA, .A-Jugend, .A-Junioren {
     background: #92B6D5;
-    background: linear-gradient(to bottom, rgba(147,206,222,1) 0%, rgba(117,189,209,1) 41%, rgba(73,165,191,1) 100%);
+/* 	background: linear-gradient(to top, #5ac2dc 0%, #36434e 100%); */
+   opacity: 0.9;
 }
 
 .EventB, .B-Jugend, .B-Junioren {
    background: #AD5D5D;
-   background: linear-gradient(to bottom, rgba(230,177,177,1) 0%, rgba(199,94,94,1) 59%, rgba(173,93,93,1) 100%);
+/*	background: linear-gradient(to top, #75ad5d 0%, #2b3f22 100%);  */
+   opacity: 0.9;
 }
 
 .EventC, .C-Jugend, .C-Junioren {
    background: #AF9483;
-   background: linear-gradient(to bottom, rgba(219,190,173,1) 0%, rgba(189,127,90,1) 59%, rgba(175,148,131,1) 100%);
+/*	background: linear-gradient(to top, #ddca18 0%, #514a09 100%); */
+   opacity: 0.9;
 }
 
 .EventD, .D-Jugend, .D-Junioren {
    background: #D8AE47;
-   background: linear-gradient(to bottom, rgba(186,161,102,1) 0%, rgba(214,181,102,1) 59%, rgba(216,174,71,1) 100%);
+/*	background: linear-gradient(to top, #dd1818 0%, #510909 100%); */
+   opacity: 0.9;
 }
 
 .EventE, .E-Jugend, .E-Junioren {
    background: #B76BA3;
-   background: linear-gradient(to bottom, rgba(168,64,142,1) 0%, rgba(189,136,176,1) 59%, rgba(183,107,163,1) 100%);
+/*	background: linear-gradient(to top, #18b3dd 0%, #094251 100%); */
+   opacity: 0.9;
 }
 
 .EventF, .F-Jugend, .F-Junioren {
    background: #F7786B;
-   background: linear-gradient(to bottom, rgba(199,113,105,1) 0%, rgba(219,125,114,1) 59%, rgba(247,121,107,1) 100%);
+/*	background: linear-gradient(to top, #ea7719 0%, #562c0a 100%); */
+   opacity: 0.9;
 }
 
 .EventG, .Bambini, .G-Junioren {
    background: #F3386B;
-   background: linear-gradient(to bottom, rgba(219,40,90,1) 0%, rgba(224,69,113,1) 59%, rgba(243,56,106,1) 100%);
+/*	background: linear-gradient(to top, #dfe833 0%, #525513 100%); */
+   opacity: 0.9;
 }
 
 .Eventbutton {

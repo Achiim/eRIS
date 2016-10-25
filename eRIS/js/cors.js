@@ -258,21 +258,21 @@ function readAllTeams() {
       	
     		// Generiere den Team-Button
     		$('<button>' + TeamID + '</button>')		
-    		.addClass('Eventbutton ' + Klasse)
-    		.attr( 'id', 'Button' + bid++)
-    		.appendTo( '.Buttongroup' + Klasse )
-    		.button( );
+	    		.addClass('Eventbutton ' + Klasse)
+	    		.attr( 'id', 'Button' + bid++)
+	    		.appendTo( '.Buttongroup' + Klasse )
+	    		.button( );
 
     		// onClick-Funktion für den Team-Button
     		$('#Button' + (bid-1) ).click( function( event ) {
-    		event.preventDefault();
-		
-    		var Event = new Object();
-    		Event.TeamID = $(this).html();		// ID aus dem Button
-    		Event.Dauer = 60;					// DefaultDauer 60 Minuten
-    		Event.dateStart = [];				// leeres Startdatum
-    		Event.ID = '';						// leere DB-ID
-    		newEvent(Event);				
+	    		event.preventDefault();
+			
+	    		var Event = new Object();
+	    		Event.TeamID = $(this).html();		// ID aus dem Button
+	    		Event.Dauer = 60;					// DefaultDauer 60 Minuten
+	    		Event.dateStart = [];				// leeres Startdatum
+	    		Event.ID = '';						// leere DB-ID
+	    		newEvent(Event);				
     		});
       	}
     } // Ende teamList.onload
@@ -389,16 +389,6 @@ function readAllFields() {
 
 		setFieldPartTitle(currentField); // neue Bezeichnung der Platzteile
 		
-//		for ( var pl=0; pl<AnzahlPlatzTeile; pl++) {
-//			$('<div>'+fieldPartTitle[currentField][pl]+'</div>')		
-//			.addClass('Platzteil')
-//			.attr( 'id', 'Platzteil' + pl )
-//			.css('width', PlatzTeilWidth)
-//			.appendTo( '#Platz' );
-//		}
-		
-////////////////////////////		readAllEvents(fieldTitle[currentField]); 
-
    } // Ende fieldList.onload
 
     
