@@ -91,7 +91,7 @@ Styles fuer den Belegungsplan in allen Views
 
 .Belegungsplan{
 	overflow: hidden;
-	width: 480px;
+	width: 500px;
 }
 
 #erisViews {
@@ -124,10 +124,15 @@ Styles fuer den Belegungsplan in allen Views
 }
 
 .Mitte {
-	width: 360px;
+	width: 380px;
 }
 .Platzname, .Platz, .Platzganztags, .Platzlogo, .Platzteile {
 	width: 120px;
+}
+
+.Platzname, .Platzganztags, .Platzteile {
+	margin-left: 5px;
+	float: left;
 }
 	
 .Platzlogo {
@@ -164,10 +169,14 @@ Styles fuer den Belegungsplan in allen Views
 	color: white;
 }
 
-#Platz { 
+.Platz { 
 	float: left;
 	opacity: 1;
 /* background-image: url(../images/erisPlatz.png); */	
+}
+
+.Platz {
+	margin-left: 5px;
 }
 
 .PlatzTeil {

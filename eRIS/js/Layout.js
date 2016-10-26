@@ -76,6 +76,12 @@ var fieldPortions = [] // Anzahl der belegbaren Platzteile
 var fieldPartTitle = []; // Array für Platzteilbezeichungen jedes Platzes [Platz][Platzteil]
 var currentField = 0; // Pointer auf den aktuellen Platz
 
+var Platzname = [];
+Platzname[0] = 'a';
+Platzname[1] = 'b';
+Platzname[2] = 'c';
+Platzname[3] = 'd';
+
 var AnzahlPlatzTeile = 2; // aktuelle Anzahl der reservierbaren Platzteile
 var currentDatum = erisHeute();; // aktuelles Datum in der Tagesanzeige
 
@@ -382,31 +388,45 @@ function doZeitleiste() {
  */
 function doPlatzview() {
 
-    // Beschriftung des Platzes
-	// ------------------------
-    $('<div/>')
-        .addClass('Platzname')
-        .attr('id', 'Platzname')
-        .appendTo('#PlatzMitte');
+	for ( pp=0; pp<3; pp++ ) {
+		
+		   // Beschriftung des Platzes
+		// ------------------------
+	    $('<div/>')
+	        .addClass('Platzname')
+	        .attr('id', 'Platzname' + Platzname[pp])
+	        .appendTo('#PlatzMitte');
 
-    // Container für ganztags-Ereignisse
-	// ---------------------------------
-    $('<div/>') // ganztags
-	    .addClass('Platzganztags')
-	    .attr('id', 'Platzganztags')
-	    .appendTo('#PlatzMitte');
+	}
+	
+	for ( pp=0; pp<3; pp++ ) {
+		
+		// Container für ganztags-Ereignisse
+		// ---------------------------------
+	    $('<div/>') // ganztags
+		    .addClass('Platzganztags')
+		    .attr('id', 'Platzganztags' + Platzname[pp])
+		    .appendTo('#PlatzMitte');
 
-    // Container für Platzteilbeschrifungen
-	// ------------------------------------
-    $('<div/>') // Platzteile
-	    .addClass('Platzteile')
-	    .attr('id', 'Platzteile')
-	    .appendTo('#PlatzMitte');
+	}
 
+	for ( pp=0; pp<3; pp++ ) {
+			
+	    // Container für Platzteilbeschrifungen
+		// ------------------------------------
+	    $('<div/>') // Platzteile
+		    .addClass('Platzteile')
+		    .attr('id', 'Platzteile' + Platzname[pp])
+		    .appendTo('#PlatzMitte');
+	}
+		
+
+ 
     $(document).ready(readAllFields()); // hier werden dann auch der Platzname und alle Platzteile angelegt
 
-    doPlatzteilview('PLATZA'); // Platzteile anzeigen
-
+	for ( pp=0; pp<3; pp++ ) {
+		doPlatzteilview(Platzname[pp]); // Platzteile anzeigen
+	}
 }
 //*********************************************************************************
 
@@ -419,7 +439,9 @@ function doPlatzteilview(PlatzNummer) {
 
     // Löschen alter Platzview-Komponenten
 	// -----------------------------------
-    $('.PlatzTeil').remove(); // Lösche alle Platzbestandteile
+//    $('.PlatzTeil').remove(); // Lösche alle Platzbestandteile
+//    $('.Platz').remove(); // Lösche alle Plätze
+    
     pid = 0; // Nummerierung für Platzelemente 0..N
     
     // neue Breiten für Platzteile und Marker bestimmen
@@ -430,7 +452,7 @@ function doPlatzteilview(PlatzNummer) {
     // falls es noch keinen Container für den Platz gibt, diesen anlegen
     // -----------------------------------------------------------------
     var pk = '';
-    pk = $('.Platz').attr('id');
+    pk = $('.Platz'+PlatzNummer).attr('id');
     if (pk == undefined)
 	    // Erzeuge Platz
 	    $('<div/>')
@@ -441,7 +463,7 @@ function doPlatzteilview(PlatzNummer) {
     // Breite des Platz-Containers festlegen
     // --------------------------------------
 //    $('#Platz').width((PlatzTeilWidth + PlatzTeilMargin) * fieldPortions[currentField]); // Breite der Platz anpassen
-    $('#Platz').width(PlatzWidth); // Breite der Platz anpassen
+    $('#Platz'+PlatzNummer).width(PlatzWidth); // Breite der Platz anpassen
 
     // erzeuge das Belegungsraster im Platz
     // ------------------------------------
@@ -451,7 +473,7 @@ function doPlatzteilview(PlatzNummer) {
                 .addClass('PlatzTeil')
                 .attr('id', pid++ + PlatzNummer)
                 .css('width', PlatzTeilWidth)
-                .appendTo('#Platz'+PlatzNummer);
+                .appendTo('#Platz' + PlatzNummer);
         }
     }
 
@@ -527,7 +549,7 @@ function makePlatzDroppable() {
             var real = realZiel(Ziel, hh, ww); // ermittle reales Ziel das unter der linken, oberen Ecke liegt
             if (real >= 0) {
 
-                $(ui.draggable).appendTo($('#' + real + 'PLATZA')); // im Ziel ablegeb
+                $(ui.draggable).appendTo($('#' + real + Platzname[currentField])); // im Ziel ablegeb
                 var msg = '';
                 if (erisEvent.ID == undefined || erisEvent.ID == '') {
                     msg = makeEventMessage(MarkerID);
@@ -680,7 +702,7 @@ function newEvent(erisEvent) {
         var zielID = (hour - BeginnZeitLeiste) * AnzahlPlatzteileJeStunde * AnzahlPlatzTeile + (minute / (StundeInMinuten / AnzahlPlatzteileJeStunde) * AnzahlPlatzTeile); // je Stunde x Raster; Beginn allerdings bei 8:00 Uhr (8*x Raster versetzt)
         if (zielID >= 0 && zielID < AnzahlPlatzteileJeStunde * AnzahlPlatzTeile * AnzahlStunden) {
             $('#' + markerID)
-                .appendTo('#' + zielID + 'PLATZA');
+                .appendTo('#' + zielID + Platzname[currentField]);
         } else {
             alert('Event außerhalb des darstellbaren Bereiches ' + marker + ' ' + beginn);
         }
@@ -928,7 +950,7 @@ function nextDatum() {
     if (currentField < 0) currentField = fieldAmount - 1; // In Kreis blättern
     if (AnzahlPlatzTeile != fieldPortions[currentField]) { // falls Platzteileanzahl abweicht, muss der Platz neu aufgebaut werden
         AnzahlPlatzTeile = fieldPortions[currentField]; // neu Platzportionierung merken
-        doPlatzteilview('PLATZA'); // Platzeile neu aufbauen
+        doPlatzteilview(Platzname[currentField]); // Platzeile neu aufbauen
     }
 
     doClearEvents(); // alle Events von der Anzeige entfernen
@@ -948,7 +970,7 @@ function nextField() {
     if (currentField >= fieldAmount) currentField = 0; // In Kreis blättern
     if (AnzahlPlatzTeile != fieldPortions[currentField]) { // falls Platzteileanzahl abweicht, muss der Platz neu aufgebaut werden
         AnzahlPlatzTeile = fieldPortions[currentField]; // neu Platzportionierung merken
-        doPlatzteilview('PLATZA'); // Platzeile neu aufbauen
+        doPlatzteilview(Platzname[currentField]); // Platzeile neu aufbauen
     }
 
     doClearEvents(); // alle Events von der Anzeige entfernen
@@ -964,13 +986,17 @@ function nextField() {
 */
 function setFieldPartTitle(a) {
 	var plz = 0;
-    $('.Platzteil').remove(); // alte Bezeichung der Platzteile entfernen
+//    $('.Platzteil').remove(); // alte Bezeichung der Platzteile entfernen
+    
+    var suffix = Platzname[a];
+    
     for (var pl = 0; pl < fieldPortions[a]; pl++) {
-        $('<div>' + fieldPartTitle[currentField][pl] + '</div>') // neue Bezeichung der Platzteile erzeugen
+        var ptn = fieldPartTitle[a][pl];
+        $('<div>' + ptn + '</div>') // neue Bezeichung der Platzteile erzeugen
             .addClass('Platzteil')
-            .attr('id', 'Platzteil' + pl)
+            .attr('id', 'Platzteil' + pl + suffix)
             .css('width', PlatzTeilWidth)
-            .appendTo('#Platzteile');
+            .appendTo('#Platzteile' + suffix);
     }
 }
 //*********************************************************************************

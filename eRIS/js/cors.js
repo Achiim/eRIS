@@ -378,16 +378,18 @@ function readAllFields() {
     			var plz=pl+1;
      			fieldPartTitle[a][pl] = Fields[a].portionName+plz;	// Platzkürzel + lfd. Nummer
     		}
-      	}
-
-		$('#Platzname')
-		.text(fieldTitle[currentField]);
+    		
+    		
+			$('#Platzname' + Platzname[a])
+				.text(fieldTitle[a]);
+				
+			AnzahlPlatzTeile = fieldPortions[a];
+			PlatzTeilWidth = PlatzWidth / AnzahlPlatzTeile - PlatzTeilMargin;
+			MarkerMinWidth = PlatzTeilWidth - MarkerPadding;
 		
-		AnzahlPlatzTeile = fieldPortions[currentField];
-		PlatzTeilWidth = PlatzWidth / AnzahlPlatzTeile - PlatzTeilMargin;
-		MarkerMinWidth = PlatzTeilWidth - MarkerPadding;
+			setFieldPartTitle(a); // neue Bezeichnung der Platzteile
 
-		setFieldPartTitle(currentField); // neue Bezeichnung der Platzteile
+      	}
 		
    } // Ende fieldList.onload
 
