@@ -2,9 +2,9 @@
 # eRIS
 # elektonisches Reservierungs- und Infromationssystem
 
-****************************************
-* Sportstätten-Reservierungs-System    *
-****************************************
+
+* Sportstätten-Reservierungs-System
+
 Autor:      Achiim
 Jahr:       2016
 
@@ -25,4 +25,3 @@ Nutzergruppe "Sportstätten-Verwalter"
 - über das Internet zugängliche Information
 - Anzeige eines Belegungsplans über das Internet
 - Passwortgeschützer Zugang für den Sportstätten-Verwalter
->>>>>>> branch 'master' of https://github.com/Achiim/eRIS.git
