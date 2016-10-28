@@ -1,9 +1,9 @@
 
 # eRIS - elektronisches Reservierungs- und Informationssystem
 
-Sportstätten-Reservierungs-System
-Autor:      Achiim
-Jahr:       2016
+###Sportstätten-Reservierungs-System
+###Autor:      Achiim
+###Jahr:       2016
 
 Allgemein können mit diesem System beliebige Sportstätten für die Nutzung reserviert werden. Eine "öffentliche Bereitstellung" bietet die Möglichkeit für:
 
