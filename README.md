@@ -1,8 +1,6 @@
+
 # eRIS
-<<<<<<< HEAD
-=======
-elektonisches Reservierungs- und Infromationssystem
-##
+# elektonisches Reservierungs- und Infromationssystem
 
 ****************************************
 * Sportstätten-Reservierungs-System    *
