@@ -10,6 +10,28 @@
 	
 **/
 
+/* global $ */
+/* global fieldTitle */
+/* global newEvent */
+/* global setFieldPartTitle */
+/* global erisTimestamp */
+/* global erisTraceLevel */
+
+
+/* global bid */
+/* global fieldAmount */
+/* global fieldPortions */
+/* global fieldPartTitle */
+/* global AnzahlPlatzTeile */
+/* global Platzname */
+/* global PlatzTeilWidth */
+/* global PlatzWidth */
+/* global PlatzTeilMargin */
+/* global MarkerMinWidth */
+/* global MarkerPadding */
+
+
+
 	/*********************************************************************************
 	Funktion:	erisCreateCORSRequest 
 	Zweck:		Generiert einen Cross-Origin Ressource Sharing Request, damit auf den 
@@ -73,7 +95,7 @@ function postEvent(msg, ui) {
 	    		return;							
 		   	}
 		
-	} // Ende von eventPost.onload
+	}; // Ende von eventPost.onload
 	
 	eventPost.onerror = function() {
 		    erisLog('postEvent: Woops, there was an error making the request.');
@@ -115,7 +137,7 @@ function postEventUpdate(msg) {
 	    		return;							
 		   	}
 		
-	} // Ende von eventPostUpdate.onload
+	}; // Ende von eventPostUpdate.onload
 	
 	eventPostUpdate.onerror = function() {
 		    erisLog('postEventUpdate: Woops, there was an error making the request.');
@@ -215,7 +237,7 @@ function readAllEvents(field, datum) {
     	
 			newEvent(Event);
 		}
-	} // Ende von eventList.onload
+	}; // Ende von eventList.onload
 
 	eventList.onerror = function() {
 		    erisLog('Woops, there was an error making the request.');
@@ -224,9 +246,9 @@ function readAllEvents(field, datum) {
 	eventList.send();
 }
 
-	/*********************************************************************************
-	Funktion:	readAllTeams 
-	Zweck:		Lese alle Teams aus dem Google-Speicher
+/*********************************************************************************
+Funktion:	readAllTeams 
+Zweck:		Lese alle Teams aus dem Google-Speicher
 */
 function readAllTeams() {
     // This is a sample server that supports CORS.
@@ -288,7 +310,7 @@ function readAllTeams() {
     		});
       	}
       	}
-    } // Ende teamList.onload
+    }; // Ende teamList.onload
 
     
     teamList.onerror = function() {
@@ -341,7 +363,7 @@ function readAllGroups() {
     	$('<div>' + '</div>')		
 		.delay(300);						// Verzögeerung um 300ms, damit Buttongroups vorhanden sind, bevor Buttons reingelegt werden
 
-    } // Ende groupList.onload
+    }; // Ende groupList.onload
 
 
     groupList.onerror = function() {
