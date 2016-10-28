@@ -1,0 +1,340 @@
+@CHARSET "ISO-8859-1";
+/**
+    ****************************************
+	* Sportstaetten-Reservierungs-System   *
+	****************************************
+	
+	Autor:	Achim
+	Jahr:	2016
+	
+	Default-Layout
+	
+	Quelle fuer HTML-Farbnamen: http://www.w3schools.com/colors/colors_groups.asp
+	Style-Guide: https://material.google.com/style/color.html#color-color-palette
+
+ 	Quelle fuer Linear-Gradient der Marker: http://www.cssmatic.com/gradient-generator
+*/
+
+
+/****************************************
+Styles fuer Schriftgrößen, -ausrichtung
+****************************************/
+
+body {
+	
+	font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+}
+
+.K1 {	
+	font-size: 1.5rem;
+	font-weight: bold;
+}  
+
+.K2 {	
+	font-size: 1rem;
+	font-weight: bold;
+}
+
+.Uhrzeit {
+	font-size: 1.0rem;
+}
+
+.Muelleimer, .Sammeleimer {  
+	text-align: center;
+}
+
+.Marker {  
+ 	font-size: 1rem;
+    font-weight: bold;   
+	color: white;
+	opacity: 1.0;	
+/*  background-image: url(../images/marker.png); */	
+}
+
+.tooltip .tooltiptext {
+	font-size: 0.7rem;
+}
+
+/**************************************
+Styles fuer Schriftfarben ...
+**************************************/
+
+.Sammeleimer {  
+    color: #616161;						/* Gray 700 */
+}
+
+.Uhrzeit {
+	color: #fafafa;						/* Gray 50 */
+}
+
+.Muelleimer {
+	color: #fafafa;						/* Gray 50 */
+}
+
+
+/*******************************************
+Styles fuer den Belegungsplan in allen Views
+*******************************************/
+.verschwommen {
+  	filter: blur(2px);
+	-webkit-filter: blur(2px);
+	-moz-filter: blur(2px);
+	-o-filter: blur(2px);
+	-ms-filter: blur(2px);
+	cursor: progress;
+}
+
+.Belegungsplan, .K2, .Buttonlist, .Sammler{
+	margin-left: 0px;
+	float: left;
+}
+
+.Belegungsplan{
+	overflow: hidden;
+	width: 500px;
+}
+
+#erisViews {
+	width: 600px;
+}
+
+
+#Tagesplan, #Wochenplan, #Monatsplan {
+	height: 570px;
+}
+
+.Zeitleiste{
+	width: 520px;
+} 
+
+#ZeitLinks{
+		text-align: right;	
+} 
+
+#ZeitRechts{
+		text-align: left;	
+} 
+
+.Datumsleiste, #DatumLinks, #DatumMitte, #DatumRechts {
+	height: 20px;
+}
+
+.Ortsleiste, #OrtLinks, #OrtMitte, #OrtRechts {
+	height: 20px;
+}
+
+.Mitte {
+	width: 380px;
+}
+.Platzname, .Platz, .Platzganztags, .Platzlogo, .Platzteile {
+	width: 120px;
+}
+
+.Platzname, .Platzganztags, .Platzteile {
+	margin-left: 5px;
+	float: left;
+}
+	
+.Platzlogo {
+	position: relative;
+}
+
+.Platzkopf {
+	float: left;
+}
+
+.Platzname {
+	color: white;
+	height: 20px;
+}
+
+.Platzganztags {
+	float: left;
+	height: 20px;
+	margin-right: 1px;
+	margin-top: 1px;
+}
+
+.Rand {
+	vertical-align: middle;
+}
+
+.Platzteil, .PlatzTeil {
+}
+
+.Platzteil{
+	float: left;
+	margin-top: 1px;
+	margin-right: 1px;
+	color: white;
+}
+
+.Platz { 
+	float: left;
+	opacity: 1;
+/* background-image: url(../images/erisPlatz.png); */	
+}
+
+.Platz {
+	margin-left: 5px;
+}
+
+.PlatzTeil {
+	float: left;
+	margin-top: 1px;
+	margin-right: 1px;
+	height: 10px;
+}
+
+.Links, .Rechts {
+	width: 60px;
+	float: left;
+	color: white;
+}
+
+.Mitte {
+	float: left;
+	color: white;
+}
+
+#PlatzLinks, #PlatzMitte, #PlatzRechts, #OrtLinks, #OrtMitte, #OrtRechts, #DatumLinks, #DatumMitte, #DatumRechts {
+	text-align: center;
+}
+
+#DatumButtonLinks, #DatumButtonRechts, #OrtButtonLinks, #OrtButtonRechts, #PlatzButtonLinks, #PlatzButtonRechts {
+	padding: 0px;
+	border: 0px;
+	border-radius: 0px;
+	height: 19px;
+	margin-bottom: 1px;
+}
+
+.foot, .K2, .Sammler {
+	width: 500px;
+}
+
+.Muelleimer, .Sammeleimer {
+	float: left;
+}
+
+#Zeitleiste {
+	float: left;
+	height: 400px;
+	overflow: scroll;
+}
+
+#ZeitMitte {
+
+}
+
+.Platznavigation {
+	height: 40px;
+}
+
+.Platznavigation, .Datumsnavigation, .Ortsnavigation {
+	width: 60px;
+}
+
+#Buttonlist {
+	height: 70px;
+	width: 600px;
+	float: left;
+}
+
+.Buttongroup {
+	width: 40px;
+}
+
+
+.Uhrzeit {
+	margin-top: 1px;
+}
+	
+#Eimertitel, #Sammlertitel {
+    height: 20px;
+}
+
+.Muelleimer, .Sammeleimer {  
+    height: 40px;
+	width: 250px;
+}
+
+
+.Marker {  
+    border-radius: 5px;
+    height: 37px;
+	width: 169px;
+	position: relative;
+	float: left;
+	padding: 5px;
+	text-align: center;
+	vertical-align: middle;
+}
+
+div.ui-draggable-dragging {
+  -moz-box-shadow: 0 0 .5em rgba(0, 0, 0, .8);
+  -webkit-box-shadow: 0 0 .5em rgba(0, 0, 0, .8);
+  box-shadow: 0 0 .5em rgba(0, 0, 0, .8);
+}
+
+.EventAH, .AH, .alteHerren  {
+   background: #BDB76B;
+/*   background: linear-gradient(to top, #bdb86b 0%, #454327 100%); */ 
+   opacity: 0.9;
+}
+
+.EventAk, .Aktive {
+   background: #2F4F4F;
+/*   background: linear-gradient(to top, #9bbcd8 0%, #28323b 100%); */ 
+   opacity: 0.9;
+}
+
+.EventA, .A-Jugend, .A-Junioren {
+    background: #92B6D5;
+/* 	background: linear-gradient(to top, #5ac2dc 0%, #36434e 100%); */
+   opacity: 0.9;
+}
+
+.EventB, .B-Jugend, .B-Junioren {
+   background: #AD5D5D;
+/*	background: linear-gradient(to top, #75ad5d 0%, #2b3f22 100%);  */
+   opacity: 0.9;
+}
+
+.EventC, .C-Jugend, .C-Junioren {
+   background: #AF9483;
+/*	background: linear-gradient(to top, #ddca18 0%, #514a09 100%); */
+   opacity: 0.9;
+}
+
+.EventD, .D-Jugend, .D-Junioren {
+   background: #D8AE47;
+/*	background: linear-gradient(to top, #dd1818 0%, #510909 100%); */
+   opacity: 0.9;
+}
+
+.EventE, .E-Jugend, .E-Junioren {
+   background: #B76BA3;
+/*	background: linear-gradient(to top, #18b3dd 0%, #094251 100%); */
+   opacity: 0.9;
+}
+
+.EventF, .F-Jugend, .F-Junioren {
+   background: #F7786B;
+/*	background: linear-gradient(to top, #ea7719 0%, #562c0a 100%); */
+   opacity: 0.9;
+}
+
+.EventG, .Bambini, .G-Junioren {
+   background: #F3386B;
+/*	background: linear-gradient(to top, #dfe833 0%, #525513 100%); */
+   opacity: 0.9;
+}
+
+.Eventbutton {
+	float: left;
+	position: relative;
+	color: white;
+}
+
+

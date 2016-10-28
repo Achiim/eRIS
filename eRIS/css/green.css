@@ -1,0 +1,62 @@
+@CHARSET "ISO-8859-1";
+/**
+    ****************************************
+	* Sportstaetten-Reservierungs-System   *
+	****************************************
+	
+	Autor:	Achim
+	Jahr:	2016
+	
+	Default-Layout
+	
+	Quelle fuer HTML-Farbnamen: http://www.w3schools.com/colors/colors_groups.asp
+	Style-Guide: https://material.google.com/style/color.html#color-color-palette
+
+**/
+/***********************************
+Styles fuer verwendete Farben
+***********************************/
+.Sammeleimer {  
+    background: #f1f8e9;				/* Light Green 50 */
+}
+
+.Stadion, .StadionHaelfte, .StadionHaelfte1 , .StadionHaelfte2, .PlatzTeil, .Platzganztags {
+	background: #dcedc8;				/* Light Green 100 */
+}
+
+.Rasen, .RasenHaelfte, .RasenHaelfte1 , .RasenHaelfte2 {
+	background: #c5e1a5;				/* Light Green 200 */
+}
+
+.Kunst, .KunstHaelfte, .KunstHaelfte1 , .KunstHaelfte2 {
+    background: #aed581;				/* Light Green 300 */
+}
+
+.Zeit1 {
+	background: #9ccc65;				/* Light Green 400 */
+}
+
+.Zeit2 {
+	background: #8bc34a;				/* Light Green 500 */
+}
+
+.Zeit, .ZeitNoBorder, .Uhrzeit, .UhrzeitHalbe {
+	background: #7cb342;				/* Light Green 600 */
+}
+
+.Tag, .Tagesdatum {
+	background: #689f38;				/* Light Green 700 */
+}
+
+body {
+/*
+	background: #558b2f; 				/* Light Green 800 */
+}
+
+.Belegungsplan, .Muelleimer {
+	background: #33691e;				/* Light Green 900 */
+}
+
+#DatumButtonLinks, #DatumButtonRechts, #OrtButtonLinks, #OrtButtonRechts, #PlatzButtonLinks, #PlatzButtonRechts {
+	background: #c5e1a5;				/* Light Green 200 */
+}

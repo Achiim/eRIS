@@ -1,0 +1,145 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>eRIS Layout-Tests</title>
+ 
+  <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.0.1.css">
+  <script src="https://code.jquery.com/qunit/qunit-2.0.1.js"></script>
+  <script src="js/Layout.js"></script>
+ 
+ <!-- 
+	pixelToMinutes - Test
+	---------------------
+	const MarkerHeightjePlatzteil = 11 Pixel
+	const AnzahlPlatzteileJeStunde = 4 ~ 1 Platzteil = 1/4 Stunde 
+	
+	Beispile: 11 Pixel je 1/4-Stunde
+	 0 Pixel = 15 Minuten
+	33 Pixel = 60 Minuten
+	.... 
+  -->
+  <script>
+  QUnit.test("pixelToMinutes 56 Tests a 11 Pixel hoch (minimal 0 Pixel; maximal 605 Pixel)", function( assert ) {
+		minuten = StundeInMinuten / AnzahlPlatzteileJeStunde;
+		for (var tt = 0; tt< 56; tt++ ) {
+		    assert.equal(pixelToMinutes(tt*MarkerHeightjePlatzteil), tt*minuten+minuten);
+		}
+	  });
+  </script>
+  
+ <!-- 
+	minutesToPixel - Test
+	---------------------
+	Beispile: je 15 Minuten ensprechen 11 Pixel
+	 15 Minuten = 0 Pixel
+	 60 Minuten = 33 Pixel
+	.... 
+  -->
+  <script>
+  QUnit.test("minutesToPixel 56 Test a 15 Minuten (minimal 30 Minuten; maximal 840 Minuten (14h))", function( assert ) {
+
+		minuten = StundeInMinuten / AnzahlPlatzteileJeStunde;
+		for (var tt = 0; tt< 56; tt++ ) {
+			assert.equal(minutesToPixel(tt*minuten+minuten), MarkerHeightjePlatzteil*tt);
+		}
+	  });
+  </script>
+
+ <!-- 
+	minutesToPixel und pixelToMinutes - Kombinationstest
+	----------------------------------------------------
+	Beispile: je 15 Minuten in Pixel wandeln und wieder zurück
+	.... 
+  -->
+  <script>
+  
+  QUnit.test("minutesToPixel und pixelToMinutes - Kombinationstest", function( assert ) {
+
+		minuten = StundeInMinuten / AnzahlPlatzteileJeStunde;
+		for (var tt = 0; tt< 56; tt++ ) {
+			pp = minutesToPixel(tt*minuten+minuten);
+			mm = pixelToMinutes(pp)
+			assert.equal(tt*minuten+minuten, mm);
+		}
+	  });
+  </script>
+
+
+
+<!-- 
+	realZiel - Test
+	---------------
+	Beispiel: 4 Platzteile + 4 Raster je Stunde = 16 Platzteile je Stunde reservierbar (0..15)
+	
+	0	1	2	3			hh bis Reihe 1 = nicht zulässig, da Mindesthöhe unterschritten
+	4	5	6	7			hh bis Reihe 2 = 21px
+	8	9	10	11			hh bis Reihe 3 = 32px
+	12	13	14	15			hh bis Reihe 4 = 43px
+
+	ww bis Spalte 1 = 89px
+	ww bis Spalte 2 = 179px
+	ww bis Spalte 3 = 269px
+	ww bis Spalte 4 = 359px
+	
+-->
+  <script>
+  QUnit.test("realZiel bei Ablage eines Markers 1/2h und 1 Platzviertel", function( assert ) {
+
+
+		assert.equal(realZiel(00,21,89), -1);			// Reihe 1
+		assert.equal(realZiel(01,21,89), -1);			// 
+		assert.equal(realZiel(02,21,89), -1);			// 
+		assert.equal(realZiel(03,21,89), -1);			// 
+		
+		assert.equal(realZiel(04,21,89), 0);			// Reihe 2
+		assert.equal(realZiel(05,21,89), 1);			// 
+		assert.equal(realZiel(06,21,89), 2);			// 
+		assert.equal(realZiel(07,21,89), 3);			// 
+		
+		assert.equal(realZiel(08,21,89), 4);			// Reine 3
+		assert.equal(realZiel(09,21,89), 5);			// 
+		assert.equal(realZiel(10,21,89), 6);			// 
+		assert.equal(realZiel(11,21,89), 7);			// 
+		
+		assert.equal(realZiel(12,21,89), 8);			// Reihe 4
+		assert.equal(realZiel(13,21,89), 9);			// 
+		assert.equal(realZiel(14,21,89), 10);			// 
+		assert.equal(realZiel(15,21,89), 11);			// 
+	  });
+	</script>
+
+		
+	<script>
+	QUnit.test("realZiel bei Ablage eines Markers 1h und 1 Platzviertel", function( assert ) {
+
+		assert.equal(realZiel(00,43,89), -1);			// Reihe 1
+		assert.equal(realZiel(01,43,89), -1);			// 
+		assert.equal(realZiel(02,43,89), -1);			// 
+		assert.equal(realZiel(03,43,89), -1);			// 
+		
+		assert.equal(realZiel(04,43,89), -1);			// Reihe 2
+		assert.equal(realZiel(05,43,89), -1);			// 
+		assert.equal(realZiel(06,43,89), -1);			// 
+		assert.equal(realZiel(07,43,89), -1);			// 
+		
+		assert.equal(realZiel(08,43,89), 0);			// Reine 3
+		assert.equal(realZiel(09,43,89), 1);			// 
+		assert.equal(realZiel(10,43,89), 2);			// 
+		assert.equal(realZiel(11,43,89), 3);			// 
+		
+		assert.equal(realZiel(12,43,89), 4);			// Reihe 4
+		assert.equal(realZiel(13,43,89), 5);			// 
+		assert.equal(realZiel(14,43,89), 6);			// 
+		assert.equal(realZiel(15,43,89), 7);			// 
+		
+	  });
+	</script>
+	
+</head>
+<body>
+ 
+<div id="qunit"></div>
+ 
+</body>
+</html>

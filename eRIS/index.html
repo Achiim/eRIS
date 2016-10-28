@@ -1,0 +1,99 @@
+<!DOCTYPE html >
+<html>
+	<head>
+		<title>eRIS - 2016</title>
+
+		<meta charset="UTF-8" />
+<!--
+	****************************************
+	* eRIS                                 *
+	* Sportstaetten-Reservierungs-System   *
+	****************************************
+	Autor: 		Achim, Tim
+	Jahr:		2016
+	Version:	V0.001
+	
+	Allgemein koennen mit diesem System beliebige Sportstaetten
+	fuer die Nutzung reserviert werden.
+	
+	Eine "oeffentliche Bereitstellung" bietet die Moeglichkeit fuer:
+	
+	Nutzergruppe "Teilnehmer/Sportler"
+	- die Anzeige bereits reservierter Zeitraeume auf bestimmten Sportstaetten
+	- Identifikation von freien, nicht reservierten Zeitraeume auf bestimmten Sportstaetten
+	
+	Nutzergruppe "Sportstaetten-Verwalter"
+	- Reservierung von Sportstaetten zu bestimmten Zeitraeumen
+	- Ãnderung bestehender Reservierungen
+	
+	Oeffentliche Bereitstellung bedeutet in diesem Zusammenhang:
+	- ueber das Internet zugaengliche Webseite
+	- Anzeige des Belegungsplans auf dieser Webseite
+	- Passwortgeschuetzer Zugang fuer den Sportstaetten-Verwalter
+	
+-->
+
+		
+		<link rel="stylesheet" type="text/css" href="css/default.css"/>
+		<link rel="stylesheet" type="text/css" href="css/green.css" title="green"/>
+		<link rel="alternate stylesheet" type="text/css" href="css/gray.css" title="gray"/>
+		<link rel="alternate stylesheet" type="text/css" href="css/red.css" title="red"/>
+		<link rel="alternate stylesheet" type="text/css" href="css/blue.css" title="blue"/>
+
+		<link href="css/jQueryUI/jquery-ui.css" rel="stylesheet">
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+		<script src="js/Zeit.js"></script>
+		<script src="js/Layout.js"></script>
+		<script src="js/cors.js"></script>
+		
+		<script>
+			$(document).ready(							// sobald die Seite geladen ist (jQuery)
+					function() {
+						doLayout();
+						
+					}
+				);
+		</script>
+
+	</head>
+	
+	<body>
+		<div id="erisViews">
+		  <ul>
+		    <li><a href="#Tagesplan">Tagesplan</a></li>
+		    <li><a href="#Wohenplan">Wochenplan</a></li>
+		    <li><a href="#Monatsplan">Monatsplan</a></li>
+		    <li><a href="#eRIS">eRIS</a></li>
+		  </ul>
+		  <div id="Tagesplan">
+				<div class="Belegungsplan" id="Belegungsplan"></div>
+		  </div>
+		  <div id="Wohenplan">
+				<p class="K1">Wochenplan</p>
+		  </div>
+
+		  <div id="Monatsplan">
+				<p class="K1">Monatsplan</p>
+		  </div>
+		  <div id="eRIS">
+			<p class="K1">eRIS</p>
+			<div style="text-align:center">
+				<img src="images/eRIS-Logo.png" width="300px">
+				<p>elektronisches Reservierungs- und Informations-System für Sportstätten.</p>
+			    <p>(c) 2016 Tim und Achim Schneider. Alle Rechte vorbehalten.</p>
+			    <p>Version: 0.1 vom 22.10.2016</p>
+			</div>
+		  </div>
+		</div>
+		
+		<div class="Buttonlist" id="Buttonlist">
+		</div>
+
+		<div class="Sammler" id="Container">
+		</div>
+		
+	</body>
+</html>
