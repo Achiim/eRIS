@@ -1,5 +1,5 @@
 
-# eRIS - elektonisches Reservierungs- und Infromationssystem
+# eRIS - elektronisches Reservierungs- und Informationssystem
 
 Sportstätten-Reservierungs-System
 Autor:      Achiim
