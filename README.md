@@ -1,17 +1,11 @@
 
-# eRIS
-# elektonisches Reservierungs- und Infromationssystem
+# eRIS - elektonisches Reservierungs- und Infromationssystem
 
-
-* Sportstätten-Reservierungs-System
-
+Sportstätten-Reservierungs-System
 Autor:      Achiim
 Jahr:       2016
 
-Allgemein können mit diesem System beliebige Sportstätten
-für die Nutzung reserviert werden.
-
-Eine "öffentliche Bereitstellung" bietet die Möglichkeit für:
+Allgemein können mit diesem System beliebige Sportstätten für die Nutzung reserviert werden. Eine "öffentliche Bereitstellung" bietet die Möglichkeit für:
 
 Nutzergruppe "Teilnehmer/Sportler/Eltern"
 - die Anzeige bereits reservierter Zeiträume auf bestimmten Sportstätten
