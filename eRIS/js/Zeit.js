@@ -63,5 +63,3 @@ function erisTimestamp() {
 	var timestamp =  tag + '.' + monat + '.' + jahr + ' ' + stunde + ':' + minute + ':' + sekunde + '.' + millisekunde; // Formatiere Rückgabe
 	return timestamp;
 }
-
-
