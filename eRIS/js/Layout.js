@@ -63,8 +63,21 @@
 //*********************************************************************************
 /**
  * @global
- * 
- */
+ */ 
+
+ /*global $*/
+ /*global erisHeute*/
+ /*global erisTrace*/
+ /*global readAllEvents*/
+ /*global readAllFields*/
+ /*global readAllTeams*/
+ /*global readAllGroups*/
+ /*global postEvent*/
+ /*global postEventUpdate*/
+ /*global erisBerechneDatum*/
+ 
+ 
+ 
 var erisTraceLevel = true; // true = Trace-Meldungen ausgeben
 
 //	globale Variablen
@@ -103,13 +116,11 @@ const AnzahlPlatzteileJeStunde = 4; // kleinstes Reservierungsraster 1/4-tel Stu
 
 // Markerkostanten
 const MarkerPadding = 5 + 5;
-const innerMarkerWidth = PlatzTeilWidth - MarkerPadding; // abzgl. padding links und rechts und margin oben
 const innerMarkerHeight = 5; // abzgl. padding oben und unten und margin rechts
 const MarkerMaxWidth = PlatzWidth - MarkerPadding - PlatzTeilMargin;
 var MarkerMinWidth = PlatzTeilWidth - MarkerPadding;
 const MarkerMinHeight = innerMarkerHeight * 2 + PlatzTeilMargin;
 const MarkerHeightjePlatzteil = MarkerMinHeight;
-const MarkerWidthjePlatzteil = MarkerMinWidth;
 var MarkerWidth = (PlatzTeilWidth + PlatzTeilMargin) * AnzahlPlatzTeile - PlatzTeilMargin - MarkerPadding;
 	
 // Zeitleistenkonstanten
@@ -416,8 +427,6 @@ function doZeitleiste() {
 	// --------------------------------------------------
 	$('#Zeitleiste').animate({scrollTop: 176}, 2000);
 	
-	var sh = $('#Zeitleiste').prop('scrollHeight');
-	
     erisTrace('doZeitleiste - Ende');
 }
 
@@ -432,7 +441,7 @@ function doPlatzview() {
 
     erisTrace('doPlatzview - Beginn');
 
-    for ( pp=0; pp<3; pp++ ) {
+    for ( var pp=0; pp<3; pp++ ) {
 		
 		   // Beschriftung des Platzes
 		// ------------------------
@@ -511,7 +520,6 @@ function doPlatzteilview(PlatzNummer) {
 
     // Breite des Platz-Containers festlegen
     // --------------------------------------
-//    $('#Platz').width((PlatzTeilWidth + PlatzTeilMargin) * fieldPortions[currentField]); // Breite der Platz anpassen
     $('#Platz'+PlatzNummer).width(PlatzWidth); // Breite der Platz anpassen
 
     // erzeuge das Belegungsraster im Platz
@@ -571,8 +579,6 @@ function realZiel(Ziel, h, w) {
         return -1;
     }
 
-	erisTrace('realZiel - Ende');
-
 }
 //*********************************************************************************
 
@@ -594,9 +600,6 @@ function makePlatzDroppable() {
 
             var erisEvent = new Object();
             readFromMarkerData(MarkerID, erisEvent); // übertrage .data -> Objekt
-
-            var Dauer = erisEvent.Dauer; // ersetzt hh
-            var PlatzTeile = erisEvent.Platzteile; // ersetzt ww
 
             var ww = $(ui.draggable).css('width'); // Maße des gedroppten Marker
             var hh = $(ui.draggable).css('height');
@@ -630,7 +633,8 @@ function makePlatzDroppable() {
 
 	erisTrace('makePlatzDroppable - Ende');
 
-};
+}
+
 //*********************************************************************************
 
 /**
@@ -645,7 +649,6 @@ function newEvent(erisEvent) {
 	var marker = erisEvent.TeamID;
     var dauer = erisEvent.Dauer;
     var beginn = erisEvent.dateStart;
-    var id = erisEvent.ID;
 
     var hoehe = minutesToPixel(dauer);
     var breite = MarkerWidth; 
@@ -670,7 +673,7 @@ function newEvent(erisEvent) {
          .resizable({
             resize: function(event, ui) {
             	var breite = (PlatzWidth / AnzahlPlatzTeile) - MarkerPadding;
-                anz = Math.round(ui.size.width / breite);
+                var anz = Math.round(ui.size.width / breite);
                 breite = anz * PlatzTeilWidth-MarkerPadding;
                 breite += anz * PlatzTeilMargin;
                 
@@ -688,7 +691,7 @@ function newEvent(erisEvent) {
                 
                 var MarkerID = $(ui.element).attr('id');
 
-                eEvent = new Object();
+                var eEvent = new Object();
                 readFromMarkerData(MarkerID, eEvent);
                 
                 // belegte Platzteile ermitteln
@@ -738,7 +741,7 @@ function newEvent(erisEvent) {
                             $(this).dialog("close");
                         }
                     }
-                }) //end confirm dialog
+                }); //end confirm dialog
         }
 
     });
@@ -784,7 +787,6 @@ function startedDrag(event, ui) {
 	
     erisTrace('startedDrag - Beginn');
     
-	var parentID = ui.helper.context.parentElement.id; 
 	if (event.shiftKey )
 	    $('#Zeitleiste').css({
 	        overflow: 'visible'
@@ -800,7 +802,6 @@ function startedDrag(event, ui) {
 function stoppedDrag(event, ui) {
 
     erisTrace('stoppedDrag - Beginn');
-	var parentID = ui.helper.context.parentElement.id; 
 
 	$('#Zeitleiste').css({
 	   overflow: 'auto'
@@ -894,7 +895,7 @@ function createEventAttributes(mID, eEvent) {
     
 	var real = $('#' + mID).parent().attr('id');
 	var suffix = real.replace(/[0-9]/g,''); // Ziffern entfernen
-	var real = parseInt(real);
+	real = parseInt(real);
 
 	// ID
     eEvent.ID = $('#' + mID).data('erisID');
@@ -911,7 +912,7 @@ function createEventAttributes(mID, eEvent) {
     
     // start
     var Stunde = real / AnzahlPlatzTeile / AnzahlPlatzteileJeStunde + BeginnZeitLeiste; // volle Stunde aus Zeile berechnet 
-    StundeString = Math.floor(Stunde); // volle Stunde aus Zeile berechnet 
+    var StundeString = Math.floor(Stunde); // volle Stunde aus Zeile berechnet 
 
     var xxx = (StundeString - BeginnZeitLeiste) * AnzahlPlatzTeile * AnzahlPlatzteileJeStunde;
     xxx = real - xxx; // 0 - 15tes Platzteilraster innerhalb einer Stunde
@@ -983,31 +984,31 @@ function doEventbutton() {
 function altersKlasse(TeamID) {
     erisTrace('altersKlasse - Beginn/Ende');
 
-    AH = ['AH', 'H1', 'H2'];
+    var AH = ['AH', 'H1', 'H2'];
     if ($.inArray(TeamID, AH) > -1) return 'alteHerren';
 
-    Ak = ['Ak', '1.', '2.'];
+    var Ak = ['Ak', '1.', '2.'];
     if ($.inArray(TeamID, Ak) > -1) return 'Aktive';
 
-    A = ['A', 'A1', 'A2', 'AM'];
+    var A = ['A', 'A1', 'A2', 'AM'];
     if ($.inArray(TeamID, A) > -1) return 'A-Junioren';
 
-    B = ['B', 'B1', 'B2', 'BM'];
+    var B = ['B', 'B1', 'B2', 'BM'];
     if ($.inArray(TeamID, B) > -1) return 'B-Junioren';
 
-    C = ['C', 'C1', 'C2', 'CM'];
+    var C = ['C', 'C1', 'C2', 'CM'];
     if ($.inArray(TeamID, C) > -1) return 'C-Junioren';
 
-    D = ['D', 'D1', 'D2', 'D3', 'D4', 'D5', 'DM'];
+    var D = ['D', 'D1', 'D2', 'D3', 'D4', 'D5', 'DM'];
     if ($.inArray(TeamID, D) > -1) return 'D-Junioren';
 
-    E = ['E', 'E1', 'E2', 'E3', 'E4', 'E5', 'EM'];
+    var E = ['E', 'E1', 'E2', 'E3', 'E4', 'E5', 'EM'];
     if ($.inArray(TeamID, E) > -1) return 'E-Junioren';
 
-    F = ['F', 'F1', 'F2', 'F3', 'F4', 'F5'];
+    var F = ['F', 'F1', 'F2', 'F3', 'F4', 'F5'];
     if ($.inArray(TeamID, F) > -1) return 'F-Junioren';
 
-    G = ['G', 'G1', 'G2', 'G3', 'G4', 'G5'];
+    var G = ['G', 'G1', 'G2', 'G3', 'G4', 'G5'];
     if ($.inArray(TeamID, G) > -1) return 'G-Junioren';
 
     return '';
@@ -1138,9 +1139,7 @@ function nextField() {
 */
 function setFieldPartTitle(a) {
     erisTrace('setFieldPartTitle - End: Parameter = ' + a);
-	var plz = 0;
-//    $('.Platzteil').remove(); // alte Bezeichung der Platzteile entfernen
-    
+
     var suffix = Platzname[a];
     
     for (var pl = 0; pl < fieldPortions[a]; pl++) {
