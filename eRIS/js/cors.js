@@ -72,11 +72,11 @@ function postEvent(msg, ui) {
 	
 	var eventPost = erisCreateCORSRequest('GET', url);
 	if (!eventPost) {
-	  	erisLog('postEvent: CORS not supported');
+	  	erisError('postEvent: CORS not supported');
 		return;
 	}
 	else {
-		erisLog('postEvent: vor dem Speichern ' + msg);
+		erisLog('postEvent: vor dem Speichern ' + url);
 	}
 	
 	
@@ -85,7 +85,7 @@ function postEvent(msg, ui) {
 			var text = eventPost.responseText;
 	    	var status = eventPost.status;
 		   	if (status < 200 || status >=  300) {
-		   		erisLog('postEvent: HTTP-Fehler beim Schreiben der Events: ' + status + ' ' + text +  ' ' + msg);
+		   		erisError('postEvent: HTTP-Fehler beim Schreiben der Events: ' + status + ' ' + text +  ' ' + msg);
 		   	}
 		   	else {
 		   		erisLog('postEvent: ok' + text);			// debug only
@@ -98,7 +98,7 @@ function postEvent(msg, ui) {
 	}; // Ende von eventPost.onload
 	
 	eventPost.onerror = function() {
-		    erisLog('postEvent: Woops, there was an error making the request.');
+			erisError('postEvent: Woops, there was an error making the request.');
 		  };
 	
 	eventPost.send();
@@ -118,11 +118,11 @@ function postEventUpdate(msg) {
 	
 	var eventPostUpdate = erisCreateCORSRequest('GET', url);
 	if (!eventPostUpdate) {
-	  	erisLog('postEventUpdate: CORS not supported');
+	  	erisError('postEventUpdate: CORS not supported');
 		return;
 	}
 	else {
-		erisLog('postEventUpdate: vor dem Update ' + msg);
+		erisLog('postEventUpdate: vor dem Update ' + url);
 	}
 	
 	// Response handlers.
@@ -130,7 +130,7 @@ function postEventUpdate(msg) {
 			var text = eventPostUpdate.responseText;
 	    	var status = eventPostUpdate.status;
 		   	if (status < 200 || status >=  300) {
-		   		erisLog('postEventUpdate: HTTP-Fehler beim Update des Events: ' + status + ' ' + text +  ' ' + msg);
+		   		erisError('postEventUpdate: HTTP-Fehler beim Update des Events: ' + status + ' ' + text +  ' ' + msg);
 		   	}
 		   	else {
 		   		erisLog('postEventUpdate: ok' + text);				// debug only
@@ -140,7 +140,7 @@ function postEventUpdate(msg) {
 	}; // Ende von eventPostUpdate.onload
 	
 	eventPostUpdate.onerror = function() {
-		    erisLog('postEventUpdate: Woops, there was an error making the request.');
+			erisError('postEventUpdate: Woops, there was an error making the request.');
 		  };
 
 	eventPostUpdate.send();
@@ -180,7 +180,7 @@ function readAllEvents(field, datum) {
 
 	var eventList = erisCreateCORSRequest('GET', url);
 	if (!eventList) {
-	  	erisLog('CORS not supported');
+		erisError('readAllEvents: CORS not supported');
 		return;
 	}
 
@@ -191,7 +191,7 @@ function readAllEvents(field, datum) {
 //		}, 2000);
 		var text = eventList.responseText;
     	var status = eventList.status;
-	   	if (status < 200 || status >=  300) erisLog('readAllEvents: HTTP-Fehler beim lesen der Events: ' + status+ ' ' + text);
+	   	if (status < 200 || status >=  300) erisError('readAllEvents: HTTP-Fehler beim lesen der Events: ' + status+ ' ' + text);
 
 //		erisLog('readAllEvents:' + text);		// debugging only
 
@@ -240,7 +240,7 @@ function readAllEvents(field, datum) {
 	}; // Ende von eventList.onload
 
 	eventList.onerror = function() {
-		    erisLog('Woops, there was an error making the request.');
+			erisError('Woops, there was an error making the request.');
 		  };
 
 	eventList.send();
@@ -257,7 +257,7 @@ function readAllTeams() {
 
     var teamList = erisCreateCORSRequest('GET', url);
     if (!teamList) {
-      erisLog('CORS not supported');
+    	erisError('CORS not supported');
       return;
     }
 
@@ -265,7 +265,7 @@ function readAllTeams() {
     teamList.onload = function() {
     	var text = teamList.responseText;
     	var status = teamList.status;
-    	if (status < 200 || status >=  300) erisLog('readAllTeams: HTTP-Fehler beim lesen der Teams: ' + status);
+    	if (status < 200 || status >=  300) erisError('readAllTeams: HTTP-Fehler beim lesen der Teams: ' + status);
    
 //		erisLog('readAllTeams:' + text);		// debugging only
 
@@ -314,7 +314,7 @@ function readAllTeams() {
 
     
     teamList.onerror = function() {
-    	erisLog('Woops, there was an error making the request.');
+    	erisError('Woops, there was an error making the request.');
 	};
 
 	teamList.send();
@@ -331,7 +331,7 @@ function readAllGroups() {
     var groupList = erisCreateCORSRequest('GET', url);
     //  var teamList = erisCreateCORSRequest('POST', url);
     if (!groupList) {
-      erisLog('CORS not supported');
+    	erisError('CORS not supported');
       return;
     }
 
@@ -339,7 +339,7 @@ function readAllGroups() {
     groupList.onload = function() {
     	var text = groupList.responseText;
     	var status = groupList.status;
-	   	if (status < 200 || status >=  300) erisLog('readAllGroupsHTTP-Fehler beim lesen der Groups: ' + status);
+	   	if (status < 200 || status >=  300) erisError('readAllGroupsHTTP-Fehler beim lesen der Groups: ' + status);
    
 //		erisLog('readAllGroups:' + text);		// debugging only
 
@@ -367,7 +367,7 @@ function readAllGroups() {
 
 
     groupList.onerror = function() {
-    	erisLog('Woops, there was an error making the request.');
+    	erisError('Woops, there was an error making the request.');
 	};
 
 	groupList.send();
@@ -383,7 +383,7 @@ function readAllFields() {
 
     var fieldList = erisCreateCORSRequest('GET', url);
     if (!fieldList) {
-      erisLog('CORS not supported');
+    	erisError('CORS not supported');
       return;
     }
 
@@ -391,7 +391,7 @@ function readAllFields() {
     fieldList.onload = function() {
     	var text = fieldList.responseText;
     	var status = fieldList.status;
-    	if (status < 200 || status >=  300) erisLog('readAllFields: HTTP-Fehler beim lesen der Fields: ' + status);
+    	if (status < 200 || status >=  300) erisError('readAllFields: HTTP-Fehler beim lesen der Fields: ' + status);
    
 //		erisLog('readAllFields:' + text);		// debugging only
     	
@@ -430,7 +430,7 @@ function readAllFields() {
 
     
     fieldList.onerror = function() {
-    	erisLog('Woops, there was an error making the request.');
+    	erisError('Woops, there was an error making the request.');
 	};
 
 	fieldList.send();
@@ -447,10 +447,19 @@ function erisLog(msg) {
 }
 
 /*********************************************************************************
+Funktion:	erisError 
+Zweck:		gibt eine formatierte Fehlermeldung aus
+*/
+function erisError(msg) {
+		
+	console.error(erisTimestamp() + ': eRIS - ' + msg);
+}
+
+/*********************************************************************************
 Funktion:	erisTrace 
 Zweck:		gibt eine formatierte Meldung aus
 */
 function erisTrace(msg) {
 		
-	if (erisTraceLevel) console.log(erisTimestamp() + ': eRIS - Trace: ' + msg);
+	if (erisTraceLevel) console.info(erisTimestamp() + ': eRIS - Trace: ' + msg);
 }
