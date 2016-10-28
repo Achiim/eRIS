@@ -154,7 +154,7 @@ function postEventUpdate(msg) {
 	
 	In:
 			field = Name des Platzes, für das Events gelesen werden sollen
-					'' = hole alle Events
+					null = hole alle Events
 			datum = Tagesdatum das gelesen werden soll
 	
 	url-Format : https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/event/field/Stadion/time/21.10.2016%2008%3A00/21.10.2016%2022%3A00
@@ -162,13 +162,13 @@ function postEventUpdate(msg) {
 function readAllEvents(field, datum) {
 	$('.Platz').addClass('verschwommen');
 
-	if (field == undefined || field == 'undefined') field = fieldTitle[0];
-	if (field == '') {
+	if (field === undefined || field === 'undefined') field = fieldTitle[0];
+	if (field === null) {
 		// Endpoint zur Liste aller Events
 		var url = 'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/event';
 	}
 	else {
-		if (datum == '') {
+		if (datum === null) {
 
 			// Endpoint zur Liste aller Events eines Fields
 			var url = 'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/event/field/' + field;
@@ -198,7 +198,7 @@ function readAllEvents(field, datum) {
 		//		erisLog('readAllEvents:' + text);		// debugging only
 
 		var Termine = JSON.parse(text).items;
-		if (Termine == undefined) return;
+		if (Termine === undefined) return;
 
 
 		/**********************************************
@@ -272,14 +272,14 @@ function readAllTeams() {
 		//		erisLog('readAllTeams:' + text);		// debugging only
 
 		var Teams = JSON.parse(text).items;
-		if (Teams == undefined) return;
+		if (Teams === undefined) return;
 
-		var TeamID = ''; // Team-Kürzel z.B. "A"
-		var Team = ''; // Team-Bezeichung z.B. "A-Jugend"
-		var DefaultColor = ''; // Team-Farbcode z.B. "00AACC"
-		var DefaultDuration = ''; // Default-Dauer einer Reservierung
-		var DefaultSize = ''; // Default-Platzgräße einer Reservierung in Anzahl der Teile z.B. "3/4" für 3 von 4 max. Teilen 
-		var Klasse = ''; // Altersklasse des Teams
+		var TeamID = null; // Team-Kürzel z.B. "A"
+		var Team = null; // Team-Bezeichung z.B. "A-Jugend"
+		var DefaultColor = null; // Team-Farbcode z.B. "00AACC"
+		var DefaultDuration = null; // Default-Dauer einer Reservierung
+		var DefaultSize = null; // Default-Platzgräße einer Reservierung in Anzahl der Teile z.B. "3/4" für 3 von 4 max. Teilen 
+		var Klasse = null; // Altersklasse des Teams
 
 		for (var a = 0; a < Teams.length; a++) {
 			TeamID = Teams[a].teamId;
@@ -307,7 +307,7 @@ function readAllTeams() {
 					Event.TeamID = $(this).html(); // ID aus dem Button
 					Event.Dauer = 60; // DefaultDauer 60 Minuten
 					Event.dateStart = []; // leeres Startdatum
-					Event.ID = ''; // leere DB-ID
+					Event.ID = null; // leere DB-ID
 					newEvent(Event);
 				});
 			}
@@ -346,9 +346,9 @@ function readAllGroups() {
 		//		erisLog('readAllGroups:' + text);		// debugging only
 
 		var Groups = JSON.parse(text).items;
-		if (Groups == undefined) return;
-		var GroupID = ''; // Group-Kürzel z.B. "Aktive"
-		var GroupColor = ''; // Group-Farbcode z.B. "00AACC"
+		if (Groups === undefined) return;
+		var GroupID = null; // Group-Kürzel z.B. "Aktive"
+		var GroupColor = null; // Group-Farbcode z.B. "00AACC"
 
 		for (var a = 0; a < Groups.length; a++) {
 			GroupID = Groups[a].groupId;
@@ -401,7 +401,7 @@ function readAllFields() {
 
 
 			var Fields = JSON.parse(text).items;
-			if (Fields == undefined) return;
+			if (Fields === undefined) return;
 
 			fieldAmount = Fields.length;
 

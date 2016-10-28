@@ -513,7 +513,7 @@ function doPlatzteilview(PlatzNummer) {
     // -----------------------------------------------------------------
     var pk = '';
     pk = $('.Platz' + PlatzNummer).attr('id');
-    if (pk == undefined)
+    if (pk === undefined)
     // Erzeuge Platz
         $('<div/>')
         .addClass('Platz')
@@ -617,7 +617,7 @@ function makePlatzDroppable() {
 
                 $(ui.draggable).appendTo($('#' + Ziel + suffix)); // im Ziel ablegeb
                 var msg = '';
-                if (erisEvent.ID == undefined || erisEvent.ID == '') {
+                if (erisEvent.ID === undefined || erisEvent.ID === '') {
                     msg = makeEventMessage(MarkerID);
                     postEvent(msg, ui.draggable); // in DB speichern
                 }
@@ -709,10 +709,10 @@ function newEvent(erisEvent) {
                 readFromMarkerData(MarkerID, eEvent);
 
                 // belegte Platzteile ermitteln
-                if (anz == 1) eEvent.Platzteil = [1];
-                if (anz == 2) eEvent.Platzteil = [1, 2];
-                if (anz == 3) eEvent.Platzteil = [1, 2, 3];
-                if (anz == 4) eEvent.Platzteil = [1, 2, 3, 4];
+                if (anz === 1) eEvent.Platzteil = [1];
+                if (anz === 2) eEvent.Platzteil = [1, 2];
+                if (anz === 3) eEvent.Platzteil = [1, 2, 3];
+                if (anz === 4) eEvent.Platzteil = [1, 2, 3, 4];
 
                 storeToMarkerData(MarkerID, eEvent);
             }
@@ -933,10 +933,10 @@ function createEventAttributes(mID, eEvent) {
     xxx = real - xxx; // 0 - 15tes Platzteilraster innerhalb einer Stunde
 
     var MinuteString = Math.floor(xxx / AnzahlPlatzTeile);
-    if (MinuteString == 0) MinuteString = '00';
-    if (MinuteString == 1) MinuteString = '15';
-    if (MinuteString == 2) MinuteString = '30';
-    if (MinuteString == 3) MinuteString = '45';
+    if (MinuteString === 0) MinuteString = '00';
+    if (MinuteString === 1) MinuteString = '15';
+    if (MinuteString === 2) MinuteString = '30';
+    if (MinuteString === 3) MinuteString = '45';
 
     var DatumString = $('#DatumMitte').text(); // Datum aus der Anzeige
 
