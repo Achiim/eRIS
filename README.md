@@ -5,6 +5,7 @@
 ###Autor:      Achiim
 ###Jahr:       2016
 
+##Allgemeine Beschreibung
 Allgemein können mit diesem System beliebige Sportstätten für die Nutzung reserviert werden. Eine "öffentliche Bereitstellung" bietet die Möglichkeit für:
 
 ##Nutzergruppe "Teilnehmer/Sportler/Eltern"
