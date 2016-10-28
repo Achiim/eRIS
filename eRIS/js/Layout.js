@@ -87,7 +87,7 @@ var bid = 0; // Nummerierung für Buttons
 
 var fieldAmount = 0; // Anzahl der Felder
 var fieldTitle = []; // Array für Platzbezeichungen
-var fieldPortions = [] // Anzahl der belegbaren Platzteile
+var fieldPortions = []; // Anzahl der belegbaren Platzteile
 var fieldPartTitle = []; // Array für Platzteilbezeichungen jedes Platzes [Platz][Platzteil]
 var currentField = 0; // Pointer auf den aktuellen Platz
 
@@ -594,7 +594,7 @@ function makePlatzDroppable() {
 
             var Ziel = $(this).attr('id'); // ID des PlatzTeil in das gedroppt wird
         	var suffix = Ziel.replace(/[0-9]/g,''); // Ziffern entfernen
-        	Ziel = Ziel = parseInt(Ziel); // Platzsuffix
+        	Ziel = Ziel = parseInt(Ziel, 10); // Platzsuffix
 
             var MarkerID = $(ui.draggable).attr('id'); // ID des Markers der gedropped wird
 
@@ -603,8 +603,8 @@ function makePlatzDroppable() {
 
             var ww = $(ui.draggable).css('width'); // Maße des gedroppten Marker
             var hh = $(ui.draggable).css('height');
-            ww = parseInt(ww);
-            hh = parseInt(hh);
+            ww = parseInt(ww, 10);
+            hh = parseInt(hh, 10);
 
             var real = realZiel(Ziel, hh, ww); // ermittle reales Ziel das unter der linken, oberen Ecke liegt
             if (real >= 0) {
@@ -767,8 +767,8 @@ function newEvent(erisEvent) {
     });
 */
     if (beginn.length > 0) {
-        var hour = parseInt(beginn[1].split(':')[0]);
-        var minute = parseInt(beginn[1].split(':')[1]);
+        var hour = parseInt(beginn[1].split(':')[0], 10);
+        var minute = parseInt(beginn[1].split(':')[1], 10);
         var zielID = (hour - BeginnZeitLeiste) * AnzahlPlatzteileJeStunde * AnzahlPlatzTeile + (minute / (StundeInMinuten / AnzahlPlatzteileJeStunde) * AnzahlPlatzTeile); // je Stunde x Raster; Beginn allerdings bei 8:00 Uhr (8*x Raster versetzt)
         if (zielID >= 0 && zielID < AnzahlPlatzteileJeStunde * AnzahlPlatzTeile * AnzahlStunden) {
             $('#' + markerID)
@@ -895,7 +895,7 @@ function createEventAttributes(mID, eEvent) {
     
 	var real = $('#' + mID).parent().attr('id');
 	var suffix = real.replace(/[0-9]/g,''); // Ziffern entfernen
-	real = parseInt(real);
+	real = parseInt(real, 10);
 
 	// ID
     eEvent.ID = $('#' + mID).data('erisID');
@@ -906,8 +906,8 @@ function createEventAttributes(mID, eEvent) {
     // Dauer
     var ww = $('#' + mID).css('width'); // Maße des gedroppten Marker
     var hh = $('#' + mID).css('height');
-    ww = parseInt(ww);
-    hh = parseInt(hh);
+    ww = parseInt(ww, 10);
+    hh = parseInt(hh, 10);
     eEvent.Dauer = pixelToMinutes(hh); // Minuten aus Pixel berechnet
     
     // start

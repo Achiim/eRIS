@@ -28,9 +28,9 @@ function erisHeute() {
  */
 function erisBerechneDatum(datum,deltaTage) {
 	var dd = datum.split('.');		// tt.mm.jjjj
-	var tt = parseInt(dd[0]);
-	var mm = parseInt(dd[1]);
-	var jj = parseInt(dd[2]);
+	var tt = parseInt(dd[0], 10);
+	var mm = parseInt(dd[1], 10);
+	var jj = parseInt(dd[2], 10);
 	
 	// berechne neuen Tag
 	// ------------------

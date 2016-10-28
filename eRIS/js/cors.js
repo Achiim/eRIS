@@ -229,11 +229,11 @@ function readAllEvents(field, datum) {
 			Event.dateStart = Event.start.split(' ');		// Array [0] = Datum, [1] = Zeit
     	
 			var dateStart = Event.start.split(' ');
-			var day = parseInt(dateStart[0].split('.')[0]);
-			var month = parseInt(dateStart[0].split('.')[1]);
-			var year = parseInt(dateStart[0].split('.')[2]);
-			var hour = parseInt(dateStart[1].split(':')[0]);
-			var minute = parseInt(dateStart[1].split(':')[1]);
+			var day = parseInt(dateStart[0].split('.')[0], 10);
+			var month = parseInt(dateStart[0].split('.')[1], 10);
+			var year = parseInt(dateStart[0].split('.')[2], 10);
+			var hour = parseInt(dateStart[1].split(':')[0], 10);
+			var minute = parseInt(dateStart[1].split(':')[1], 10);
     	
 			newEvent(Event);
 		}
