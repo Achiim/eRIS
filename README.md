@@ -1,6 +1,7 @@
 
 # eRIS - elektronisches Reservierungs- und Informationssystem
-## Impressum
+Impressum
+---------
 ###Sportstätten-Reservierungs-System
 ###Autor:      Achiim
 ###Jahr:       2016
