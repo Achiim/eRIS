@@ -45,3 +45,23 @@ function erisBerechneDatum(datum,deltaTage) {
 	return neuDatum;
 }
 
+//*********************************************************************
+/** 
+ * liefert das aktuelle Datum im Format TT.DD.JJJJ hh:mm:ss.ms
+ * 
+ * @return timestamp
+ */ 
+function erisTimestamp() {
+	var today = new Date();	// aktuelles Datum
+	var tag = today.getDate();	// aktueller Tag
+	var monat = today.getMonth()+1; // aktueller Monat
+	var jahr = today.getFullYear(); // aktuelles Jahr
+	var stunde = today.getHours(); 
+	var minute = today.getMinutes();
+	var sekunde = today.getSeconds();
+	var millisekunde = ('00' + today.getMilliseconds()).slice(-3); // mit fuehrenden Nullen
+	var timestamp =  tag + '.' + monat + '.' + jahr + ' ' + stunde + ':' + minute + ':' + sekunde + '.' + millisekunde; // Formatiere Rückgabe
+	return timestamp;
+}
+
+

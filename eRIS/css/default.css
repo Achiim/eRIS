@@ -210,7 +210,7 @@ Styles fuer den Belegungsplan in allen Views
 }
 
 .foot, .K2, .Sammler {
-	width: 600px;
+	width: 500px;
 }
 
 .Muelleimer, .Sammeleimer {
@@ -220,7 +220,7 @@ Styles fuer den Belegungsplan in allen Views
 #Zeitleiste {
 	float: left;
 	height: 400px;
-	overflow: auto;
+	overflow: scroll;
 }
 
 #ZeitMitte {
@@ -250,17 +250,13 @@ Styles fuer den Belegungsplan in allen Views
 	margin-top: 1px;
 }
 	
-.ZeitFoot, .foot {
-	height: 60px;
-}
-
 #Eimertitel, #Sammlertitel {
     height: 20px;
 }
 
 .Muelleimer, .Sammeleimer {  
     height: 40px;
-	width: 300px;
+	width: 250px;
 }
 
 

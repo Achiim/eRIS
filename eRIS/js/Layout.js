@@ -65,6 +65,8 @@
  * @global
  * 
  */
+var erisTraceLevel = true; // true = Trace-Meldungen ausgeben
+
 //	globale Variablen
 var pid = 0; // Nummerierung für PlatzElemente
 var mid = 0; // Nummerierung für Marker
@@ -123,13 +125,18 @@ const AnzahlStunden = EndeZeitLeiste - BeginnZeitLeiste; // z.B. 14 h
 	@param:			none
  */
 function doLayout() {
-
+	erisTrace('doLayout - Beginn');
     $( "#erisViews" ).tabs(); // Tabs erzeugen
     doTagesview(); // baue 1-Tages-View auf
     doPlatzview(); // baue 1-Platz-View auf
     doEventbutton(); // generiere die Knöpfe
     doFuss(); // zeige den "Default-Fuss" mit dem Sammler und Mülleimer
+ 
     $(document).ready(readAllEvents(fieldTitle[currentField], currentDatum)); // Zeige alle Events des aktuellen Platzes an
+    
+    $('#Container') 	// bewege Container für Sammler und Mülleimer in den View
+    .appendTo('#Belegungsplan');
+    erisTrace('doLayout - Ende');
 }
 //*********************************************************************************
 
@@ -138,11 +145,32 @@ function doLayout() {
 	@param:			none
  */
 function doTagesview() {
+	erisTrace('doTagesview - Beginn');
+
 	doOrtsleiste();
 	doDatumsleiste();
 	doPlatzleiste();
 	doZeitleiste();
 	
+    $('#Belegungsplan') 	// bewege den Belegungsplan in den View
+    .appendTo('#Tagesplan');
+
+    erisTrace('doTagesview - Ende');
+
+}
+//*********************************************************************************
+
+/**
+	Erzeugt alle Bestandteile des Layouts des Wochenbelegungsplans.
+	@param:			none
+ */
+function doWochenplan() {
+	erisTrace('doWochenplan - Beginn');
+
+	$('#Belegungsplan') 	// bewege den Belegungsplan in den View
+    .appendTo('#Wochenplan');
+
+	erisTrace('doWochenplan - Ende');
 
 }
 //*********************************************************************************
@@ -151,6 +179,7 @@ function doTagesview() {
  */
 
 function doOrtsleiste() {
+	erisTrace('doOrtsleiste - Beginn');
     // Ort
     // ---------------------------------------------------
 
@@ -193,6 +222,8 @@ function doOrtsleiste() {
             nextOrt();
         })
         .appendTo('#OrtRechts');
+
+    erisTrace('doOrtsleiste - Ende');
 }
 
 //*********************************************************************************
@@ -201,6 +232,8 @@ function doOrtsleiste() {
  */
 
 function doDatumsleiste() {
+    erisTrace('doDatumsleiste - Beginn');
+ 
     // Datum
     // ---------------------------------------------------
 
@@ -244,6 +277,7 @@ function doDatumsleiste() {
         })
         .appendTo('#DatumRechts');
 
+    erisTrace('doDatumsleiste - Ende');
 
 }
 //*********************************************************************************
@@ -252,6 +286,7 @@ function doDatumsleiste() {
  */
 
 function doPlatzleiste() {
+    erisTrace('doPlatzleiste - Beginn');
     // Platz
     // ---------------------------------------------------
 
@@ -294,6 +329,8 @@ function doPlatzleiste() {
 	        nextField();
 	    })
 	    .appendTo('#PlatzRechts');
+
+    erisTrace('doPlatzleiste - Ende');
 }
 
 //*********************************************************************************
@@ -303,7 +340,9 @@ function doPlatzleiste() {
 
 function doZeitleiste() {
 	
-	// Zeit
+    erisTrace('doZeitleiste - Beginn');
+
+    // Zeit
 	// ---------------------------------------------------
 	
 	$('<div/>') // Erzeuge die Zeitleiste
@@ -377,6 +416,9 @@ function doZeitleiste() {
 	// --------------------------------------------------
 	$('#Zeitleiste').animate({scrollTop: 176}, 2000);
 	
+	var sh = $('#Zeitleiste').prop('scrollHeight');
+	
+    erisTrace('doZeitleiste - Ende');
 }
 
 //*********************************************************************************
@@ -388,7 +430,9 @@ function doZeitleiste() {
  */
 function doPlatzview() {
 
-	for ( pp=0; pp<3; pp++ ) {
+    erisTrace('doPlatzview - Beginn');
+
+    for ( pp=0; pp<3; pp++ ) {
 		
 		   // Beschriftung des Platzes
 		// ------------------------
@@ -427,6 +471,10 @@ function doPlatzview() {
 	for ( pp=0; pp<3; pp++ ) {
 		doPlatzteilview(Platzname[pp]); // Platzteile anzeigen
 	}
+
+    makePlatzDroppable();
+
+	erisTrace('doPlatzview - Ende');
 }
 //*********************************************************************************
 
@@ -436,7 +484,8 @@ function doPlatzview() {
  */
 function doPlatzteilview(PlatzNummer) {
 
-
+	erisTrace('doPlatzteilview - Beginn');
+	
     // Löschen alter Platzview-Komponenten
 	// -----------------------------------
 //    $('.PlatzTeil').remove(); // Lösche alle Platzbestandteile
@@ -477,8 +526,7 @@ function doPlatzteilview(PlatzNummer) {
         }
     }
 
-    makePlatzDroppable();
-
+	erisTrace('doPlatzteilview - Ende');
 }
 
 //*********************************************************************************
@@ -501,6 +549,8 @@ function doPlatzteilview(PlatzNummer) {
 
 function realZiel(Ziel, h, w) {
 
+	erisTrace('realZiel - Beginn: Parameter = ' + Ziel + ',' + h + ',' + w);
+	
     var zielRow = Math.floor(Ziel / AnzahlPlatzTeile);
     var zielCol = Ziel % AnzahlPlatzTeile;
 
@@ -514,29 +564,36 @@ function realZiel(Ziel, h, w) {
     zielCol = zielCol - markerCol;
     if (zielRow >= 0 && zielCol >= 0) {
         var ZielID = zielRow * AnzahlPlatzTeile + zielCol;
+    	erisTrace('realZiel - Ende: return = ' + ZielID);
         return ZielID;
     } else {
+    	erisTrace('realZiel - Ende: return = -1');
         return -1;
     }
 
+	erisTrace('realZiel - Ende');
 
 }
 //*********************************************************************************
 
 /**
-			mache die Platzhälften "droppable", damit Events darin abgelegt werden können
+	mache die Platzhälften "droppable", damit Events darin abgelegt werden können
 */
 function makePlatzDroppable() {
 
+	erisTrace('makePlatzDroppable - Beginn');
+	
     $('.PlatzTeil').droppable({
-        drop: function(event, ui) { // Funktion, die beim droppen aufgerufen wird
+    	drop: function(event, ui) { // Funktion, die beim droppen aufgerufen wird
 
-            var Ziel = parseInt($(this).attr('id')); // ID des PlatzTeil in das gedroppt wird
+            var Ziel = $(this).attr('id'); // ID des PlatzTeil in das gedroppt wird
+        	var suffix = Ziel.replace(/[0-9]/g,''); // Ziffern entfernen
+        	Ziel = Ziel = parseInt(Ziel); // Platzsuffix
 
             var MarkerID = $(ui.draggable).attr('id'); // ID des Markers der gedropped wird
 
             var erisEvent = new Object();
-            readAttributeFromEvent(MarkerID, erisEvent); // übertrage .data -> Objekt
+            readFromMarkerData(MarkerID, erisEvent); // übertrage .data -> Objekt
 
             var Dauer = erisEvent.Dauer; // ersetzt hh
             var PlatzTeile = erisEvent.Platzteile; // ersetzt ww
@@ -549,25 +606,29 @@ function makePlatzDroppable() {
             var real = realZiel(Ziel, hh, ww); // ermittle reales Ziel das unter der linken, oberen Ecke liegt
             if (real >= 0) {
 
-                $(ui.draggable).appendTo($('#' + real + Platzname[currentField])); // im Ziel ablegeb
+                $(ui.draggable).appendTo($('#' + real + suffix)); // im Ziel ablegeb
                 var msg = '';
                 if (erisEvent.ID == undefined || erisEvent.ID == '') {
                     msg = makeEventMessage(MarkerID);
                     postEvent(msg, ui.draggable); // in DB speichern
-                } else {
+               } else {
                     msg = makeEventUpdateMessage(MarkerID);
                     postEventUpdate(msg);
                 }
 
-                createEventObject(MarkerID, erisEvent);      // erzeuge Objekt + .data aus Position und Größe des Marker
+                createEventAttributes(MarkerID, erisEvent);      // erzeuge Objekt + .data aus Position und Größe des Marker
             }
 
             $(ui.draggable).css({
                 'top': 0,
                 'left': 0
             }); // Position im Ziel oben links
-        }
+            
+        } 
+
     });
+
+	erisTrace('makePlatzDroppable - Ende');
 
 };
 //*********************************************************************************
@@ -578,7 +639,10 @@ function makePlatzDroppable() {
 		@param: erisEvent
  */
 function newEvent(erisEvent) {
-    var marker = erisEvent.TeamID;
+
+	erisTrace('newEvent - Beginn: Parameter (erisID) = ' + erisEvent.ID);
+
+	var marker = erisEvent.TeamID;
     var dauer = erisEvent.Dauer;
     var beginn = erisEvent.dateStart;
     var id = erisEvent.ID;
@@ -593,14 +657,17 @@ function newEvent(erisEvent) {
         .height(hoehe)
         .width(breite)
 	    .appendTo('#Sammler')
-	    .draggable()
+	    .draggable({ scroll: true })
         .draggable("option", "revert", "invalid")
         .draggable("option", "cursorAt", {
             left: 0,
             top: 0
         })
+        .draggable({
+        	start: function(event, ui) { startedDrag(event, ui) },
+            stop: function(event, ui) { stoppedDrag(event, ui)} })
 
-        .resizable({
+         .resizable({
             resize: function(event, ui) {
             	var breite = (PlatzWidth / AnzahlPlatzTeile) - MarkerPadding;
                 anz = Math.round(ui.size.width / breite);
@@ -622,7 +689,7 @@ function newEvent(erisEvent) {
                 var MarkerID = $(ui.element).attr('id');
 
                 eEvent = new Object();
-                readAttributeFromEvent(MarkerID, eEvent);
+                readFromMarkerData(MarkerID, eEvent);
                 
                 // belegte Platzteile ermitteln
                 if (anz == 1) eEvent.Platzteil = [1];
@@ -630,7 +697,7 @@ function newEvent(erisEvent) {
                 if (anz == 3) eEvent.Platzteil = [1,2,3];
                 if (anz == 4) eEvent.Platzteil = [1,2,3,4];
                 
-                storeEventToObjectData(MarkerID, eEvent);
+                storeToMarkerData(MarkerID, eEvent);
             }
         })
         .resizable({
@@ -639,8 +706,8 @@ function newEvent(erisEvent) {
 
                 var msg = '';
                 var erisEvent = new Object();
-                createEventObject(MarkerID, erisEvent);
-                readAttributeFromEvent(MarkerID, erisEvent); // übertrage .data -> Objekt
+                createEventAttributes(MarkerID, erisEvent);
+                readFromMarkerData(MarkerID, erisEvent); // übertrage .data -> Objekt
                 msg = makeEventUpdateMessage(MarkerID);
                 postEventUpdate(msg);
             }
@@ -661,8 +728,8 @@ function newEvent(erisEvent) {
                     open: function(event, ui) {
                         var MarkerID = mmID;
                         var erisEvent = new Object();
-                        createEventObject(MarkerID, erisEvent);
-                        readAttributeFromEvent(MarkerID, erisEvent); // übertrage .data -> Objekt
+                        createEventAttributes(MarkerID, erisEvent);
+                        readFromMarkerData(MarkerID, erisEvent); // übertrage .data -> Objekt
                         var markup = erisToolTip(markerID, erisEvent);
                         $(this).html(markup);
                     },
@@ -686,7 +753,7 @@ function newEvent(erisEvent) {
                 open: function(event, ui) {
                     var MarkerID = mmID;
                     var erisEvent = new Object();
-                    readAttributeFromEvent(MarkerID, erisEvent); // übertrage .data -> Objekt
+                    readFromMarkerData(MarkerID, erisEvent); // übertrage .data -> Objekt
                     var markup = erisToolTip(markerID, erisEvent);
                     $(this).html(markup);
                 }
@@ -707,13 +774,45 @@ function newEvent(erisEvent) {
             alert('Event außerhalb des darstellbaren Bereiches ' + marker + ' ' + beginn);
         }
     }
-    storeEventToObjectData(markerID, erisEvent);
+    storeToMarkerData(markerID, erisEvent);
+
+    erisTrace('newEvent - Ende');
 }
+
+//*********************************************************************************
+function startedDrag(event, ui) {
+	
+    erisTrace('startedDrag - Beginn');
+    
+	var parentID = ui.helper.context.parentElement.id; 
+	if (event.shiftKey )
+	    $('#Zeitleiste').css({
+	        overflow: 'visible'
+	    });
+	else
+	    $('#Zeitleiste').css({
+	        overflow: 'auto'
+	    });
+	
+    erisTrace('startedDrag - Ende');
+}
+//*********************************************************************************
+function stoppedDrag(event, ui) {
+
+    erisTrace('stoppedDrag - Beginn');
+	var parentID = ui.helper.context.parentElement.id; 
+
+	$('#Zeitleiste').css({
+	   overflow: 'auto'
+	});
+    erisTrace('stoppedDrag - Ende');
+}
+//*********************************************************************************
 
 //*********************************************************************************
 
 /**
-	storeEventToObjectData: 
+	storeToMarkerData: 
 	Überträgt die Eigenschaften eines Event in .data des jQuery-Elements
 	
 	@param	erisID 			= 	Event.ID 			= interner Schlüssel
@@ -728,8 +827,20 @@ function newEvent(erisEvent) {
 	@param	erisDateStart	=	Event.dateStart		= Array [0] = Datum, [1] = Zeit
 
  */
-function storeEventToObjectData(mID, eEvent) {
+function storeToMarkerData(mID, eEvent) {
 
+    erisTrace('storeToMarkerData - Beginn');
+    
+    if (eEvent.ID.length === 0 ) {
+    	eEvent.ID = undefined;
+    	eEvent.start = undefined;
+    	eEvent.spiel = undefined;
+    	eEvent.serie = undefined;
+    	eEvent.Platz = undefined;
+    	eEvent.Platzteil = undefined;
+    	eEvent.dateStart = undefined;
+    }
+    	
     $('#' + mID)
         .data('erisID', eEvent.ID)
         .data('erisStart', eEvent.start)
@@ -742,6 +853,8 @@ function storeEventToObjectData(mID, eEvent) {
         .data('erisPlatzteil', eEvent.Platzteil)
         //	.data('erisGroup', eEvent.Team)
         .data('erisDateStart', eEvent.dateStart);
+   	
+    erisTrace('storeToMarkerData - Ende');
 }
 //*********************************************************************************
 
@@ -749,7 +862,9 @@ function storeEventToObjectData(mID, eEvent) {
 
 		Überträgt die .data-Eigenschaften des jQuery-Elements in Variablen.
 */
-function readAttributeFromEvent(mID, eEvent) {
+function readFromMarkerData(mID, eEvent) {
+
+    erisTrace('readFromMarkerData - Beginn');
 
     eEvent.ID = $('#' + mID).data('erisID');
     eEvent.start = $('#' + mID).data('erisStart');
@@ -762,6 +877,8 @@ function readAttributeFromEvent(mID, eEvent) {
     eEvent.Platzteil = $('#' + mID).data('erisPlatzteil');
     //	eEvent.Team = $('#'+mID).data('erisGroup');
     eEvent.dateStart = $('#' + mID).data('erisDateStart');
+
+    erisTrace('readFromMarkerData - Ende');
 }
 //*********************************************************************************
 
@@ -771,16 +888,28 @@ function readAttributeFromEvent(mID, eEvent) {
 	@param mID 		= css-id des Marker
 	@param eEvent 	= erzeutes Objekt mit Eigenschaften des Marker 
  */
-function createEventObject(mID, eEvent) {
-    var real = parseInt($('#' + mID).parent().attr('id'));
+function createEventAttributes(mID, eEvent) {
+
+    erisTrace('createEventAttributes - Beginn');
+    
+	var real = $('#' + mID).parent().attr('id');
+	var suffix = real.replace(/[0-9]/g,''); // Ziffern entfernen
+	var real = parseInt(real);
+
+	// ID
     eEvent.ID = $('#' + mID).data('erisID');
+    
+    // TeamId
     eEvent.TeamId = $('#' + mID).text();
+    
+    // Dauer
     var ww = $('#' + mID).css('width'); // Maße des gedroppten Marker
     var hh = $('#' + mID).css('height');
     ww = parseInt(ww);
     hh = parseInt(hh);
     eEvent.Dauer = pixelToMinutes(hh); // Minuten aus Pixel berechnet
-
+    
+    // start
     var Stunde = real / AnzahlPlatzTeile / AnzahlPlatzteileJeStunde + BeginnZeitLeiste; // volle Stunde aus Zeile berechnet 
     StundeString = Math.floor(Stunde); // volle Stunde aus Zeile berechnet 
 
@@ -797,27 +926,34 @@ function createEventObject(mID, eEvent) {
     
     eEvent.start = DatumString + " " + StundeString + ":" + MinuteString;
     
+    // startDate
     var dd = [];
     dd[0] = DatumString;
     dd[1] = StundeString + ":" + MinuteString;
     eEvent.startDate = dd;
     
-    eEvent.description = "Training";
-    eEvent.field = $('#Platzname').text();
+    // Platz
+    eEvent.Platz = $('#Platzname' + suffix).text();
 
+
+    
+    // description
+    eEvent.description = "Training";
+    
     $('#' + mID)
     .data('erisID', eEvent.ID)
     .data('erisStart', eEvent.start)
     .data('erisDauer', eEvent.Dauer)
-//    .data('erisBeschreibung', eEvent.Beschreibung)
-//    .data('erisTeamID', eEvent.TeamID)
-//    .data('erisSpiel', eEvent.Spiel)
-//    .data('erisSerie', eEvent.Serie)
-//    .data('erisPlatz', eEvent.Platz)
- //   .data('erisPlatzteil', eEvent.Platzteil)
+    .data('erisBeschreibung', eEvent.Beschreibung)
+    .data('erisTeamID', eEvent.TeamID)
+    .data('erisSpiel', eEvent.Spiel)
+    .data('erisSerie', eEvent.Serie)
+    .data('erisPlatz', eEvent.Platz)
+    .data('erisPlatzteil', eEvent.Platzteil)
     //	.data('erisGroup', eEvent.Team)
     .data('erisDateStart', eEvent.dateStart);
 
+    erisTrace('createEventAttributes - Ende');
 }
 //*********************************************************************************
 
@@ -829,9 +965,13 @@ function createEventObject(mID, eEvent) {
  */
 function doEventbutton() {
 
+    erisTrace('doEventbutton - Beginn');
+
     doClearEventbuttons();
     $(document).ready(readAllGroups());
     $(document).ready(readAllTeams());
+    
+    erisTrace('doEventbutton - Ende');
 }
 //*********************************************************************************
 /**
@@ -841,6 +981,8 @@ function doEventbutton() {
  * @returns Bezeichnung der Alterklasse
  */
 function altersKlasse(TeamID) {
+    erisTrace('altersKlasse - Beginn/Ende');
+
     AH = ['AH', 'H1', 'H2'];
     if ($.inArray(TeamID, AH) > -1) return 'alteHerren';
 
@@ -877,6 +1019,8 @@ function altersKlasse(TeamID) {
 	Erzeugt eine Fußzeile im Belegungsplan.
 */
 function doFuss() {
+	
+    erisTrace('doFuss - Beginn');
 
     $('<div/>')
         .addClass('foot')
@@ -912,6 +1056,8 @@ function doFuss() {
                 }); // Position im Ziel oben links
         }
     });
+
+    erisTrace('doFuss - Ende');
 }
 //*********************************************************************************
 
@@ -919,12 +1065,15 @@ function doFuss() {
 		Blättern der Anzeige für Datum
 */
 function prevDatum() {
-	var aktDat = $('#DatumMitte').text();
+    erisTrace('prevDatum - Beginn');
+
+    var aktDat = $('#DatumMitte').text();
 	currentDatum = erisBerechneDatum(aktDat, -1);
 	$('#DatumMitte').text(currentDatum);
-    doClearEvents(); // alle Events von der Anzeige entfernen
+    doClearMarker(); // alle Events von der Anzeige entfernen
     $(document).ready(readAllEvents(fieldTitle[currentField], currentDatum)); // alle Events des neuen Datums anzeigen
-	return;
+
+    erisTrace('prevDatum - Ende');
 }
 //*********************************************************************************
 
@@ -932,12 +1081,15 @@ function prevDatum() {
 		Blättern der Anzeige für Datum
 */
 function nextDatum() {
-	var aktDat = $('#DatumMitte').text();
+    erisTrace('nextDatum - Beginn');
+
+    var aktDat = $('#DatumMitte').text();
 	currentDatum = erisBerechneDatum(aktDat, +1);
 	$('#DatumMitte').text(currentDatum);
-    doClearEvents(); // alle Events von der Anzeige entfernen
+    doClearMarker(); // alle Events von der Anzeige entfernen
     $(document).ready(readAllEvents(fieldTitle[currentField], currentDatum)); // alle Events des neuen Datums anzeigen
-	return;
+
+    erisTrace('nextDatum - End');
 }
 	//*********************************************************************************
 
@@ -953,7 +1105,7 @@ function nextDatum() {
         doPlatzteilview(Platzname[currentField]); // Platzeile neu aufbauen
     }
 
-    doClearEvents(); // alle Events von der Anzeige entfernen
+    doClearMarker(); // alle Events von der Anzeige entfernen
     $('#Platzname').text(fieldTitle[currentField]); // neuen Platznamen in den Titel
     setFieldPartTitle(currentField); // neue Bezeichnung der Platzteile
     $(document).ready(readAllEvents(fieldTitle[currentField], currentDatum)); // alle Events des neuen Platzes anzeigen
@@ -973,7 +1125,7 @@ function nextField() {
         doPlatzteilview(Platzname[currentField]); // Platzeile neu aufbauen
     }
 
-    doClearEvents(); // alle Events von der Anzeige entfernen
+    doClearMarker(); // alle Events von der Anzeige entfernen
     $('#Platzname').text(fieldTitle[currentField]); // neuen Platznamen in den Titel
     setFieldPartTitle(currentField); // neue Bezeichnung der Platzteile
     $(document).ready(readAllEvents(fieldTitle[currentField], currentDatum)); // alle Events des neuen Platzes anzeigen
@@ -985,6 +1137,7 @@ function nextField() {
 		setzt die Platzteile-Bezeichung für einen Platz
 */
 function setFieldPartTitle(a) {
+    erisTrace('setFieldPartTitle - End: Parameter = ' + a);
 	var plz = 0;
 //    $('.Platzteil').remove(); // alte Bezeichung der Platzteile entfernen
     
@@ -998,6 +1151,8 @@ function setFieldPartTitle(a) {
             .css('width', PlatzTeilWidth)
             .appendTo('#Platzteile' + suffix);
     }
+
+    erisTrace('setFieldPartTitle - Ende');
 }
 //*********************************************************************************
 
@@ -1006,15 +1161,22 @@ function setFieldPartTitle(a) {
 */
 
 function makeEventMessage(id) {
+    erisTrace('makeEventMessage - Beginn: Parameter = ' + id);
+
     var erisEvent = new Object();
-    createEventObject(id, erisEvent);
-    var ff = erisEvent.field;
+    createEventAttributes(id, erisEvent);
+    var ff = erisEvent.Platz;
     ff = ff.replace(/\s/g, '%20'); // maskiere Blank durch %20
 
     var dd = erisEvent.start;
     dd = dd.replace(/\./g, '%2E'); // maskiere . durch %2E
+    dd = dd.replace(/\s/g, '%20'); // maskiere Blank durch %20
+    dd = dd.replace(/\:/g, '%3A'); // maskiere : durch %3A
 
     var msg = erisEvent.description + '/' + dd + '/' + erisEvent.Dauer + '/' + erisEvent.TeamId + '/' + ff + '/' + "1%2B2";
+ 
+    erisTrace('makeEventMessage - Ende');
+
     return msg;
 }
 //*********************************************************************************
@@ -1026,12 +1188,20 @@ function makeEventMessage(id) {
 */
 
 function makeEventUpdateMessage(id) {
+    erisTrace('makeEventUpdateMessage - Beginn: Parameter = ' + id);
     var erisEvent = new Object();
-    createEventObject(id, erisEvent);
-    var ff = erisEvent.field;
+    createEventAttributes(id, erisEvent);
+    var ff = erisEvent.Platz;
     ff = ff.replace(/\s/g, '%20'); // maskiere Blank durch %20
+    
+    var dd = erisEvent.start;
+    dd = dd.replace(/\./g, '%2E'); // maskiere . durch %2E
+    dd = dd.replace(/\s/g, '%20'); // maskiere Blank durch %20
+    dd = dd.replace(/\:/g, '%3A'); // maskiere : durch %3A
 
-    var msg = erisEvent.ID + '/' + erisEvent.start + '/' + erisEvent.Dauer + '/' + ff + '/' + "1%2B2";
+    var msg = erisEvent.ID + '/' + dd + '/' + erisEvent.Dauer + '/' + ff + '/' + "1%2B2";
+
+    erisTrace('makeEventUpdateMessage - Ende');
     return msg;
 }
 //*********************************************************************************
@@ -1039,8 +1209,10 @@ function makeEventUpdateMessage(id) {
 /*********************************************************************************
 		Entfernt alle Eventmarker aus der Ansicht
  */
-function doClearEvents() {
+function doClearMarker() {
+    erisTrace('doClearMarker - Beginn');
     $('.Marker').remove();
+    erisTrace('doClearMarker - Ende');
 }
 //*********************************************************************************
 
@@ -1049,8 +1221,10 @@ function doClearEvents() {
 		Entfernt alle Eventbutton aus der Ansicht
  */
 function doClearEventbuttons() {
+    erisTrace('doClearEventbuttons - Beginn');
     $('.Eventbutton').remove();
     $('.Buttongroup').remove();
+    erisTrace('doClearEventbuttons - Ende');
 }
 //*********************************************************************************
 
@@ -1059,6 +1233,7 @@ function doClearEventbuttons() {
 	rechnet Pixel in Minuten um
  */
 function pixelToMinutes(hh) {
+    erisTrace('pixelToMinutes - Beginn/Ende');
 
     return Math.round((hh + MarkerPadding + PlatzTeilMargin) / StundeInPixel * StundeInMinuten); // Minuten aus Pixel berechnet
 }
@@ -1068,6 +1243,7 @@ function pixelToMinutes(hh) {
 		rechnet Minuten in Pixel um
  */
 function minutesToPixel(hh) {
+    erisTrace('minutesToPixel - Beginn/Ende');
 
     return (Math.round(hh / StundeInMinuten * StundeInPixel)) - MarkerPadding - PlatzTeilMargin; // Pixel aus Minuten berechnet
 }
@@ -1089,6 +1265,7 @@ function minutesToPixel(hh) {
 
  */
 function erisToolTip(markerID, erisEvent) {
+    erisTrace('erisToolTip - Beginn');
     var tt = 'erisID = ' + erisEvent.ID + '<br\>';
     tt += 'erisStart = ' + erisEvent.start + '<br\>';
     tt += 'erisDauer = ' + erisEvent.Dauer + '<br\>';
@@ -1100,5 +1277,6 @@ function erisToolTip(markerID, erisEvent) {
     tt += 'erisPlatzteil = ' + erisEvent.Platzteil + '<br\>';
     tt += 'erisDateStart = ' + erisEvent.dateStart;
 
+    erisTrace('erisToolTip - Ende');
     return tt;
 }

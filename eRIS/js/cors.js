@@ -11,25 +11,29 @@
 **/
 
 	/*********************************************************************************
-	Funktion:	createCORSRequest 
+	Funktion:	erisCreateCORSRequest 
 	Zweck:		Generiert einen Cross-Origin Ressource Sharing Request, damit auf den 
 				Google-Cloud-Server zugegriffen werden kann.
+				
+	Template from:	https://www.html5rocks.com/en/tutorials/cors/
 */
-function createCORSRequest(method, url) {
-  var xhr = new XMLHttpRequest();
-  if ("withCredentials" in xhr) {
-    // XHR for Chrome/Firefox/Opera/Safari.
-	var mode = false; // false = synchroner Aufruf der url | true = asynchroner Aufruf
-    xhr.open(method, url, mode);						
-  } else if (typeof XDomainRequest != "undefined") {
-    // XDomainRequest for IE.
-    xhr = new XDomainRequest();
-    xhr.open(method, url);
-  } else {
-    // CORS not supported.
-    xhr = null;
-  }
-  return xhr;
+function erisCreateCORSRequest(method, url) {
+    erisTrace('erisCreateCORSRequest - Beginn: Parameter = ' + method + ', ' + url);
+    var xhr = new XMLHttpRequest();
+    if ("withCredentials" in xhr) {
+       // XHR for Chrome/Firefox/Opera/Safari.
+	   var mode = false; // false = synchroner Aufruf der url | true = asynchroner Aufruf
+       xhr.open(method, url, mode);						
+    } else if (typeof XDomainRequest != "undefined") {
+       // XDomainRequest for IE.
+       xhr = new XDomainRequest();
+       xhr.open(method, url);
+    } else {
+       // CORS not supported.
+       xhr = null;
+    }
+    erisTrace('erisCreateCORSRequest - Ende');
+    return xhr;
 }
 
 	/*********************************************************************************
@@ -38,40 +42,44 @@ function createCORSRequest(method, url) {
 	 */
 function postEvent(msg, ui) {
 
-//msg = 'Training/12.10.2016%2017%3A00/90/A/Kunstrasen';
+	//msg = 'Training/12.10.2016%2017%3A00/90/A/Kunstrasen';
+		
 	
-
-// Endpoint zur Liste aller Events
-var url = 'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/addEvent/' + msg;
-
-var eventPost = createCORSRequest('GET', url);
-if (!eventPost) {
-  	alert('CORS not supported');
-	return;
-}
-
-// Response handlers.
-eventPost.onload = function() {	
-		var text = eventPost.responseText;
-    	var status = eventPost.status;
-	   	if (status < 200 || status >=  300) {
-	   		alert('postEvent: HTTP-Fehler beim Schreiben der Events: ' + status + ' ' + text +  ' ' + msg);
-	   	}
-	   	else {
-//	   		alert('postEvent: ok' + text);				// debug only
-	   		var erisID = JSON.parse(text);				// return generierte ID aus der DB
-        	$(ui).data( "erisID", erisID.id ); 			// merke dir die eindeutige Nummer des Event (generiert von Tim)
-
-    		return;							
-	   	}
+	// Endpoint zur Liste aller Events
+	var url = 'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/addEvent/' + msg;
 	
-} // Ende von eventPost.onload
-
-eventPost.onerror = function() {
-	    alert('Woops, there was an error making the request.');
-	  };
-
-eventPost.send();
+	var eventPost = erisCreateCORSRequest('GET', url);
+	if (!eventPost) {
+	  	erisLog('postEvent: CORS not supported');
+		return;
+	}
+	else {
+		erisLog('postEvent: vor dem Speichern ' + msg);
+	}
+	
+	
+	// Response handlers.
+	eventPost.onload = function() {	
+			var text = eventPost.responseText;
+	    	var status = eventPost.status;
+		   	if (status < 200 || status >=  300) {
+		   		erisLog('postEvent: HTTP-Fehler beim Schreiben der Events: ' + status + ' ' + text +  ' ' + msg);
+		   	}
+		   	else {
+		   		erisLog('postEvent: ok' + text);			// debug only
+		   		var erisID = JSON.parse(text);				// return generierte ID aus der DB
+//	        	$(ui.draggable).data( "erisID", erisID.id ); 			// merke dir die eindeutige Nummer des Event (generiert von Tim)
+	
+	    		return;							
+		   	}
+		
+	} // Ende von eventPost.onload
+	
+	eventPost.onerror = function() {
+		    erisLog('postEvent: Woops, there was an error making the request.');
+		  };
+	
+	eventPost.send();
 }
 
 	/*********************************************************************************
@@ -83,34 +91,37 @@ function postEventUpdate(msg) {
 	//msg = 'id/12.10.2016%2017%3A00/90/Kunstrasen'
 	
 
-// Endpoint zur Liste aller Events
-var url = 'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/event/update/' + msg;
-
-var eventPostUpdate = createCORSRequest('GET', url);
-if (!eventPostUpdate) {
-  	alert('CORS not supported');
-	return;
-}
-
-// Response handlers.
-eventPostUpdate.onload = function() {	
-		var text = eventPostUpdate.responseText;
-    	var status = eventPostUpdate.status;
-	   	if (status < 200 || status >=  300) {
-	   		alert('postEventUpdate: HTTP-Fehler beim Update des Events: ' + status + ' ' + text +  ' ' + msg);
-	   	}
-	   	else {
-//	   		alert('eventPostUpdate: ok' + text);				// debug only
-    		return;							
-	   	}
+	// Endpoint zur Liste aller Events
+	var url = 'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/event/update/' + msg;
 	
-} // Ende von eventPostUpdate.onload
+	var eventPostUpdate = erisCreateCORSRequest('GET', url);
+	if (!eventPostUpdate) {
+	  	erisLog('postEventUpdate: CORS not supported');
+		return;
+	}
+	else {
+		erisLog('postEventUpdate: vor dem Update ' + msg);
+	}
+	
+	// Response handlers.
+	eventPostUpdate.onload = function() {	
+			var text = eventPostUpdate.responseText;
+	    	var status = eventPostUpdate.status;
+		   	if (status < 200 || status >=  300) {
+		   		erisLog('postEventUpdate: HTTP-Fehler beim Update des Events: ' + status + ' ' + text +  ' ' + msg);
+		   	}
+		   	else {
+		   		erisLog('postEventUpdate: ok' + text);				// debug only
+	    		return;							
+		   	}
+		
+	} // Ende von eventPostUpdate.onload
+	
+	eventPostUpdate.onerror = function() {
+		    erisLog('postEventUpdate: Woops, there was an error making the request.');
+		  };
 
-eventPostUpdate.onerror = function() {
-	    alert('Woops, there was an error making the request.');
-	  };
-
-	  eventPostUpdate.send();
+	eventPostUpdate.send();
 }
 
 	/*********************************************************************************
@@ -145,9 +156,9 @@ function readAllEvents(field, datum) {
 		}
 	}
 
-	var eventList = createCORSRequest('GET', url);
+	var eventList = erisCreateCORSRequest('GET', url);
 	if (!eventList) {
-	  	alert('CORS not supported');
+	  	erisLog('CORS not supported');
 		return;
 	}
 
@@ -158,9 +169,9 @@ function readAllEvents(field, datum) {
 //		}, 2000);
 		var text = eventList.responseText;
     	var status = eventList.status;
-	   	if (status < 200 || status >=  300) alert('readAllEvents: HTTP-Fehler beim lesen der Events: ' + status+ ' ' + text);
+	   	if (status < 200 || status >=  300) erisLog('readAllEvents: HTTP-Fehler beim lesen der Events: ' + status+ ' ' + text);
 
-//		alert('readAllEvents:' + text);		// debugging only
+//		erisLog('readAllEvents:' + text);		// debugging only
 
 		var Termine = JSON.parse(text).items;
 		if (Termine == undefined) return;
@@ -207,7 +218,7 @@ function readAllEvents(field, datum) {
 	} // Ende von eventList.onload
 
 	eventList.onerror = function() {
-		    alert('Woops, there was an error making the request.');
+		    erisLog('Woops, there was an error making the request.');
 		  };
 
 	eventList.send();
@@ -222,9 +233,9 @@ function readAllTeams() {
     var url = 'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/team';
     //  var url = 'https://1-dot-svn-rest.appspot.com/_ah/api/treeSystem/v1/traverseTree';
 
-    var teamList = createCORSRequest('GET', url);
+    var teamList = erisCreateCORSRequest('GET', url);
     if (!teamList) {
-      alert('CORS not supported');
+      erisLog('CORS not supported');
       return;
     }
 
@@ -232,9 +243,9 @@ function readAllTeams() {
     teamList.onload = function() {
     	var text = teamList.responseText;
     	var status = teamList.status;
-    	if (status < 200 || status >=  300) alert('readAllTeams: HTTP-Fehler beim lesen der Teams: ' + status);
+    	if (status < 200 || status >=  300) erisLog('readAllTeams: HTTP-Fehler beim lesen der Teams: ' + status);
    
-//		alert('readAllTeams:' + text);		// debugging only
+//		erisLog('readAllTeams:' + text);		// debugging only
 
     	var Teams = JSON.parse(text).items;
 		if (Teams == undefined) return;
@@ -255,7 +266,8 @@ function readAllTeams() {
     		DefaultDuration = Teams[a].defaultDuration;
 //    		DefaultSize = Teams[a].defaultSize;
     		Klasse = Teams[a].group.groupId;
-      	
+ 
+    		if (Klasse != 'Sonstiges') {
     		// Generiere den Team-Button
     		$('<button>' + TeamID + '</button>')		
 	    		.addClass('Eventbutton ' + Klasse)
@@ -275,11 +287,12 @@ function readAllTeams() {
 	    		newEvent(Event);				
     		});
       	}
+      	}
     } // Ende teamList.onload
 
     
     teamList.onerror = function() {
-    	alert('Woops, there was an error making the request.');
+    	erisLog('Woops, there was an error making the request.');
 	};
 
 	teamList.send();
@@ -293,10 +306,10 @@ function readAllGroups() {
     // This is a sample server that supports CORS.
     var url = 'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/group';
 
-    var groupList = createCORSRequest('GET', url);
-    //  var teamList = createCORSRequest('POST', url);
+    var groupList = erisCreateCORSRequest('GET', url);
+    //  var teamList = erisCreateCORSRequest('POST', url);
     if (!groupList) {
-      alert('CORS not supported');
+      erisLog('CORS not supported');
       return;
     }
 
@@ -304,9 +317,9 @@ function readAllGroups() {
     groupList.onload = function() {
     	var text = groupList.responseText;
     	var status = groupList.status;
-	   	if (status < 200 || status >=  300) alert('readAllGroupsHTTP-Fehler beim lesen der Groups: ' + status);
+	   	if (status < 200 || status >=  300) erisLog('readAllGroupsHTTP-Fehler beim lesen der Groups: ' + status);
    
-//		alert('readAllGroups:' + text);		// debugging only
+//		erisLog('readAllGroups:' + text);		// debugging only
 
     	var Groups = JSON.parse(text).items;
 		if (Groups == undefined) return;
@@ -332,7 +345,7 @@ function readAllGroups() {
 
 
     groupList.onerror = function() {
-    	alert('Woops, there was an error making the request.');
+    	erisLog('Woops, there was an error making the request.');
 	};
 
 	groupList.send();
@@ -346,9 +359,9 @@ function readAllFields() {
     // This is a sample server that supports CORS.
     var url = 'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/field';
 
-    var fieldList = createCORSRequest('GET', url);
+    var fieldList = erisCreateCORSRequest('GET', url);
     if (!fieldList) {
-      alert('CORS not supported');
+      erisLog('CORS not supported');
       return;
     }
 
@@ -356,9 +369,9 @@ function readAllFields() {
     fieldList.onload = function() {
     	var text = fieldList.responseText;
     	var status = fieldList.status;
-    	if (status < 200 || status >=  300) alert('readAllFields: HTTP-Fehler beim lesen der Fields: ' + status);
+    	if (status < 200 || status >=  300) erisLog('readAllFields: HTTP-Fehler beim lesen der Fields: ' + status);
    
-//		alert('readAllFields:' + text);		// debugging only
+//		erisLog('readAllFields:' + text);		// debugging only
     	
 
     	var Fields = JSON.parse(text).items;
@@ -395,8 +408,27 @@ function readAllFields() {
 
     
     fieldList.onerror = function() {
-    	alert('Woops, there was an error making the request.');
+    	erisLog('Woops, there was an error making the request.');
 	};
 
 	fieldList.send();
+}
+
+
+/*********************************************************************************
+Funktion:	erisLog 
+Zweck:		gibt eine formatierte Meldung aus
+*/
+function erisLog(msg) {
+		
+	console.log(erisTimestamp() + ': eRIS - ' + msg);
+}
+
+/*********************************************************************************
+Funktion:	erisTrace 
+Zweck:		gibt eine formatierte Meldung aus
+*/
+function erisTrace(msg) {
+		
+	if (erisTraceLevel) console.log(erisTimestamp() + ': eRIS - Trace: ' + msg);
 }
