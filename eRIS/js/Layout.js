@@ -63,21 +63,21 @@
 //*********************************************************************************
 /**
  * @global
- */ 
+ */
 
- /*global $*/
- /*global erisHeute*/
- /*global erisTrace*/
- /*global readAllEvents*/
- /*global readAllFields*/
- /*global readAllTeams*/
- /*global readAllGroups*/
- /*global postEvent*/
- /*global postEventUpdate*/
- /*global erisBerechneDatum*/
- 
- 
- 
+/*global $*/
+/*global erisHeute*/
+/*global erisTrace*/
+/*global readAllEvents*/
+/*global readAllFields*/
+/*global readAllTeams*/
+/*global readAllGroups*/
+/*global postEvent*/
+/*global postEventUpdate*/
+/*global erisBerechneDatum*/
+
+
+
 var erisTraceLevel = true; // true = Trace-Meldungen ausgeben
 
 //	globale Variablen
@@ -122,7 +122,7 @@ var MarkerMinWidth = PlatzTeilWidth - MarkerPadding;
 const MarkerMinHeight = innerMarkerHeight * 2 + PlatzTeilMargin;
 const MarkerHeightjePlatzteil = MarkerMinHeight;
 var MarkerWidth = (PlatzTeilWidth + PlatzTeilMargin) * AnzahlPlatzTeile - PlatzTeilMargin - MarkerPadding;
-	
+
 // Zeitleistenkonstanten
 const StundeInMinuten = 60; // eine Stunde hat 60 Minuten
 const StundeInPixel = AnzahlPlatzteileJeStunde * (PlatzTeilHeight + PlatzTeilMargin); // eine Stunde hat z.B. 48 Pixel
@@ -136,17 +136,17 @@ const AnzahlStunden = EndeZeitLeiste - BeginnZeitLeiste; // z.B. 14 h
 	@param:			none
  */
 function doLayout() {
-	erisTrace('doLayout - Beginn');
-    $( "#erisViews" ).tabs(); // Tabs erzeugen
+    erisTrace('doLayout - Beginn');
+    $("#erisViews").tabs(); // Tabs erzeugen
     doTagesview(); // baue 1-Tages-View auf
     doPlatzview(); // baue 1-Platz-View auf
     doEventbutton(); // generiere die Knöpfe
     doFuss(); // zeige den "Default-Fuss" mit dem Sammler und Mülleimer
- 
+
     $(document).ready(readAllEvents(fieldTitle[currentField], currentDatum)); // Zeige alle Events des aktuellen Platzes an
-    
-    $('#Container') 	// bewege Container für Sammler und Mülleimer in den View
-    .appendTo('#Belegungsplan');
+
+    $('#Container') // bewege Container für Sammler und Mülleimer in den View
+        .appendTo('#Belegungsplan');
     erisTrace('doLayout - Ende');
 }
 //*********************************************************************************
@@ -156,15 +156,15 @@ function doLayout() {
 	@param:			none
  */
 function doTagesview() {
-	erisTrace('doTagesview - Beginn');
+    erisTrace('doTagesview - Beginn');
 
-	doOrtsleiste();
-	doDatumsleiste();
-	doPlatzleiste();
-	doZeitleiste();
-	
-    $('#Belegungsplan') 	// bewege den Belegungsplan in den View
-    .appendTo('#Tagesplan');
+    doOrtsleiste();
+    doDatumsleiste();
+    doPlatzleiste();
+    doZeitleiste();
+
+    $('#Belegungsplan') // bewege den Belegungsplan in den View
+        .appendTo('#Tagesplan');
 
     erisTrace('doTagesview - Ende');
 
@@ -176,12 +176,12 @@ function doTagesview() {
 	@param:			none
  */
 function doWochenplan() {
-	erisTrace('doWochenplan - Beginn');
+    erisTrace('doWochenplan - Beginn');
 
-	$('#Belegungsplan') 	// bewege den Belegungsplan in den View
-    .appendTo('#Wochenplan');
+    $('#Belegungsplan') // bewege den Belegungsplan in den View
+        .appendTo('#Wochenplan');
 
-	erisTrace('doWochenplan - Ende');
+    erisTrace('doWochenplan - Ende');
 
 }
 //*********************************************************************************
@@ -190,7 +190,7 @@ function doWochenplan() {
  */
 
 function doOrtsleiste() {
-	erisTrace('doOrtsleiste - Beginn');
+    erisTrace('doOrtsleiste - Beginn');
     // Ort
     // ---------------------------------------------------
 
@@ -244,7 +244,7 @@ function doOrtsleiste() {
 
 function doDatumsleiste() {
     erisTrace('doDatumsleiste - Beginn');
- 
+
     // Datum
     // ---------------------------------------------------
 
@@ -312,9 +312,9 @@ function doPlatzleiste() {
         .appendTo('#Platzleiste');
 
     $('<div/>') // Anzeige von Plätzen
-    .addClass('Mitte')
-    .attr('id', 'PlatzMitte')
-    .appendTo('#Platzleiste');
+        .addClass('Mitte')
+        .attr('id', 'PlatzMitte')
+        .appendTo('#Platzleiste');
 
     $('<div/>') // Navigation innerhalb von Plätzen
         .addClass('Rechts')
@@ -322,24 +322,24 @@ function doPlatzleiste() {
         .appendTo('#Platzleiste');
 
     $('<div><</div>') // Platz nach links
-	    .addClass('Links')
-	    .attr('id', 'PlatzButtonLinks')
-	    .button()
-	    .click(function(event) {
-	        event.preventDefault();
-	        prevField();
-	    })
-	    .appendTo('#PlatzLinks');
+        .addClass('Links')
+        .attr('id', 'PlatzButtonLinks')
+        .button()
+        .click(function(event) {
+            event.preventDefault();
+            prevField();
+        })
+        .appendTo('#PlatzLinks');
 
     $('<div>></div>') // Platz nach rechts
-	    .addClass('Rechts')
-	    .attr('id', 'PlatzButtonRechts')
-	    .button()
-	    .click(function(event) {
-	        event.preventDefault();
-	        nextField();
-	    })
-	    .appendTo('#PlatzRechts');
+        .addClass('Rechts')
+        .attr('id', 'PlatzButtonRechts')
+        .button()
+        .click(function(event) {
+            event.preventDefault();
+            nextField();
+        })
+        .appendTo('#PlatzRechts');
 
     erisTrace('doPlatzleiste - Ende');
 }
@@ -350,83 +350,85 @@ function doPlatzleiste() {
  */
 
 function doZeitleiste() {
-	
+
     erisTrace('doZeitleiste - Beginn');
 
     // Zeit
-	// ---------------------------------------------------
-	
-	$('<div/>') // Erzeuge die Zeitleiste
-	    .addClass('Zeitleiste')
-	    .attr('id', 'Zeitleiste')
-	    .appendTo('#Belegungsplan');
-	
-	$('<div/>') // Anzeige der Zeit links
-	    .addClass('Links')
-	    .attr('id', 'ZeitLinks')
-	    .appendTo('#Zeitleiste');
-	
-	$('<div/>') // Anzeige von Plätzteilen
-	    .addClass('Mitte')
-	    .attr('id', 'ZeitMitte')
-	    .appendTo('#Zeitleiste');
-	
-	$('<div/>') // Anzeige der Zeit rechts
-	    .addClass('Rechts')
-	    .attr('id', 'ZeitRechts')
-	    .appendTo('#Zeitleiste');
-	
-	// ganztags
-	// ---------------------------------------------------
-	$('<div>ganz</div>') // Beschriftung links für ganztags-Ereignisse
-	.addClass('Uhrzeit Rand')
-	.attr('id', 'ganztags')
-	.appendTo('#PlatzLinks');
-	
-	$('<div>Teil</div>') // Beschriftung links für Platzteile-Bezeichnung
-	.addClass('Uhrzeit Rand')
-	.attr('id', 'ganztags')
-	.appendTo('#PlatzLinks');
-	
-	$('<div>ganz</div>') // Beschriftung rechts für ganztags-Ereignisse
-	.addClass('Uhrzeit Rand')
-	.attr('id', 'ganztags')
-	.appendTo('#PlatzRechts');
-	
-	$('<div>Teil</div>') // Beschriftung rechts für Platzteile-Bezeichnung
-	.addClass('Uhrzeit Rand')
-	.attr('id', 'ganztags')
-	.appendTo('#PlatzRechts');
-	
-	// Linke Zeitskala erzeugen 8:00 - 22:00 Uhr
-	// --------------------------------------------------
-	for (var uhr = BeginnZeitLeiste; uhr < EndeZeitLeiste; uhr++) { // Zeitspalte links
-	    $('<div>' + uhr + '<sup>00</sup></div>')
-	        .addClass('Uhrzeit')
-	        .attr('id', 'LU' + uhr)
-	        .css({
-	            'height': StundeInPixel - PlatzTeilMargin
-	        })
-	        .appendTo('#ZeitLinks');
-	}
-	
-	// Rechte Zeitskala erzeugen 8:00 - 22:00 Uhr
-	// --------------------------------------------------
-	for (var uhr = BeginnZeitLeiste; uhr < EndeZeitLeiste; uhr++) { // Zeitspalte rechts
-	    $('<div>' + uhr + '<sup>00</sup></div>')
-	        .addClass('Uhrzeit')
-	        .attr('id', 'RU' + uhr)
-	        .css({
-	            'height': StundeInPixel - PlatzTeilMargin
-	        })
-	        .appendTo('#ZeitRechts');
-	}
-	
+    // ---------------------------------------------------
 
-	// Bewege die Zeitskala ziemlich ans Ende
-	// --------------------------------------------------
-	$('#Zeitleiste').animate({scrollTop: 176}, 2000);
-	
+    $('<div/>') // Erzeuge die Zeitleiste
+        .addClass('Zeitleiste')
+        .attr('id', 'Zeitleiste')
+        .appendTo('#Belegungsplan');
+
+    $('<div/>') // Anzeige der Zeit links
+        .addClass('Links')
+        .attr('id', 'ZeitLinks')
+        .appendTo('#Zeitleiste');
+
+    $('<div/>') // Anzeige von Plätzteilen
+        .addClass('Mitte')
+        .attr('id', 'ZeitMitte')
+        .appendTo('#Zeitleiste');
+
+    $('<div/>') // Anzeige der Zeit rechts
+        .addClass('Rechts')
+        .attr('id', 'ZeitRechts')
+        .appendTo('#Zeitleiste');
+
+    // ganztags
+    // ---------------------------------------------------
+    $('<div>ganz</div>') // Beschriftung links für ganztags-Ereignisse
+        .addClass('Uhrzeit Rand')
+        .attr('id', 'ganztags')
+        .appendTo('#PlatzLinks');
+
+    $('<div>Teil</div>') // Beschriftung links für Platzteile-Bezeichnung
+        .addClass('Uhrzeit Rand')
+        .attr('id', 'ganztags')
+        .appendTo('#PlatzLinks');
+
+    $('<div>ganz</div>') // Beschriftung rechts für ganztags-Ereignisse
+        .addClass('Uhrzeit Rand')
+        .attr('id', 'ganztags')
+        .appendTo('#PlatzRechts');
+
+    $('<div>Teil</div>') // Beschriftung rechts für Platzteile-Bezeichnung
+        .addClass('Uhrzeit Rand')
+        .attr('id', 'ganztags')
+        .appendTo('#PlatzRechts');
+
+    // Linke Zeitskala erzeugen 8:00 - 22:00 Uhr
+    // --------------------------------------------------
+    for (var uhr = BeginnZeitLeiste; uhr < EndeZeitLeiste; uhr++) { // Zeitspalte links
+        $('<div>' + uhr + '<sup>00</sup></div>')
+            .addClass('Uhrzeit')
+            .attr('id', 'LU' + uhr)
+            .css({
+                'height': StundeInPixel - PlatzTeilMargin
+            })
+            .appendTo('#ZeitLinks');
+    }
+
+    // Rechte Zeitskala erzeugen 8:00 - 22:00 Uhr
+    // --------------------------------------------------
+    for (var uhr = BeginnZeitLeiste; uhr < EndeZeitLeiste; uhr++) { // Zeitspalte rechts
+        $('<div>' + uhr + '<sup>00</sup></div>')
+            .addClass('Uhrzeit')
+            .attr('id', 'RU' + uhr)
+            .css({
+                'height': StundeInPixel - PlatzTeilMargin
+            })
+            .appendTo('#ZeitRechts');
+    }
+
+
+    // Bewege die Zeitskala ziemlich ans Ende
+    // --------------------------------------------------
+    $('#Zeitleiste').animate({
+        scrollTop: 176
+    }, 2000);
+
     erisTrace('doZeitleiste - Ende');
 }
 
@@ -441,49 +443,49 @@ function doPlatzview() {
 
     erisTrace('doPlatzview - Beginn');
 
-    for ( var pp=0; pp<3; pp++ ) {
-		
-		   // Beschriftung des Platzes
-		// ------------------------
-	    $('<div/>')
-	        .addClass('Platzname')
-	        .attr('id', 'Platzname' + Platzname[pp])
-	        .appendTo('#PlatzMitte');
+    for (var pp = 0; pp < 3; pp++) {
 
-	}
-	
-	for ( pp=0; pp<3; pp++ ) {
-		
-		// Container für ganztags-Ereignisse
-		// ---------------------------------
-	    $('<div/>') // ganztags
-		    .addClass('Platzganztags')
-		    .attr('id', 'Platzganztags' + Platzname[pp])
-		    .appendTo('#PlatzMitte');
+        // Beschriftung des Platzes
+        // ------------------------
+        $('<div/>')
+            .addClass('Platzname')
+            .attr('id', 'Platzname' + Platzname[pp])
+            .appendTo('#PlatzMitte');
 
-	}
+    }
 
-	for ( pp=0; pp<3; pp++ ) {
-			
-	    // Container für Platzteilbeschrifungen
-		// ------------------------------------
-	    $('<div/>') // Platzteile
-		    .addClass('Platzteile')
-		    .attr('id', 'Platzteile' + Platzname[pp])
-		    .appendTo('#PlatzMitte');
-	}
-		
+    for (pp = 0; pp < 3; pp++) {
 
- 
+        // Container für ganztags-Ereignisse
+        // ---------------------------------
+        $('<div/>') // ganztags
+            .addClass('Platzganztags')
+            .attr('id', 'Platzganztags' + Platzname[pp])
+            .appendTo('#PlatzMitte');
+
+    }
+
+    for (pp = 0; pp < 3; pp++) {
+
+        // Container für Platzteilbeschrifungen
+        // ------------------------------------
+        $('<div/>') // Platzteile
+            .addClass('Platzteile')
+            .attr('id', 'Platzteile' + Platzname[pp])
+            .appendTo('#PlatzMitte');
+    }
+
+
+
     $(document).ready(readAllFields()); // hier werden dann auch der Platzname und alle Platzteile angelegt
 
-	for ( pp=0; pp<3; pp++ ) {
-		doPlatzteilview(Platzname[pp]); // Platzteile anzeigen
-	}
+    for (pp = 0; pp < 3; pp++) {
+        doPlatzteilview(Platzname[pp]); // Platzteile anzeigen
+    }
 
     makePlatzDroppable();
 
-	erisTrace('doPlatzview - Ende');
+    erisTrace('doPlatzview - Ende');
 }
 //*********************************************************************************
 
@@ -493,34 +495,34 @@ function doPlatzview() {
  */
 function doPlatzteilview(PlatzNummer) {
 
-	erisTrace('doPlatzteilview - Beginn');
-	
+    erisTrace('doPlatzteilview - Beginn');
+
     // Löschen alter Platzview-Komponenten
-	// -----------------------------------
-//    $('.PlatzTeil').remove(); // Lösche alle Platzbestandteile
-//    $('.Platz').remove(); // Lösche alle Plätze
-    
+    // -----------------------------------
+    //    $('.PlatzTeil').remove(); // Lösche alle Platzbestandteile
+    //    $('.Platz').remove(); // Lösche alle Plätze
+
     pid = 0; // Nummerierung für Platzelemente 0..N
-    
+
     // neue Breiten für Platzteile und Marker bestimmen
     // ------------------------------------------------
     PlatzTeilWidth = PlatzWidth / AnzahlPlatzTeile - PlatzTeilMargin; // Width = Width + Margin
     MarkerMinWidth = PlatzTeilWidth - MarkerPadding; // neue kleinste Markergröße
-    
+
     // falls es noch keinen Container für den Platz gibt, diesen anlegen
     // -----------------------------------------------------------------
     var pk = '';
-    pk = $('.Platz'+PlatzNummer).attr('id');
+    pk = $('.Platz' + PlatzNummer).attr('id');
     if (pk == undefined)
-	    // Erzeuge Platz
-	    $('<div/>')
-		    .addClass('Platz')
-		    .attr('id', 'Platz'+ PlatzNummer)
-		    .appendTo('#ZeitMitte');
+    // Erzeuge Platz
+        $('<div/>')
+        .addClass('Platz')
+        .attr('id', 'Platz' + PlatzNummer)
+        .appendTo('#ZeitMitte');
 
     // Breite des Platz-Containers festlegen
     // --------------------------------------
-    $('#Platz'+PlatzNummer).width(PlatzWidth); // Breite der Platz anpassen
+    $('#Platz' + PlatzNummer).width(PlatzWidth); // Breite der Platz anpassen
 
     // erzeuge das Belegungsraster im Platz
     // ------------------------------------
@@ -534,7 +536,7 @@ function doPlatzteilview(PlatzNummer) {
         }
     }
 
-	erisTrace('doPlatzteilview - Ende');
+    erisTrace('doPlatzteilview - Ende');
 }
 
 //*********************************************************************************
@@ -557,8 +559,8 @@ function doPlatzteilview(PlatzNummer) {
 
 function realZiel(Ziel, h, w) {
 
-	erisTrace('realZiel - Beginn: Parameter = ' + Ziel + ',' + h + ',' + w);
-	
+    erisTrace('realZiel - Beginn: Parameter = ' + Ziel + ',' + h + ',' + w);
+
     var zielRow = Math.floor(Ziel / AnzahlPlatzTeile);
     var zielCol = Ziel % AnzahlPlatzTeile;
 
@@ -572,10 +574,11 @@ function realZiel(Ziel, h, w) {
     zielCol = zielCol - markerCol;
     if (zielRow >= 0 && zielCol >= 0) {
         var ZielID = zielRow * AnzahlPlatzTeile + zielCol;
-    	erisTrace('realZiel - Ende: return = ' + ZielID);
+        erisTrace('realZiel - Ende: return = ' + ZielID);
         return ZielID;
-    } else {
-    	erisTrace('realZiel - Ende: return = -1');
+    }
+    else {
+        erisTrace('realZiel - Ende: return = -1');
         return -1;
     }
 
@@ -587,14 +590,14 @@ function realZiel(Ziel, h, w) {
 */
 function makePlatzDroppable() {
 
-	erisTrace('makePlatzDroppable - Beginn');
-	
+    erisTrace('makePlatzDroppable - Beginn');
+
     $('.PlatzTeil').droppable({
-    	drop: function(event, ui) { // Funktion, die beim droppen aufgerufen wird
+        drop: function(event, ui) { // Funktion, die beim droppen aufgerufen wird
 
             var Ziel = $(this).attr('id'); // ID des PlatzTeil in das gedroppt wird
-        	var suffix = Ziel.replace(/[0-9]/g,''); // Ziffern entfernen
-        	Ziel = Ziel = parseInt(Ziel, 10); // Platzsuffix
+            var suffix = Ziel.replace(/[0-9]/g, ''); // Ziffern entfernen
+            Ziel = Ziel = parseInt(Ziel, 10); // Platzsuffix
 
             var MarkerID = $(ui.draggable).attr('id'); // ID des Markers der gedropped wird
 
@@ -614,24 +617,25 @@ function makePlatzDroppable() {
                 if (erisEvent.ID == undefined || erisEvent.ID == '') {
                     msg = makeEventMessage(MarkerID);
                     postEvent(msg, ui.draggable); // in DB speichern
-               } else {
+                }
+                else {
                     msg = makeEventUpdateMessage(MarkerID);
                     postEventUpdate(msg);
                 }
 
-                createEventAttributes(MarkerID, erisEvent);      // erzeuge Objekt + .data aus Position und Größe des Marker
+                createEventAttributes(MarkerID, erisEvent); // erzeuge Objekt + .data aus Position und Größe des Marker
             }
 
             $(ui.draggable).css({
                 'top': 0,
                 'left': 0
             }); // Position im Ziel oben links
-            
-        } 
+
+        }
 
     });
 
-	erisTrace('makePlatzDroppable - Ende');
+    erisTrace('makePlatzDroppable - Ende');
 
 }
 
@@ -644,62 +648,69 @@ function makePlatzDroppable() {
  */
 function newEvent(erisEvent) {
 
-	erisTrace('newEvent - Beginn: Parameter (erisID) = ' + erisEvent.ID);
+    erisTrace('newEvent - Beginn: Parameter (erisID) = ' + erisEvent.ID);
 
-	var marker = erisEvent.TeamID;
+    var marker = erisEvent.TeamID;
     var dauer = erisEvent.Dauer;
     var beginn = erisEvent.dateStart;
 
     var hoehe = minutesToPixel(dauer);
-    var breite = MarkerWidth; 
+    var breite = MarkerWidth;
     var markerID = marker + mid++;
-    
+
     $('<div>' + marker + '</div>')
         .addClass(altersKlasse(marker) + ' Marker')
         .attr('id', markerID)
         .height(hoehe)
         .width(breite)
-	    .appendTo('#Sammler')
-	    .draggable({ scroll: true })
+        .appendTo('#Sammler')
+        .draggable({
+            scroll: true
+        })
         .draggable("option", "revert", "invalid")
         .draggable("option", "cursorAt", {
             left: 0,
             top: 0
         })
         .draggable({
-        	start: function(event, ui) { startedDrag(event, ui) },
-            stop: function(event, ui) { stoppedDrag(event, ui)} })
+            start: function(event, ui) {
+                startedDrag(event, ui)
+            },
+            stop: function(event, ui) {
+                stoppedDrag(event, ui)
+            }
+        })
 
-         .resizable({
+    .resizable({
             resize: function(event, ui) {
-            	var breite = (PlatzWidth / AnzahlPlatzTeile) - MarkerPadding;
+                var breite = (PlatzWidth / AnzahlPlatzTeile) - MarkerPadding;
                 var anz = Math.round(ui.size.width / breite);
-                breite = anz * PlatzTeilWidth-MarkerPadding;
+                breite = anz * PlatzTeilWidth - MarkerPadding;
                 breite += anz * PlatzTeilMargin;
-                
-                if (breite < MarkerMinWidth) 
-                	ui.size.width = MarkerMinWidth;
+
+                if (breite < MarkerMinWidth)
+                    ui.size.width = MarkerMinWidth;
                 else
-                	ui.size.width = breite;
-                	
-                if (breite > MarkerMaxWidth) 
-                	ui.size.width = MarkerMaxWidth;
+                    ui.size.width = breite;
+
+                if (breite > MarkerMaxWidth)
+                    ui.size.width = MarkerMaxWidth;
                 else
-                	ui.size.width = breite;
-                
+                    ui.size.width = breite;
+
                 ui.size.height = Math.round(ui.size.height / MarkerHeightjePlatzteil) * MarkerHeightjePlatzteil;
-                
+
                 var MarkerID = $(ui.element).attr('id');
 
                 var eEvent = new Object();
                 readFromMarkerData(MarkerID, eEvent);
-                
+
                 // belegte Platzteile ermitteln
                 if (anz == 1) eEvent.Platzteil = [1];
-                if (anz == 2) eEvent.Platzteil = [1,2];
-                if (anz == 3) eEvent.Platzteil = [1,2,3];
-                if (anz == 4) eEvent.Platzteil = [1,2,3,4];
-                
+                if (anz == 2) eEvent.Platzteil = [1, 2];
+                if (anz == 3) eEvent.Platzteil = [1, 2, 3];
+                if (anz == 4) eEvent.Platzteil = [1, 2, 3, 4];
+
                 storeToMarkerData(MarkerID, eEvent);
             }
         })
@@ -716,56 +727,56 @@ function newEvent(erisEvent) {
             }
         })
 
-	    .resizable("option", "minWidth", MarkerMinWidth)
-	        .resizable("option", "maxWidth", MarkerMaxWidth)
-	        .resizable("option", "minHeight", MarkerMinHeight)
+    .resizable("option", "minWidth", MarkerMinWidth)
+        .resizable("option", "maxWidth", MarkerMaxWidth)
+        .resizable("option", "minHeight", MarkerMinHeight)
 
-	    .on({
-	        click: function() {
-	            var mmID = this.id;
+    .on({
+        click: function() {
+            var mmID = this.id;
 
 
-	            $('<div></div>').dialog({
-                    modal: true,
-                    title: "Event-Info",
-                    open: function(event, ui) {
-                        var MarkerID = mmID;
-                        var erisEvent = new Object();
-                        createEventAttributes(MarkerID, erisEvent);
-                        readFromMarkerData(MarkerID, erisEvent); // übertrage .data -> Objekt
-                        var markup = erisToolTip(markerID, erisEvent);
-                        $(this).html(markup);
-                    },
-                    buttons: {
-                        Ok: function() {
-                            $(this).dialog("close");
-                        }
-                    }
-                }); //end confirm dialog
-        }
-
-    });
-/*
-    .hover(function() {
-        var mmID = this.id;
-
-        $('<div/>')
-            .dialog({
+            $('<div></div>').dialog({
                 modal: true,
                 title: "Event-Info",
                 open: function(event, ui) {
                     var MarkerID = mmID;
                     var erisEvent = new Object();
+                    createEventAttributes(MarkerID, erisEvent);
                     readFromMarkerData(MarkerID, erisEvent); // übertrage .data -> Objekt
                     var markup = erisToolTip(markerID, erisEvent);
                     $(this).html(markup);
+                },
+                buttons: {
+                    Ok: function() {
+                        $(this).dialog("close");
+                    }
                 }
-            })
-            .addClass('EventInfo');
-    }, function() {
-        $('.EventInfo').dialog("close");
+            }); //end confirm dialog
+        }
+
     });
-*/
+    /*
+        .hover(function() {
+            var mmID = this.id;
+
+            $('<div/>')
+                .dialog({
+                    modal: true,
+                    title: "Event-Info",
+                    open: function(event, ui) {
+                        var MarkerID = mmID;
+                        var erisEvent = new Object();
+                        readFromMarkerData(MarkerID, erisEvent); // übertrage .data -> Objekt
+                        var markup = erisToolTip(markerID, erisEvent);
+                        $(this).html(markup);
+                    }
+                })
+                .addClass('EventInfo');
+        }, function() {
+            $('.EventInfo').dialog("close");
+        });
+    */
     if (beginn.length > 0) {
         var hour = parseInt(beginn[1].split(':')[0], 10);
         var minute = parseInt(beginn[1].split(':')[1], 10);
@@ -773,7 +784,8 @@ function newEvent(erisEvent) {
         if (zielID >= 0 && zielID < AnzahlPlatzteileJeStunde * AnzahlPlatzTeile * AnzahlStunden) {
             $('#' + markerID)
                 .appendTo('#' + zielID + Platzname[currentField]);
-        } else {
+        }
+        else {
             alert('Event außerhalb des darstellbaren Bereiches ' + marker + ' ' + beginn);
         }
     }
@@ -784,18 +796,18 @@ function newEvent(erisEvent) {
 
 //*********************************************************************************
 function startedDrag(event, ui) {
-	
+
     erisTrace('startedDrag - Beginn');
-    
-	if (event.shiftKey )
-	    $('#Zeitleiste').css({
-	        overflow: 'visible'
-	    });
-	else
-	    $('#Zeitleiste').css({
-	        overflow: 'auto'
-	    });
-	
+
+    if (event.shiftKey)
+        $('#Zeitleiste').css({
+            overflow: 'visible'
+        });
+    else
+        $('#Zeitleiste').css({
+            overflow: 'auto'
+        });
+
     erisTrace('startedDrag - Ende');
 }
 //*********************************************************************************
@@ -803,9 +815,9 @@ function stoppedDrag(event, ui) {
 
     erisTrace('stoppedDrag - Beginn');
 
-	$('#Zeitleiste').css({
-	   overflow: 'auto'
-	});
+    $('#Zeitleiste').css({
+        overflow: 'auto'
+    });
     erisTrace('stoppedDrag - Ende');
 }
 //*********************************************************************************
@@ -831,17 +843,17 @@ function stoppedDrag(event, ui) {
 function storeToMarkerData(mID, eEvent) {
 
     erisTrace('storeToMarkerData - Beginn');
-    
-    if (eEvent.ID.length === 0 ) {
-    	eEvent.ID = undefined;
-    	eEvent.start = undefined;
-    	eEvent.spiel = undefined;
-    	eEvent.serie = undefined;
-    	eEvent.Platz = undefined;
-    	eEvent.Platzteil = undefined;
-    	eEvent.dateStart = undefined;
+
+    if (eEvent.ID.length === 0) {
+        eEvent.ID = undefined;
+        eEvent.start = undefined;
+        eEvent.spiel = undefined;
+        eEvent.serie = undefined;
+        eEvent.Platz = undefined;
+        eEvent.Platzteil = undefined;
+        eEvent.dateStart = undefined;
     }
-    	
+
     $('#' + mID)
         .data('erisID', eEvent.ID)
         .data('erisStart', eEvent.start)
@@ -854,7 +866,7 @@ function storeToMarkerData(mID, eEvent) {
         .data('erisPlatzteil', eEvent.Platzteil)
         //	.data('erisGroup', eEvent.Team)
         .data('erisDateStart', eEvent.dateStart);
-   	
+
     erisTrace('storeToMarkerData - Ende');
 }
 //*********************************************************************************
@@ -892,24 +904,24 @@ function readFromMarkerData(mID, eEvent) {
 function createEventAttributes(mID, eEvent) {
 
     erisTrace('createEventAttributes - Beginn');
-    
-	var real = $('#' + mID).parent().attr('id');
-	var suffix = real.replace(/[0-9]/g,''); // Ziffern entfernen
-	real = parseInt(real, 10);
 
-	// ID
+    var real = $('#' + mID).parent().attr('id');
+    var suffix = real.replace(/[0-9]/g, ''); // Ziffern entfernen
+    real = parseInt(real, 10);
+
+    // ID
     eEvent.ID = $('#' + mID).data('erisID');
-    
+
     // TeamId
     eEvent.TeamId = $('#' + mID).text();
-    
+
     // Dauer
     var ww = $('#' + mID).css('width'); // Maße des gedroppten Marker
     var hh = $('#' + mID).css('height');
     ww = parseInt(ww, 10);
     hh = parseInt(hh, 10);
     eEvent.Dauer = pixelToMinutes(hh); // Minuten aus Pixel berechnet
-    
+
     // start
     var Stunde = real / AnzahlPlatzTeile / AnzahlPlatzteileJeStunde + BeginnZeitLeiste; // volle Stunde aus Zeile berechnet 
     var StundeString = Math.floor(Stunde); // volle Stunde aus Zeile berechnet 
@@ -923,36 +935,36 @@ function createEventAttributes(mID, eEvent) {
     if (MinuteString == 2) MinuteString = '30';
     if (MinuteString == 3) MinuteString = '45';
 
-    var DatumString = $('#DatumMitte').text();	// Datum aus der Anzeige
-    
+    var DatumString = $('#DatumMitte').text(); // Datum aus der Anzeige
+
     eEvent.start = DatumString + " " + StundeString + ":" + MinuteString;
-    
+
     // startDate
     var dd = [];
     dd[0] = DatumString;
     dd[1] = StundeString + ":" + MinuteString;
     eEvent.startDate = dd;
-    
+
     // Platz
     eEvent.Platz = $('#Platzname' + suffix).text();
 
 
-    
+
     // description
     eEvent.description = "Training";
-    
+
     $('#' + mID)
-    .data('erisID', eEvent.ID)
-    .data('erisStart', eEvent.start)
-    .data('erisDauer', eEvent.Dauer)
-    .data('erisBeschreibung', eEvent.Beschreibung)
-    .data('erisTeamID', eEvent.TeamID)
-    .data('erisSpiel', eEvent.Spiel)
-    .data('erisSerie', eEvent.Serie)
-    .data('erisPlatz', eEvent.Platz)
-    .data('erisPlatzteil', eEvent.Platzteil)
-    //	.data('erisGroup', eEvent.Team)
-    .data('erisDateStart', eEvent.dateStart);
+        .data('erisID', eEvent.ID)
+        .data('erisStart', eEvent.start)
+        .data('erisDauer', eEvent.Dauer)
+        .data('erisBeschreibung', eEvent.Beschreibung)
+        .data('erisTeamID', eEvent.TeamID)
+        .data('erisSpiel', eEvent.Spiel)
+        .data('erisSerie', eEvent.Serie)
+        .data('erisPlatz', eEvent.Platz)
+        .data('erisPlatzteil', eEvent.Platzteil)
+        //	.data('erisGroup', eEvent.Team)
+        .data('erisDateStart', eEvent.dateStart);
 
     erisTrace('createEventAttributes - Ende');
 }
@@ -971,7 +983,7 @@ function doEventbutton() {
     doClearEventbuttons();
     $(document).ready(readAllGroups());
     $(document).ready(readAllTeams());
-    
+
     erisTrace('doEventbutton - Ende');
 }
 //*********************************************************************************
@@ -1020,7 +1032,7 @@ function altersKlasse(TeamID) {
 	Erzeugt eine Fußzeile im Belegungsplan.
 */
 function doFuss() {
-	
+
     erisTrace('doFuss - Beginn');
 
     $('<div/>')
@@ -1069,8 +1081,8 @@ function prevDatum() {
     erisTrace('prevDatum - Beginn');
 
     var aktDat = $('#DatumMitte').text();
-	currentDatum = erisBerechneDatum(aktDat, -1);
-	$('#DatumMitte').text(currentDatum);
+    currentDatum = erisBerechneDatum(aktDat, -1);
+    $('#DatumMitte').text(currentDatum);
     doClearMarker(); // alle Events von der Anzeige entfernen
     $(document).ready(readAllEvents(fieldTitle[currentField], currentDatum)); // alle Events des neuen Datums anzeigen
 
@@ -1085,21 +1097,21 @@ function nextDatum() {
     erisTrace('nextDatum - Beginn');
 
     var aktDat = $('#DatumMitte').text();
-	currentDatum = erisBerechneDatum(aktDat, +1);
-	$('#DatumMitte').text(currentDatum);
+    currentDatum = erisBerechneDatum(aktDat, +1);
+    $('#DatumMitte').text(currentDatum);
     doClearMarker(); // alle Events von der Anzeige entfernen
     $(document).ready(readAllEvents(fieldTitle[currentField], currentDatum)); // alle Events des neuen Datums anzeigen
 
     erisTrace('nextDatum - End');
 }
-	//*********************************************************************************
+//*********************************************************************************
 
-	/**
-			Blättern der Anzeige für Plätze
-	*/
-	function prevField() {
+/**
+		Blättern der Anzeige für Plätze
+*/
+function prevField() {
     currentField--;
-    currentDatum = $('#DatumMitte').text();	// Datum aus der Anzeige
+    currentDatum = $('#DatumMitte').text(); // Datum aus der Anzeige
     if (currentField < 0) currentField = fieldAmount - 1; // In Kreis blättern
     if (AnzahlPlatzTeile != fieldPortions[currentField]) { // falls Platzteileanzahl abweicht, muss der Platz neu aufgebaut werden
         AnzahlPlatzTeile = fieldPortions[currentField]; // neu Platzportionierung merken
@@ -1119,7 +1131,7 @@ function nextDatum() {
 */
 function nextField() {
     currentField++;
-    currentDatum = $('#DatumMitte').text();	// Datum aus der Anzeige
+    currentDatum = $('#DatumMitte').text(); // Datum aus der Anzeige
     if (currentField >= fieldAmount) currentField = 0; // In Kreis blättern
     if (AnzahlPlatzTeile != fieldPortions[currentField]) { // falls Platzteileanzahl abweicht, muss der Platz neu aufgebaut werden
         AnzahlPlatzTeile = fieldPortions[currentField]; // neu Platzportionierung merken
@@ -1141,7 +1153,7 @@ function setFieldPartTitle(a) {
     erisTrace('setFieldPartTitle - End: Parameter = ' + a);
 
     var suffix = Platzname[a];
-    
+
     for (var pl = 0; pl < fieldPortions[a]; pl++) {
         var ptn = fieldPartTitle[a][pl];
         $('<div>' + ptn + '</div>') // neue Bezeichung der Platzteile erzeugen
@@ -1173,7 +1185,7 @@ function makeEventMessage(id) {
     dd = dd.replace(/\:/g, '%3A'); // maskiere : durch %3A
 
     var msg = erisEvent.description + '/' + dd + '/' + erisEvent.Dauer + '/' + erisEvent.TeamId + '/' + ff + '/' + "1%2B2";
- 
+
     erisTrace('makeEventMessage - Ende');
 
     return msg;
@@ -1192,7 +1204,7 @@ function makeEventUpdateMessage(id) {
     createEventAttributes(id, erisEvent);
     var ff = erisEvent.Platz;
     ff = ff.replace(/\s/g, '%20'); // maskiere Blank durch %20
-    
+
     var dd = erisEvent.start;
     dd = dd.replace(/\./g, '%2E'); // maskiere . durch %2E
     dd = dd.replace(/\s/g, '%20'); // maskiere Blank durch %20
