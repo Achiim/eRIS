@@ -593,7 +593,9 @@ function makePlatzDroppable() {
     erisTrace('makePlatzDroppable - Beginn');
 
     $('.PlatzTeil').droppable({
-        drop: function(event, ui) { // Funktion, die beim droppen aufgerufen wird
+    	tolerance: "pointer",		// Wirft den Marker in das PlatzTeil auf das der Mouse-Pointer zeigt
+
+    	drop: function(event, ui) { // Funktion, die beim droppen aufgerufen wird
 
             var Ziel = $(this).attr('id'); // ID des PlatzTeil in das gedroppt wird
             var suffix = Ziel.replace(/[0-9]/g, ''); // Ziffern entfernen
@@ -604,15 +606,16 @@ function makePlatzDroppable() {
             var erisEvent = new Object();
             readFromMarkerData(MarkerID, erisEvent); // übertrage .data -> Objekt
 
-            var ww = $(ui.draggable).css('width'); // Maße des gedroppten Marker
-            var hh = $(ui.draggable).css('height');
-            ww = parseInt(ww, 10);
-            hh = parseInt(hh, 10);
+//            var ww = $(ui.draggable).css('width'); // Maße des gedroppten Marker
+//            var hh = $(ui.draggable).css('height');
+//            ww = parseInt(ww, 10);
+//            hh = parseInt(hh, 10);
 
-            var real = realZiel(Ziel, hh, ww); // ermittle reales Ziel das unter der linken, oberen Ecke liegt
-            if (real >= 0) {
+//            var real = realZiel(Ziel, hh, ww); // ermittle reales Ziel das unter der linken, oberen Ecke liegt
 
-                $(ui.draggable).appendTo($('#' + real + suffix)); // im Ziel ablegeb
+//            if (real >= 0) {
+
+                $(ui.draggable).appendTo($('#' + Ziel + suffix)); // im Ziel ablegeb
                 var msg = '';
                 if (erisEvent.ID == undefined || erisEvent.ID == '') {
                     msg = makeEventMessage(MarkerID);
@@ -624,7 +627,7 @@ function makePlatzDroppable() {
                 }
 
                 createEventAttributes(MarkerID, erisEvent); // erzeuge Objekt + .data aus Position und Größe des Marker
-            }
+//            }
 
             $(ui.draggable).css({
                 'top': 0,
