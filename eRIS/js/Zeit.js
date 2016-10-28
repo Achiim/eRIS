@@ -27,7 +27,6 @@ function erisHeute() {
  * @param detlaTage = +/- Anzahl Tage zur Berechnung eines neuen Datums
  */
 function erisBerechneDatum(datum,deltaTage) {
-	var maxTageImMonat;
 	var dd = datum.split('.');		// tt.mm.jjjj
 	var tt = parseInt(dd[0]);
 	var mm = parseInt(dd[1]);
