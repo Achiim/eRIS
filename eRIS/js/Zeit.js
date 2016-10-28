@@ -1,6 +1,20 @@
 /**
+    ****************************************
+	* Sportstaetten-Reservierungs-System   *
+	****************************************
+	
+	@author		Achim
+	@version	2016
+	@copyright 	alle Rechte vorbehalten
+
+	@description
  * 	Fasst alle Routinen für Zeit, Datum und deren Manipulation zusammen
  */
+//*********************************************************************************
+/**
+ * @global
+ */
+"use strict";		// Verwendung des Strict-Modus zur Laufzeit
 
 // *********************************************************************
 /** 

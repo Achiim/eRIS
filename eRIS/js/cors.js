@@ -9,6 +9,8 @@
 	Funktionen zur Nutzung der Google Cloud Platform API
 	
 **/
+"use strict";		// Verwendung des Strict-Modus zur Laufzeit
+
 
 /* global $ */
 /* global fieldTitle */

@@ -64,6 +64,8 @@
 /**
  * @global
  */
+"use strict";		// Verwendung des Strict-Modus zur Laufzeit
+
 
 /*global $*/
 /*global erisHeute*/
