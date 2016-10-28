@@ -85,7 +85,7 @@ Platzname[2] = 'c';
 Platzname[3] = 'd';
 
 var AnzahlPlatzTeile = 2; // aktuelle Anzahl der reservierbaren Platzteile
-var currentDatum = erisHeute();; // aktuelles Datum in der Tagesanzeige
+var currentDatum = erisHeute(); // aktuelles Datum in der Tagesanzeige
 
 //*********************************************************************************
 /**
