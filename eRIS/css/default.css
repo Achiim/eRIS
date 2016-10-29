@@ -126,6 +126,11 @@ Styles fuer den Belegungsplan in allen Views
 .Mitte {
 	width: 380px;
 }
+
+.MittePlatz {
+	width: 880px;
+	height: 400px;
+}
 .Platzname, .Platz, .Platzganztags, .Platzlogo, .Platzteile {
 	width: 120px;
 }
@@ -134,6 +139,16 @@ Styles fuer den Belegungsplan in allen Views
 	margin-left: 5px;
 	float: left;
 }
+.Nameplatz, .Teileplatz {
+	color: white;
+}
+
+.MittePlatzKopf {
+	text-align: center;
+	margin-left: 60px;
+}
+
+
 	
 .Platzlogo {
 	position: relative;
@@ -220,7 +235,7 @@ Styles fuer den Belegungsplan in allen Views
 #Zeitleiste {
 	float: left;
 	height: 400px;
-	overflow: scroll;
+	overflow-x: scroll;
 }
 
 #ZeitMitte {

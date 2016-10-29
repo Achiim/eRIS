@@ -137,7 +137,7 @@ function postEventUpdate(msg) {
 			erisError('postEventUpdate: HTTP-Fehler beim Update des Events: ' + status + ' ' + text + ' ' + msg);
 		}
 		else {
-			erisLog('postEventUpdate: ok' + text); // debug only
+			erisLog('postEventUpdate: ok ' + status + ' ' + text); // debug only
 			return;
 		}
 
