@@ -49,7 +49,7 @@ function erisCreateCORSRequest(method, url) {
 		var mode = false; // false = synchroner Aufruf der url | true = asynchroner Aufruf
 		xhr.open(method, url, mode);
 	}
-	else if (typeof XDomainRequest != "undefined") {
+	else if (typeof XDomainRequest !== "undefined") {
 		// XDomainRequest for IE.
 		xhr = new XDomainRequest();
 		xhr.open(method, url);
@@ -293,7 +293,7 @@ function readAllTeams() {
 			//    		DefaultSize = Teams[a].defaultSize;
 			Klasse = Teams[a].group.groupId;
 
-			if (Klasse != 'Sonstiges') {
+			if (Klasse !== 'Sonstiges') {
 				// Generiere den Team-Button
 				$('<button>' + TeamID + '</button>')
 					.addClass('Eventbutton ' + Klasse)

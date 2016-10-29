@@ -1118,7 +1118,7 @@ function prevField() {
     currentField--;
     currentDatum = $('#DatumMitte').text(); // Datum aus der Anzeige
     if (currentField < 0) currentField = fieldAmount - 1; // In Kreis blättern
-    if (AnzahlPlatzTeile != fieldPortions[currentField]) { // falls Platzteileanzahl abweicht, muss der Platz neu aufgebaut werden
+    if (AnzahlPlatzTeile !== fieldPortions[currentField]) { // falls Platzteileanzahl abweicht, muss der Platz neu aufgebaut werden
         AnzahlPlatzTeile = fieldPortions[currentField]; // neu Platzportionierung merken
         doPlatzteilview(Platzname[currentField]); // Platzeile neu aufbauen
     }
@@ -1138,7 +1138,7 @@ function nextField() {
     currentField++;
     currentDatum = $('#DatumMitte').text(); // Datum aus der Anzeige
     if (currentField >= fieldAmount) currentField = 0; // In Kreis blättern
-    if (AnzahlPlatzTeile != fieldPortions[currentField]) { // falls Platzteileanzahl abweicht, muss der Platz neu aufgebaut werden
+    if (AnzahlPlatzTeile !== fieldPortions[currentField]) { // falls Platzteileanzahl abweicht, muss der Platz neu aufgebaut werden
         AnzahlPlatzTeile = fieldPortions[currentField]; // neu Platzportionierung merken
         doPlatzteilview(Platzname[currentField]); // Platzeile neu aufbauen
     }
