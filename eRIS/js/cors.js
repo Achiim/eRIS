@@ -219,12 +219,16 @@ function readAllEvents(field, datum) {
 		*		
 		***********************************************/
 		var Event = new Object();
-
+		var erisEventMarker = [];
 
 		
 		for (var a = 0; a < Termine.length; a++) {
 
-			var EE=new ErisEvent(Termine[a].id, Termine[a].startTime, Termine[a].duration, Termine[a].description, Termine[a].team, Termine[a].match, Termine[a].partOfSeries, Termine[a].field, Termine[a].portion);
+			erisEventMarker[a]=new ErisEvent(Termine[a].id, Termine[a].startTime, Termine[a].duration, 
+											 Termine[a].description, Termine[a].team, Termine[a].match, 
+											 Termine[a].partOfSeries, Termine[a].field, Termine[a].portion);
+			erisEventMarker[a].view();
+			
 			
 			Event.ID = Termine[a].id; // interner Schlüssel
 			Event.start = Termine[a].startTime; // Datum und Uhrzeit des Beginns
