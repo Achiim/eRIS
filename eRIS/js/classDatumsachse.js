@@ -9,20 +9,23 @@
 	@copyright 	alle Rechte vorbehalten
 
 	@description
-  	Definition der Klasse "Platz" mit allen Eigenschaften und Methoden.
+  	Definition der Klasse "Datumsachse" mit allen Eigenschaften und Methoden.
 */
 
+/*global $*/
+/*global erisDatum2Wert*/
+/*global erisBerechneDatum*/
+/*global erisWert2Datum*/
+/*global erisTrace*/
 
 class Datumsachse {
 	/**
-	 * @param name = Bezeichung des Platzes
-	 * @param teilbezeichung = Kurzbezeichung für Platzteile
-	 * @param anzahlteile = Anzahl der reservierbaren Platzteile
+	 * @param wert = aktuelles Datum
 	 * 
 	 * @description
-	 * Konstruktor für ein Platzobjekt. 
+	 * Konstruktor für eine Datumsachse mit Auswahl-Slider. 
 	 * @example
-	 * Aufrufbeispiel: var kunstrasen = new Platz('Kunstrasen', 'K', 2); 
+	 * Aufrufbeispiel: var timeline = new Datumsachse('30.10.2016'); 
 	 */
 
 	constructor(wert) {

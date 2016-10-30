@@ -9,22 +9,29 @@
 	@copyright 	alle Rechte vorbehalten
 
 	@description
-  	Definition der Klasse "Platz" mit allen Eigenschaften und Methoden.
+  	Definition der Klasse "Zeitachse" mit allen Eigenschaften und Methoden.
 */
+
+/*global $*/
+/*global BeginnZeitLeiste*/
+/*global EndeZeitLeiste*/
+/*global StundeInPixel*/
+/*global PlatzTeilMargin*/
 
 
 class Zeitachse {
 	
 
 	/**
-	 * @param name = Bezeichung des Platzes
-	 * @param teilbezeichung = Kurzbezeichung für Platzteile
-	 * @param anzahlteile = Anzahl der reservierbaren Platzteile
+	 * @param art = unterscheidet Links und Rechts dargestellte Zeitachsen
+	 *				Der Wert von art wird als class dem generierten <div> zugeordnet
+	 *				das ermöglicht eine Gestaltung per css.
 	 * 
 	 * @description
-	 * Konstruktor für ein Platzobjekt. 
+	 * Konstruktor für eine vertikale Zeitachse, die limks und/oder rechts angezeigt werden kann.
+	 * Dazwischen soll sich einen Fläche befinden. 
 	 * @example
-	 * Aufrufbeispiel: var kunstrasen = new Platz('Kunstrasen', 'K', 2); 
+	 * Aufrufbeispiel: var zeitleiste = new Zeitachse('Rechts'); 
 	 */
 
 	constructor(art) {
