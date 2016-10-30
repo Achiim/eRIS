@@ -32,7 +32,7 @@ class Zeitachse {
 	}
 
 	view(containerId) {
-		
+				
 	    $('<div/>') // Anzeige der Zeit links
         .addClass(this.art)
         .attr('id', 'Zeit'+this.art)

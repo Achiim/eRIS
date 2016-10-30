@@ -796,6 +796,22 @@ function newEvent(erisEvent) {
     }
     storeToMarkerData(markerID, erisEvent);
 
+    // qTip für den Marker
+    var markup = erisToolTip(markerID, erisEvent);
+    $('#'+markerID).qtip({ // Grab some elements to apply the tooltip to
+        content: {
+        	title: erisEvent.TeamID,
+            text: markup
+        },
+        position: {
+            my: 'top left',
+            at: 'bottom right'
+        },
+        style: {
+            classes: 'qtip-blue qtip-shadow'
+        }
+    });
+    
     erisTrace('newEvent - Ende');
 }
 

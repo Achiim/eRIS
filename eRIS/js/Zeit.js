@@ -59,6 +59,42 @@ function erisBerechneDatum(datum, deltaTage) {
 }
 
 //*********************************************************************
+
+/**
+ * 
+ * Wandelt Datum in die interne Darstellung
+ * 
+ * @param datum = dd.mm.jjjj
+ * @returns interner Wert des Datums
+ */
+function erisDatum2Wert(datum) {
+	var dd = datum.split('.'); // tt.mm.jjjj
+	var tt = parseInt(dd[0], 10);
+	var mm = parseInt(dd[1], 10);
+	var jj = parseInt(dd[2], 10);
+	var nd = new Date(jj, mm - 1, tt); // Datumswert, mit dem gerechnet werden kann
+  return nd.getTime();
+}
+
+//*********************************************************************
+
+/**
+ * 
+ * Wandelt interne Darstellung in dd.mm.jjjj
+ * 
+ * @param wert = interner Wert des Datums
+ * @retuns = dd.mm.jjjj
+ */
+function erisWert2Datum(wert) {
+	var today = new Date(wert); // Datumswert, mit dem gerechnet werden kann
+	var tag = today.getDate(); // aktueller Tag
+	var monat = today.getMonth() + 1; // aktueller Monat
+	var jahr = today.getFullYear(); // aktuelles Jahr
+	var heute = tag + '.' + monat + '.' + jahr; // Formatiere Rückgabe
+  return heute;
+}
+
+//*********************************************************************
 /** 
  * liefert das aktuelle Datum im Format TT.DD.JJJJ hh:mm:ss.ms
  * 

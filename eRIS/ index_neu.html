@@ -50,10 +50,14 @@
 		<script src="js/cors.js"></script>
 		<script src="js/classPlatz.js"></script>
 		<script src="js/classZeitachse.js"></script>
+		<script src="js/classDatumsachse.js"></script>
 		
 		<script>		
 		$(document).ready(							// sobald die Seite geladen ist (jQuery)
 				function() {
+					var Timeline = new Datumsachse(erisHeute());
+					Timeline.view('Datumsleiste');
+
 					var zeitlinks = new Zeitachse('Links');
 					zeitlinks.view('PlatzContainer');
 					var kunstrasen = new Platz('Kunstrasen', 'K', 2);
@@ -85,6 +89,10 @@
 	</head>
 	
 	<body>
+
+
+
+
 		<div id="erisViews">
 		  <ul>
 		    <li><a href="#Tagesplan">Tagesplan</a></li>
@@ -120,6 +128,11 @@
 		.attr('id', 'Platzleiste')
 		.appendTo('#Belegungsplan');
 
+		$('<div/>')
+		.addClass('Datumsleiste')
+		.attr('id', 'Datumsleiste')
+		.appendTo('#Platzleiste');
+		
 		$('<div/>')
 		.addClass('MittePlatzKopf')
 		.attr('id', 'PlatzMitteKopf')
