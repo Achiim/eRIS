@@ -34,6 +34,15 @@ body {
 	font-size: 1rem;
 	font-weight: bold;
 }
+.sliderWert {
+    width: 3em;
+    height: 1.6em;
+    top: 50%;
+    margin-top: -.8em;
+    text-align: center;
+    line-height: 1.6em;
+    color: white;
+}
 
 .Uhrzeit {
 	font-size: 1.0rem;
@@ -126,6 +135,11 @@ Styles fuer den Belegungsplan in allen Views
 .Mitte {
 	width: 380px;
 }
+
+.MittePlatz {
+	width: 880px;
+	height: 400px;
+}
 .Platzname, .Platz, .Platzganztags, .Platzlogo, .Platzteile {
 	width: 120px;
 }
@@ -134,7 +148,15 @@ Styles fuer den Belegungsplan in allen Views
 	margin-left: 5px;
 	float: left;
 }
-	
+.Nameplatz, .Teileplatz {
+	color: white;
+}
+
+.MittePlatzKopf {
+	text-align: center;
+	margin-left: 60px;
+}
+
 .Platzlogo {
 	position: relative;
 }
@@ -220,7 +242,7 @@ Styles fuer den Belegungsplan in allen Views
 #Zeitleiste {
 	float: left;
 	height: 400px;
-	overflow: scroll;
+	overflow-x: scroll;
 }
 
 #ZeitMitte {

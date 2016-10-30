@@ -34,41 +34,65 @@
 -->
 
 		
-		<!--  eigene Stylesheets -->
 		<link rel="stylesheet" type="text/css" href="css/default.css"/>
 		<link rel="stylesheet" type="text/css" href="css/green.css" title="green"/>
 		<link rel="alternate stylesheet" type="text/css" href="css/gray.css" title="gray"/>
 		<link rel="alternate stylesheet" type="text/css" href="css/red.css" title="red"/>
 		<link rel="alternate stylesheet" type="text/css" href="css/blue.css" title="blue"/>
 
-		<!--  Stylesheets für Frameworks-->
 		<link href="css/jQueryUI/jquery-ui.css" rel="stylesheet">
-		<link type="text/css" rel="stylesheet" href="http://cdn.jsdelivr.net/qtip2/3.0.3/jquery.qtip.min.css" />
 
-		<!--  jQuery + jQueryUI -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 		<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 
-		<!--  plug-in qTip -->
-		<script type="text/javascript" src="http://cdn.jsdelivr.net/qtip2/3.0.3/jquery.qtip.min.js"></script>	
-		
-		<!--  eigene JavaScripts -->
 		<script src="js/Zeit.js"></script>
 		<script src="js/Layout.js"></script>
 		<script src="js/cors.js"></script>
+		<script src="js/classPlatz.js"></script>
+		<script src="js/classZeitachse.js"></script>
+		<script src="js/classDatumsachse.js"></script>
 		
-		<script>
-			$(document).ready(							// sobald die Seite geladen ist (jQuery)
-					function() {
-						doLayout();
-						
-					}
-				);
-		</script>
+		<script>		
+		$(document).ready(							// sobald die Seite geladen ist (jQuery)
+				function() {
+					var Timeline = new Datumsachse(erisHeute());
+					Timeline.view('Datumsleiste');
 
+					var zeitlinks = new Zeitachse('Links');
+					zeitlinks.view('PlatzContainer');
+					var kunstrasen = new Platz('Kunstrasen', 'K', 2);
+					kunstrasen.view('PlatzContainer', 'PlatzMitteKopf');
+					var Stadion = new Platz('Stadion', 'S', 3);
+					Stadion.view('PlatzContainer', 'PlatzMitteKopf');
+					var Trainingsplatz = new Platz('Trainingsplatz', 'T', 4);
+					Trainingsplatz.view('PlatzContainer', 'PlatzMitteKopf');
+					var Rohrau1 = new Platz('Rohrau1', 'R', 2);
+					Rohrau1.view('PlatzContainer', 'PlatzMitteKopf');
+					var Rohrau2 = new Platz('Rohrau2', 'R', 2);
+					Rohrau2.view('PlatzContainer', 'PlatzMitteKopf');
+					var Schwabenland = new Platz('Schwabenland', 'H', 3);
+					Schwabenland.view('PlatzContainer', 'PlatzMitteKopf');
+					var Schoenbuch = new Platz('Schoenbuch', 'H', 1);
+					Schoenbuch.view('PlatzContainer', 'PlatzMitteKopf');
+					var zeitrechts = new Zeitachse('Rechts');
+					zeitrechts.view('PlatzContainer');
+					
+					var sum = 0;
+					$("#PlatzContainer .Platz").each(function(){sum += $(this).width()});
+					
+					var sumz = 125; // Breite der Zeitleisten
+					$("#PlatzMitte").css('width', sumz + sum + 55);
+					$("#Belegungsplan").css('width', sumz + sum+55);
+
+				});
+		</script>		
 	</head>
 	
 	<body>
+
+
+
+
 		<div id="erisViews">
 		  <ul>
 		    <li><a href="#Tagesplan">Tagesplan</a></li>
@@ -96,7 +120,36 @@
 			</div>
 		  </div>
 		</div>
+
+		<script>
+
+		$('<div/>')
+		.addClass('Platzleiste')
+		.attr('id', 'Platzleiste')
+		.appendTo('#Belegungsplan');
+
+		$('<div/>')
+		.addClass('Datumsleiste')
+		.attr('id', 'Datumsleiste')
+		.appendTo('#Platzleiste');
 		
+		$('<div/>')
+		.addClass('MittePlatzKopf')
+		.attr('id', 'PlatzMitteKopf')
+		.appendTo('#Platzleiste');
+
+		$('<div/>')
+		.addClass('MittePlatz')
+		.attr('id', 'PlatzMitte')
+		.css ('overflow', 'scroll')
+		.appendTo('#Platzleiste');
+
+		$('<div/>')
+		.attr('id', 'PlatzContainer')
+		.appendTo('#PlatzMitte');
+
+		</script>		
+			
 		<div class="Buttonlist" id="Buttonlist">
 		</div>
 

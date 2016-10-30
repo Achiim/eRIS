@@ -68,6 +68,31 @@
   
   </script>
 
+<!-- 
+	erisDatum2Wert - Test
+	------------------------
+	.... 
+  -->
+  <script>
+  
+  QUnit.test("erisDatum2Wert(1.1.1970)", function( assert ) {
+		assert.equal(erisDatum2Wert('1.1.1970'), 0);
+});
+
+  QUnit.test("erisDatum2Wert(30.10.2016)", function( assert ) {
+		assert.equal(erisDatum2Wert('30.10.2016'), 0);
+});
+
+  QUnit.test("erisWert2Datum(0)", function( assert ) {
+		assert.equal(erisWert2Datum(0), 0);
+});
+
+  QUnit.test("erisWert2Datum(1477778400000)", function( assert ) {
+		assert.equal(erisWert2Datum(1477778400000), 0);
+});
+
+  </script>
+  
   </head>
   <body>
  
