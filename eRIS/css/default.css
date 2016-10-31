@@ -34,15 +34,12 @@ body {
 	font-size: 1rem;
 	font-weight: bold;
 }
-.sliderWert {
-    width: 3em;
-    height: 1.6em;
-    top: 50%;
-    margin-top: -.8em;
-    text-align: center;
-    line-height: 1.6em;
-    color: white;
+
+.ui-slider-handle {
+	height: 20px;
+	color: white;
 }
+
 
 .Uhrzeit {
 	font-size: 1.0rem;

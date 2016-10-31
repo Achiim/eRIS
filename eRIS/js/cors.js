@@ -41,12 +41,12 @@
 				
 	Template from:	https://www.html5rocks.com/en/tutorials/cors/
 */
-function erisCreateCORSRequest(method, url) {
+function erisCreateCORSRequest(method, url, mode) {
 	erisTrace('erisCreateCORSRequest - Beginn: Parameter = ' + method + ', ' + url);
 	var xhr = new XMLHttpRequest();
 	if ("withCredentials" in xhr) {
 		// XHR for Chrome/Firefox/Opera/Safari.
-		var mode = false; // false = synchroner Aufruf der url | true = asynchroner Aufruf
+//		var mode = false; // false = synchroner Aufruf der url | true = asynchroner Aufruf
 		xhr.open(method, url, mode);
 	}
 	else if (typeof XDomainRequest !== "undefined") {
@@ -74,7 +74,7 @@ function postEvent(msg, ui) {
 	// Endpoint zur Liste aller Events
 	var url = 'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/addEvent/' + msg;
 
-	var eventPost = erisCreateCORSRequest('GET', url);
+	var eventPost = erisCreateCORSRequest('GET', url, true);
 	if (!eventPost) {
 		erisError('postEvent: CORS not supported');
 		return;
@@ -85,21 +85,15 @@ function postEvent(msg, ui) {
 
 
 	// Response handlers.
-	eventPost.onload = function() {
-		var text = eventPost.responseText;
-		var status = eventPost.status;
-		if (status < 200 || status >= 300) {
-			erisError('postEvent: HTTP-Fehler beim Schreiben der Events: ' + status + ' ' + text + ' ' + msg);
-		}
-		else {
-			erisLog('postEvent: ok' + text); // debug only
+	eventPost.onreadystatechange = function() {
+		if (eventPost.readyState==4 && eventPost.status == 200) {
+			erisLog('eventPost - abgeschlossen mit DONE und HTTP-Status OK:'  + eventPost.responseText);		//erfolgreich abgeschlossen
 			var erisID = JSON.parse(text); // return generierte ID aus der DB
-			//	        	$(ui.draggable).data( "erisID", erisID.id ); 			// merke dir die eindeutige Nummer des Event (generiert von Tim)
-
-			return;
+//	        	$(ui.draggable).data( "erisID", erisID.id ); 			// merke dir die eindeutige Nummer des Event (generiert von Tim)
+		} else {
+			erisError('eventPost: HTTP-Fehler beim Schreiben der Events: ' + status + ' ' + text + ' ' + msg);
 		}
-
-	}; // Ende von eventPost.onload
+	}; // Ende von eventPost.onreadystatechange
 
 	eventPost.onerror = function() {
 		erisError('postEvent: Woops, there was an error making the request.');
@@ -120,7 +114,7 @@ function postEventUpdate(msg) {
 	// Endpoint zur Liste aller Events
 	var url = 'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/event/update/' + msg;
 
-	var eventPostUpdate = erisCreateCORSRequest('GET', url);
+	var eventPostUpdate = erisCreateCORSRequest('GET', url, true);
 	if (!eventPostUpdate) {
 		erisError('postEventUpdate: CORS not supported');
 		return;
@@ -130,18 +124,14 @@ function postEventUpdate(msg) {
 	}
 
 	// Response handlers.
-	eventPostUpdate.onload = function() {
-		var text = eventPostUpdate.responseText;
-		var status = eventPostUpdate.status;
-		if (status < 200 || status >= 300) {
-			erisError('postEventUpdate: HTTP-Fehler beim Update des Events: ' + status + ' ' + text + ' ' + msg);
+	eventPostUpdate.onreadystatechange = function() {
+		if (eventPostUpdate.readyState==4 && eventPostUpdate.status == 200) {
+			erisLog('eventPostUpdate - abgeschlossen mit DONE und HTTP-Status OK:'  + eventPostUpdate.responseText);		//erfolgreich abgeschlossen
+//			var erisID = JSON.parse(text); 
+		} else {
+			erisError('eventPostUpdate: HTTP-Fehler beim Update der Events: ' + status + ' ' + text + ' ' + msg);
 		}
-		else {
-			erisLog('postEventUpdate: ok ' + status + ' ' + text); // debug only
-			return;
-		}
-
-	}; // Ende von eventPostUpdate.onload
+	}; // Ende von eventPostUpdate.onreadystatechange
 
 	eventPostUpdate.onerror = function() {
 		erisError('postEventUpdate: Woops, there was an error making the request.');
@@ -182,75 +172,81 @@ function readAllEvents(field, datum) {
 		}
 	}
 
-	var eventList = erisCreateCORSRequest('GET', url);
+	var eventList = erisCreateCORSRequest('GET', url, true);
 	if (!eventList) {
 		erisError('readAllEvents: CORS not supported');
 		return;
 	}
-
+	
 	// Response handlers.
-	eventList.onload = function() {
-		//		setTimeout(function(){
-		$('.Platz').removeClass('verschwommen');
-		//		}, 2000);
-		var text = eventList.responseText;
-		var status = eventList.status;
-		if (status < 200 || status >= 300) erisError('readAllEvents: HTTP-Fehler beim lesen der Events: ' + status + ' ' + text);
 
-		//		erisLog('readAllEvents:' + text);		// debugging only
-
-		var Termine = JSON.parse(text).items;
-		if (Termine === undefined) return;
-
-
-		/**********************************************
-		 * 			JSON-Aufbau 
-		 * 
-				   "id": 19,
-				   "startTime": "13.10.2016 09:00",
-				   "duration": 30,
-				   "description": "Training",
-				   "team": "B2",
-				   "match": false,
-				   "partOfSeries": false,
-				   "field": "Unterer Platz",
-				   "portion": [1,2,3,4]
-		*		
-		*		
-		***********************************************/
-		var Event = new Object();
-		var erisEventMarker = [];
-
-		
-		for (var a = 0; a < Termine.length; a++) {
-
-			erisEventMarker[a]=new ErisEvent(Termine[a].id, Termine[a].startTime, Termine[a].duration, 
-											 Termine[a].description, Termine[a].team, Termine[a].match, 
-											 Termine[a].partOfSeries, Termine[a].field, Termine[a].portion);
-			erisEventMarker[a].view();
+	eventList.onreadystatechange = function() {
+	
+		if (eventList.readyState==4 && eventList.status == 200) {
 			
+			erisLog('readAllEvents - abgeschlossen mit DONE und HTTP-Status OK:'  + eventList.responseText);		//erfolgreich abgeschlossen
+
+			$('.Platz').removeClass('verschwommen');
+
+			var text = eventList.responseText;
+			var status = eventList.status;
+			if (status < 200 || status >= 300) erisError('readAllEvents: HTTP-Fehler beim lesen der Events: ' + status + ' ' + text);
+	
+			//		erisLog('readAllEvents:' + text);		// debugging only
+	
+			var Termine = JSON.parse(text).items;
+			if (Termine === undefined) return;
+	
+	
+			/**********************************************
+			 * 			JSON-Aufbau 
+			 * 
+					   "id": 19,
+					   "startTime": "13.10.2016 09:00",
+					   "duration": 30,
+					   "description": "Training",
+					   "team": "B2",
+					   "match": false,
+					   "partOfSeries": false,
+					   "field": "Unterer Platz",
+					   "portion": [1,2,3,4]
+			*		
+			*		
+			***********************************************/
+			var Event = new Object();
+			var erisEventMarker = [];
+	
 			
-			Event.ID = Termine[a].id; // interner Schlüssel
-			Event.start = Termine[a].startTime; // Datum und Uhrzeit des Beginns
-			Event.Dauer = Termine[a].duration; // Dauer in Minuten 
-			Event.Beschreibung = Termine[a].description; // Beschreibung
-			Event.TeamID = Termine[a].team; // Team Kürzel
-			Event.Spiel = Termine[a].match; // Team Kürzel
-			Event.Serie = Termine[a].partOfSeries; // Teil einer Terminserie
-			Event.Platz = Termine[a].field; // Platz
-			Event.Platzteil = Termine[a].portion; // Platzteile
-			Event.dateStart = Event.start.split(' '); // Array [0] = Datum, [1] = Zeit
-
-			var dateStart = Event.start.split(' ');
-			var day = parseInt(dateStart[0].split('.')[0], 10);
-			var month = parseInt(dateStart[0].split('.')[1], 10);
-			var year = parseInt(dateStart[0].split('.')[2], 10);
-			var hour = parseInt(dateStart[1].split(':')[0], 10);
-			var minute = parseInt(dateStart[1].split(':')[1], 10);
-
-			newEvent(Event);
+			for (var a = 0; a < Termine.length; a++) {
+	
+				erisEventMarker[a]=new ErisEvent(Termine[a].id, Termine[a].startTime, Termine[a].duration, 
+												 Termine[a].description, Termine[a].team, Termine[a].match, 
+												 Termine[a].partOfSeries, Termine[a].field, Termine[a].portion);
+				erisEventMarker[a].view();
+				
+				
+				Event.ID = Termine[a].id; // interner Schlüssel
+				Event.start = Termine[a].startTime; // Datum und Uhrzeit des Beginns
+				Event.Dauer = Termine[a].duration; // Dauer in Minuten 
+				Event.Beschreibung = Termine[a].description; // Beschreibung
+				Event.TeamID = Termine[a].team; // Team Kürzel
+				Event.Spiel = Termine[a].match; // Team Kürzel
+				Event.Serie = Termine[a].partOfSeries; // Teil einer Terminserie
+				Event.Platz = Termine[a].field; // Platz
+				Event.Platzteil = Termine[a].portion; // Platzteile
+				Event.dateStart = Event.start.split(' '); // Array [0] = Datum, [1] = Zeit
+	
+				var dateStart = Event.start.split(' ');
+				var day = parseInt(dateStart[0].split('.')[0], 10);
+				var month = parseInt(dateStart[0].split('.')[1], 10);
+				var year = parseInt(dateStart[0].split('.')[2], 10);
+				var hour = parseInt(dateStart[1].split(':')[0], 10);
+				var minute = parseInt(dateStart[1].split(':')[1], 10);
+	
+				newEvent(Event);
+			}
 		}
-	}; // Ende von eventList.onload
+	}; // Ende von eventList.onreadystatechange
 
 	eventList.onerror = function() {
 		erisError('Woops, there was an error making the request.');
@@ -268,62 +264,67 @@ function readAllTeams() {
 	var url = 'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/team';
 	//  var url = 'https://1-dot-svn-rest.appspot.com/_ah/api/treeSystem/v1/traverseTree';
 
-	var teamList = erisCreateCORSRequest('GET', url);
+	var teamList = erisCreateCORSRequest('GET', url, true);
 	if (!teamList) {
 		erisError('CORS not supported');
 		return;
 	}
 
 	// Response handlers.
-	teamList.onload = function() {
-		var text = teamList.responseText;
-		var status = teamList.status;
-		if (status < 200 || status >= 300) erisError('readAllTeams: HTTP-Fehler beim lesen der Teams: ' + status);
+	teamList.onreadystatechange = function() {
+		if (teamList.readyState==4 && teamList.status == 200) {
+			
+			erisLog('readAllTeams - abgeschlossen mit DONE und HTTP-Status OK:'  + teamList.responseText);		//erfolgreich abgeschlossen
 
-		//		erisLog('readAllTeams:' + text);		// debugging only
-
-		var Teams = JSON.parse(text).items;
-		if (Teams === undefined) return;
-
-		var TeamID = null; // Team-Kürzel z.B. "A"
-		var Team = null; // Team-Bezeichung z.B. "A-Jugend"
-		var DefaultColor = null; // Team-Farbcode z.B. "00AACC"
-		var DefaultDuration = null; // Default-Dauer einer Reservierung
-		var DefaultSize = null; // Default-Platzgräße einer Reservierung in Anzahl der Teile z.B. "3/4" für 3 von 4 max. Teilen 
-		var Klasse = null; // Altersklasse des Teams
-
-		for (var a = 0; a < Teams.length; a++) {
-			TeamID = Teams[a].teamId;
-
-			// übernehme die Attribute des Teams
-			Team = Teams[a].team;
-			DefaultColor = Teams[a].defaultColor;
-			DefaultDuration = Teams[a].defaultDuration;
-			//    		DefaultSize = Teams[a].defaultSize;
-			Klasse = Teams[a].group.groupId;
-
-			if (Klasse !== 'Sonstiges') {
-				// Generiere den Team-Button
-				$('<button>' + TeamID + '</button>')
-					.addClass('Eventbutton ' + Klasse)
-					.attr('id', 'Button' + bid++)
-					.appendTo('.Buttongroup' + Klasse)
-					.button();
-
-				// onClick-Funktion für den Team-Button
-				$('#Button' + (bid - 1)).click(function(event) {
-					event.preventDefault();
-
-					var Event = new Object();
-					Event.TeamID = $(this).html(); // ID aus dem Button
-					Event.Dauer = 60; // DefaultDauer 60 Minuten
-					Event.dateStart = []; // leeres Startdatum
-					Event.ID = null; // leere DB-ID
-					newEvent(Event);
-				});
+			var text = teamList.responseText;
+			var status = teamList.status;
+			if (status < 200 || status >= 300) erisError('readAllTeams: HTTP-Fehler beim lesen der Teams: ' + status);
+	
+			//		erisLog('readAllTeams:' + text);		// debugging only
+	
+			var Teams = JSON.parse(text).items;
+			if (Teams === undefined) return;
+	
+			var TeamID = null; // Team-Kürzel z.B. "A"
+			var Team = null; // Team-Bezeichung z.B. "A-Jugend"
+			var DefaultColor = null; // Team-Farbcode z.B. "00AACC"
+			var DefaultDuration = null; // Default-Dauer einer Reservierung
+			var DefaultSize = null; // Default-Platzgräße einer Reservierung in Anzahl der Teile z.B. "3/4" für 3 von 4 max. Teilen 
+			var Klasse = null; // Altersklasse des Teams
+	
+			for (var a = 0; a < Teams.length; a++) {
+				TeamID = Teams[a].teamId;
+	
+				// übernehme die Attribute des Teams
+				Team = Teams[a].team;
+				DefaultColor = Teams[a].defaultColor;
+				DefaultDuration = Teams[a].defaultDuration;
+				//    		DefaultSize = Teams[a].defaultSize;
+				Klasse = Teams[a].group.groupId;
+	
+				if (Klasse !== 'Sonstiges') {
+					// Generiere den Team-Button
+					$('<button>' + TeamID + '</button>')
+						.addClass('Eventbutton ' + Klasse)
+						.attr('id', 'Button' + bid++)
+						.appendTo('.Buttongroup' + Klasse)
+						.button();
+	
+					// onClick-Funktion für den Team-Button
+					$('#Button' + (bid - 1)).click(function(event) {
+						event.preventDefault();
+	
+						var Event = new Object();
+						Event.TeamID = $(this).html(); // ID aus dem Button
+						Event.Dauer = 60; // DefaultDauer 60 Minuten
+						Event.dateStart = []; // leeres Startdatum
+						Event.ID = null; // leere DB-ID
+						newEvent(Event);
+					});
+				}
 			}
 		}
-	}; // Ende teamList.onload
+	}; // Ende teamList.onreadystatechange
 
 
 	teamList.onerror = function() {
@@ -341,44 +342,47 @@ function readAllGroups() {
 	// This is a sample server that supports CORS.
 	var url = 'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/group';
 
-	var groupList = erisCreateCORSRequest('GET', url);
-	//  var teamList = erisCreateCORSRequest('POST', url);
+	var groupList = erisCreateCORSRequest('GET', url, true);
 	if (!groupList) {
 		erisError('CORS not supported');
 		return;
 	}
 
 	// Response handlers.
-	groupList.onload = function() {
-		var text = groupList.responseText;
-		var status = groupList.status;
-		if (status < 200 || status >= 300) erisError('readAllGroupsHTTP-Fehler beim lesen der Groups: ' + status);
-
-		//		erisLog('readAllGroups:' + text);		// debugging only
-
-		var Groups = JSON.parse(text).items;
-		if (Groups === undefined) return;
-		var GroupID = null; // Group-Kürzel z.B. "Aktive"
-		var GroupColor = null; // Group-Farbcode z.B. "00AACC"
-
-		for (var a = 0; a < Groups.length; a++) {
-			GroupID = Groups[a].groupId;
-
-			// übernehme die Attribute der Group
-			GroupColor = Groups[a].color;
-
-			$('<div>' + '</div>')
-				.addClass('Buttongroup' + GroupID + ' Buttongroup')
-				.css({
-					'float': 'left'
-				})
-				.appendTo('#Buttonlist');
+	groupList.onreadystatechange = function() {
+		if (groupList.readyState==4 && groupList.status == 200) {
+			
+			erisLog('readAllGroups - abgeschlossen mit DONE und HTTP-Status OK:'  + groupList.responseText);		//erfolgreich abgeschlossen
+			var text = groupList.responseText;
+			var status = groupList.status;
+			if (status < 200 || status >= 300) {
+				erisError('readAllGroupsHTTP-Fehler beim lesen der Groups: ' + status);
+			} else {
+				erisLog('readAllGroups:' + text);		// debugging only
+				var Groups = JSON.parse(text).items;
+				if (Groups === undefined) return;
+				var GroupID = null; // Group-Kürzel z.B. "Aktive"
+				var GroupColor = null; // Group-Farbcode z.B. "00AACC"
+		
+				for (var a = 0; a < Groups.length; a++) {
+					GroupID = Groups[a].groupId;
+		
+					// übernehme die Attribute der Group
+					GroupColor = Groups[a].color;
+		
+					$('<div>' + '</div>')
+						.addClass('Buttongroup' + GroupID + ' Buttongroup')
+						.css({
+							'float': 'left'
+						})
+						.appendTo('#Buttonlist');
+				}
+		
+				$('<div>' + '</div>')
+					.delay(300); // Verzögeerung um 300ms, damit Buttongroups vorhanden sind, bevor Buttons reingelegt werden
+			}
 		}
-
-		$('<div>' + '</div>')
-			.delay(300); // Verzögeerung um 300ms, damit Buttongroups vorhanden sind, bevor Buttons reingelegt werden
-
-	}; // Ende groupList.onload
+	}; // Ende groupList.onreadystatechange
 
 
 	groupList.onerror = function() {
@@ -396,14 +400,17 @@ function readAllFields() {
 	// This is a sample server that supports CORS.
 	var url = 'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/field';
 
-	var fieldList = erisCreateCORSRequest('GET', url);
+	var fieldList = erisCreateCORSRequest('GET', url, false);
 	if (!fieldList) {
 		erisError('CORS not supported');
 		return;
 	}
 
 	// Response handlers.
-	fieldList.onload = function() {
+	fieldList.onreadystatechange = function() {
+		if (fieldList.readyState==4 && fieldList.status == 200) {
+			
+			erisLog('readAllFields - abgeschlossen mit DONE und HTTP-Status OK:'  + fieldList.responseText);		//erfolgreich abgeschlossen
 			var text = fieldList.responseText;
 			var status = fieldList.status;
 			if (status < 200 || status >= 300) erisError('readAllFields: HTTP-Fehler beim lesen der Fields: ' + status);
@@ -440,8 +447,8 @@ function readAllFields() {
 				setFieldPartTitle(a); // neue Bezeichnung der Platzteile
 
 			}
-
-		} // Ende fieldList.onload
+		}
+	} // Ende fieldList.onreadystatechange
 
 
 	fieldList.onerror = function() {
