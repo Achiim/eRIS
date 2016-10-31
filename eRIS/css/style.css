@@ -1,0 +1,29 @@
+@CHARSET "ISO-8859-1";
+/**
+    ****************************************
+	* Sportstaetten-Reservierungs-System   *
+	****************************************
+	
+	Autor:	Achim
+	Jahr:	2016
+	
+	zentrales Stylesheet
+	
+	Quelle fuer HTML-Farbnamen: http://www.w3schools.com/colors/colors_groups.asp
+	Style-Guide: https://material.google.com/style/color.html#color-color-palette
+
+ 	Quelle fuer Linear-Gradient der Marker: http://www.cssmatic.com/gradient-generator
+*/
+
+/* reset Browser-Defaults*/
+
+@import url("reset/reset.css");
+
+/* Basisgestaltung */
+
+@import url("default.css");
+
+/* Farbgestaltung */
+
+@import url("green.css");
+
