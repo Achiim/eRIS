@@ -55,7 +55,10 @@
 		<script>		
 		$(document).ready(							// sobald die Seite geladen ist (jQuery)
 				function() {
-					var Timeline = new Datumsachse(erisHeute());
+				    erisTrace('doLayout - Beginn');
+				    $("#erisViews").tabs(); // Tabs erzeugen
+
+				    var Timeline = new Datumsachse(erisHeute());
 					Timeline.view('Datumsleiste');
 
 					var zeitlinks = new Zeitachse('Links');
