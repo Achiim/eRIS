@@ -35,8 +35,8 @@ class Datumsachse {
 	view(containerId) {
 		
 		var dt_today = this.wert;
-		var dt_from = erisBerechneDatum(this.wert,-7);
-		var dt_to = erisBerechneDatum(this.wert, 7);
+		var dt_from = erisBerechneDatum(this.wert,-5);
+		var dt_to = erisBerechneDatum(this.wert, +7);
 
 	    $('<div/>') // Sliderbereich
 	    .attr('id', 'DateSlider')
@@ -62,9 +62,9 @@ class Datumsachse {
 			       $(ui.handle).text(this.wert);			// neuer Datumswert im Schieber
 			    },
 			
-			stop: function (e, ui) {
-			    erisTrace('neuer Datumswert = ' + this.wert);
-
+			change: function (e, ui) {
+			    $("#sliderView").slider( "option", "min", erisDatum2Wert(erisBerechneDatum(this.wert, -5)) );
+			    $("#sliderView").slider( "option", "max", erisDatum2Wert(erisBerechneDatum(this.wert, +7)) );
 			    }
 		});
 		$('#sliderView .ui-slider-handle')

@@ -1,0 +1,187 @@
+@CHARSET "ISO-8859-1";
+/**
+    ****************************************
+	* Sportstaetten-Reservierungs-System   *
+	****************************************
+	
+	Autor:	Achim
+	Jahr:	2016
+	
+	Default-Layout
+	
+	Quelle fuer HTML-Farbnamen: http://www.w3schools.com/colors/colors_groups.asp
+	Style-Guide: https://material.google.com/style/color.html#color-color-palette
+
+ 	Quelle fuer Linear-Gradient der Marker: http://www.cssmatic.com/gradient-generator
+*/
+
+
+/****************************************
+Styles fuer Schriftgrößen, -ausrichtung
+****************************************/
+
+body {
+	
+	font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+}
+
+/****************************************
+jQuery - Tabs Styles =========== Ebene 0
+****************************************/
+#erisViews {
+	width: 895px;				/* Gesamtbreite des TAB */
+}
+
+#Tagesplan, #Wochenplan, #Monatsplan, #eRIS {
+	height: 570px;				/* Höhe des TAB */
+}
+
+
+/****************************************
+Belegungsplan ================== Ebene 1
+****************************************/
+
+.Belegungsplan {
+	width: 895px;				/* maximale Breite  */
+	float: left;
+}
+
+/****************************************
+Datumsleiste =================== Ebene 2
+****************************************/
+
+.Datumsleiste {
+	padding-top: 20px;
+	height: 20px;
+}
+
+
+.ui-slider-handle {				/* jQueryUI Slider mit Datumsanzeige */
+	height: 20px;
+	color: white;
+}
+
+
+/****************************************
+Kopfleiste ==================== Ebene 2
+****************************************/
+
+.Kopfleiste {
+
+}
+
+/****************************************
+Platzkopf================ Ebene 3 + 4 + 5
+****************************************/
+.KopfContainer {
+	margin-left: 60px;
+	overflow: hidden;
+	width: 755px;				/* 125px * 6 Plätze + 5px Abstand zwischen den Plätzen */
+	height: 41px;
+}
+
+.PlatzMitteKopf {
+	text-align: center;			/* alle Beschreiftungen im Platzkopf sind zentriert */
+	color: white;				/* Schriftfarbe aller Texte im Platzkopf */
+	width: 880px;				/* 125px * 7 Plätze + 5px Abstand zwischen den Plätzen */
+	height: 41px;
+	overflow: hidden;			/* ???? */
+}
+
+.Platzteile, .Platzname  {
+	width: 120px;				/* Beschriftung über dem platz ist so breit wie ein Platz */
+	margin-left: 5px;			/* Abstand zwischen den Plätzen */
+	float: left;
+}
+
+.PlatzKopfTeil{					/* Formatierung wie das Platzteil */
+	float: left;
+	margin-top: 1px;
+	margin-right: 1px;
+}
+
+
+/****************************************
+Platzleiste ==================== Ebene 2
+****************************************/
+
+.Platzleiste {
+	height: 420px;
+	overflow: scroll;		/* heir scroll es vertikal über die Zeitachse */
+}
+
+/****************************************
+Zeitachse=============== Ebene 3 + 4 + 5
+****************************************/
+
+.Rechts, .Links {
+	width: 60px;			/* Breite der Zeitleisten */
+	overflow: hidden;		/* ???? */
+	float: left;
+	color: white;			/* Farbe der Uhrzeiten 8:00 - 22:00 */
+}
+
+#ZeitContainerLinks, #ZeitContainerRechts {
+	overflow: hidden;
+}
+
+#ZeitLinks{
+	text-align: right;
+	overflow: hidden;
+} 
+
+#ZeitRechts{
+	text-align: left;	
+	overflow: hidden;
+} 
+
+.Uhrzeit {
+	font-size: 1.0rem;
+	margin-top: 1px;
+}
+
+
+
+/****************************************
+Platzmitte============== Ebene 3 + 4 + 5
+****************************************/
+
+.PlatzMitte {
+	width: 755px;				/* 125px * 6 Plätze + 5px Abstand zwischen den Plätzen  + 20px Scrollbar */
+	overflow-x: scroll;			/* hier scroll es hoizontal über die Plätze*/
+	float: left;
+}
+
+.PlatzContainer {
+	overflow: hidden;
+	width: 880px;				/* 125px * 7 Plätze + 5px Abstand zwischen den Plätzen */
+}
+
+.Platz  {
+	margin-left: 5px;
+	width: 120px;
+	float: left;
+	opacity: 1;
+	/* background-image: url(../images/erisPlatz.png); */	
+}
+
+.PlatzTeil {
+	float: left;
+	margin-top: 1px;			/* Abstand zwischen den Platzteilen */
+	margin-right: 1px;			/* Abstand zwischen den Platzteilen */
+	height: 10px;
+}
+
+
+/*******************************************
+Styles fuer den Belegungsplan in allen Views
+*******************************************/
+.verschwommen {
+  	filter: blur(2px);
+	-webkit-filter: blur(2px);
+	-moz-filter: blur(2px);
+	-o-filter: blur(2px);
+	-ms-filter: blur(2px);
+	cursor: progress;
+}
+
