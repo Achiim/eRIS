@@ -39,11 +39,29 @@ class Zeitachse {
 	}
 
 	view(containerId) {
+		
 				
-	    $('<div/>') // Anzeige der Zeit links
-        .addClass(this.art)
-        .attr('id', 'Zeit'+this.art)
-        .appendTo('#'+containerId);
+		if (this.art == 'Links') {
+			$('<div/>') // Anzeige der Zeit links
+		    .addClass(this.art)
+		    .attr('id', 'ZeitContainer'+this.art)
+		    .prependTo('#'+containerId);
+
+			$('<div/>') // Anzeige der Zeit links
+		    .addClass(this.art)
+		    .attr('id', 'Zeit'+this.art)
+		    .prependTo('#ZeitContainer'+this.art);
+		} else {
+			$('<div/>') // Anzeige der Zeit links
+		    .addClass(this.art)
+		    .attr('id', 'ZeitContainer'+this.art)
+		    .appendTo('#'+containerId);
+
+			$('<div/>') // Anzeige der Zeit links
+		    .addClass(this.art)
+		    .attr('id', 'Zeit'+this.art)
+		    .appendTo('#ZeitContainer'+this.art);
+		}
 
 	    // Linke Zeitskala erzeugen 8:00 - 22:00 Uhr
 	    // --------------------------------------------------

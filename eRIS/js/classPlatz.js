@@ -47,6 +47,7 @@ class Platz {
 			- Platzname
 			- Platzteilbezeichungen
 		********************************************/
+
         // Container für Platzkopfbeschriftungen
         // ------------------------------------
         $('<div/>') // Container 1
@@ -54,10 +55,11 @@ class Platz {
             .addClass('Platzteile')
             .appendTo('#'+PlatzKopfId);
 
+
         // Beschriftung des Platzes
         // ------------------------
         $('<div/>')
-        .addClass('Nameplatz')
+        .addClass('Platzname')
         .attr('id', 'Platzname'+ this.name)
         .css('width', PlatzWidth)
         .html(this.name)
@@ -75,8 +77,8 @@ class Platz {
             var ptn = this.teilbezeichung;
         	var pz=pl+1;
             $('<div>' + ptn + pz + '</div>') // neue Bezeichung der Platzteile erzeugen
-                .addClass('Platzteil')
-                .attr('id', 'Platzteil' +  this.name)
+                .addClass('PlatzKopfTeil')
+                .attr('id', 'PlatzKopfTeil' +  this.name)
                 .css('width', PlatzTeilWidth)
                 .appendTo('#Platzteile' +  this.name);
         }
