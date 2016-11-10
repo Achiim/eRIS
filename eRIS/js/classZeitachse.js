@@ -21,7 +21,6 @@
 
 class Zeitachse {
 	
-
 	/**
 	 * @param art = unterscheidet Links und Rechts dargestellte Zeitachsen
 	 *				Der Wert von art wird als class dem generierten <div> zugeordnet
@@ -36,6 +35,10 @@ class Zeitachse {
 
 	constructor(art) {
 		this.art = art;							// Links oder Rechts
+		this.achsenlaenge = 392-14;    // Pixel
+    this.von = 8                // Anzeige ab 8:00 Uhr
+    this.bis = 22               // Anzeige bis 22:00 Uhr
+    this.pixelStunde = Math.floor(this.achsenlaenge / (this.bis - this.von)); // Anzahl der Pixel je Stunde
 	}
 
 	view(containerId) {
@@ -65,12 +68,13 @@ class Zeitachse {
 
 	    // Linke Zeitskala erzeugen 8:00 - 22:00 Uhr
 	    // --------------------------------------------------
-	    for (var uhr = BeginnZeitLeiste; uhr < EndeZeitLeiste; uhr++) { // Zeitspalte links
+	    for (var uhr = this.von; uhr < this.bis; uhr++) { // Zeitspalte links
 	        $('<div>' + uhr + '<sup>00</sup></div>')
 	            .addClass('Uhrzeit')
 	            .attr('id', 'LU' + uhr)
 	            .css({
-	                'height': StundeInPixel - PlatzTeilMargin
+           //     'height': StundeInPixel - PlatzTeilMargin
+                'height': this.pixelStunde
 	            })
 	            .appendTo('#Zeit'+this.art);
 	    }

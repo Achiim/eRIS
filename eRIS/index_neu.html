@@ -34,6 +34,7 @@
 -->
 
 		
+		<link rel="stylesheet" type="text/css" href="css/Marker.css"/>
 		<link rel="stylesheet" type="text/css" href="css/Tagesplan.css"/>
 		<link rel="stylesheet" type="text/css" href="css/green.css" title="green"/>
 		<link rel="alternate stylesheet" type="text/css" href="css/gray.css" title="gray"/>
@@ -46,8 +47,8 @@
 		<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 
 		<script src="js/Zeit.js"></script>
-		<script src="js/Layout.js"></script>
 		<script src="js/cors.js"></script>
+		<script src="js/classErisEvent.js"></script>
 		<script src="js/classPlatz.js"></script>
 		<script src="js/classZeitachse.js"></script>
 		<script src="js/classDatumsachse.js"></script>
@@ -55,6 +56,7 @@
 		<script>		
 		$(document).ready(							// sobald die Seite geladen ist (jQuery)
 				function() {
+		  			erisTraceLevel = 0;
 				    erisTrace('doLayout - Beginn');
 				    $('#erisViews').tabs(); // Tabs erzeugen
 				    $('#eRIS').tabs(); // Tabs erzeugen
@@ -72,9 +74,9 @@
 					Stadion.view('PlatzContainer', 'PlatzMitteKopf');
 					var Trainingsplatz = new Platz('Trainingsplatz', 'T', 4);
 					Trainingsplatz.view('PlatzContainer', 'PlatzMitteKopf');
-					var Rohrau1 = new Platz('Rohrau1', 'R', 2);
+					var Rohrau1 = new Platz('RohrauA', 'R', 2);
 					Rohrau1.view('PlatzContainer', 'PlatzMitteKopf');
-					var Rohrau2 = new Platz('Rohrau2', 'R', 2);
+					var Rohrau2 = new Platz('RohrauB', 'R', 2);
 					Rohrau2.view('PlatzContainer', 'PlatzMitteKopf');
 					var Schwabenland = new Platz('Schwabenland', 'H', 3);
 					Schwabenland.view('PlatzContainer', 'PlatzMitteKopf');
@@ -83,6 +85,8 @@
 					var zeitrechts = new Zeitachse('Rechts');
 					zeitrechts.view('Platzleiste');
 					
+					var aJugend = new ErisEvent(undefined, '09.11.2016 13:15', '60', 'Training', 'A', false, false, 'Kunstrasen', [1,2]);
+					aJugend.view();
 			
 					$('#PlatzMitte').on('scroll', function () {
 					    $('#KopfContainer').scrollLeft($(this).scrollLeft());
