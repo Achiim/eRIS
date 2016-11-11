@@ -112,20 +112,23 @@ class Platz {
     // ------------------------------------
     for (var uhr = this.von * this.AnzahlPlatzteileJeStunde; uhr < this.bis * this.AnzahlPlatzteileJeStunde; uhr++) {
       for (var pl = 0; pl < this.anzahlteile; pl++) {
+        new Platzteil(this.pid++, this).view(); // erzeuge neues Platzteil und zeige es an
+ /*       
         $('<div/>')
           .addClass('PlatzTeil')
           .attr('id', this.pid++ + this.name)
           .css({'width': this.PlatzTeilWidth,
                'height': this.pixelViertelstunde})
           .appendTo('#Platz' + this.name);
+*/
       }
     }
     
     // mache die erzeugten Platzteile droppable
     // ----------------------------------------
-    this.droppable();
+ //   this.droppable();
 	} // end view
-	
+/*	
 	droppable () {
     $('.PlatzTeil').droppable({
       tolerance: "pointer",   // Wirft den Marker in das PlatzTeil auf das der Mouse-Pointer zeigt
@@ -151,7 +154,7 @@ class Platz {
     });
 
 	} // end droppable
-
+*/
 /*	
 	store() {
     var msg = '';
@@ -168,3 +171,59 @@ class Platz {
 */
 	
 } // end class
+
+
+
+
+class Platzteil {
+  
+  constructor (pid, platz) {
+    this.pid = pid;
+    this.platz = platz;
+  }
+  
+  view() {
+    // erzeuge ein Platzteil mit Referenz auf den Platz
+    // ------------------------------------------------
+    $('<div/>')
+      .addClass('PlatzTeil')
+      .attr('id', this.pid + this.platz.name)
+      .css({'width': this.platz.PlatzTeilWidth,
+           'height': this.platz.pixelViertelstunde})
+      .data('erisObject', this)
+      .appendTo('#Platz' + this.platz.name);
+
+    // mache das erzeugte Platzteil droppable
+    // --------------------------------------
+    $('#'+ this.pid + this.platz.name).droppable({
+      tolerance: "pointer",   // Wirft den Marker in das PlatzTeil auf das der Mouse-Pointer zeigt
+
+      drop: function(event, ui) { // Marker wurde in ein Platzteil fallengelassen
+        
+        var platzteil = $(this).data('erisObject'); // Objekt Platzteil, in das gedroppt wurde
+/*        
+        var Ziel = $(this).attr('id'); // ID des PlatzTeil in das gedroppt wird
+        var suffix = Ziel.replace(/[0-9]/g, ''); // Ziffern entfernen
+        Ziel = parseInt(Ziel, 10); // Platzteilnummer
+*/  
+        var MarkerID = $(ui.draggable).attr('id'); // ID des Markers der gedropped wird
+        var erisEvent = $('#' + MarkerID).data('erisObject'); // Objekt des bewegten Markers
+        
+        // Platzname im Marker aktualisieren
+        erisEvent.Platz = platzteil.platz.name;
+
+        $(ui.draggable)
+          .appendTo($('#' + platzteil.pid + platzteil.platz.name)); // im Ziel ablegen
+//        .appendTo($('#' + Ziel + suffix)); // im Ziel ablegen
+  
+        $(ui.draggable).css({
+            'top': 0,
+            'left': 0
+        }); // Position im Ziel oben links
+  
+      } // end drop
+    });
+   
+  } // end constructor
+   
+} // end class Platzteil
