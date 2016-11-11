@@ -16,6 +16,7 @@
 /* global erisWert2Datum */
 /* global erisTrace */
 
+
 class Datumsachse {
 	/**
    * @param angezeigtesDatum =
@@ -56,20 +57,35 @@ class Datumsachse {
       value: tod_val,
       
       slide: function (e, ui) {
-  	       this.angezeigtesDatum = erisWert2Datum(ui.value);
-  	       $(ui.handle).text(this.angezeigtesDatum);			// neuer Datumswert im
+        // Achtung: this verweist hier auf das jQuery-Objekt '#sliderView'
+        var erisTimeline = $('#sliderView .ui-slider-handle').data('erisTimeline');  // Referenz
+                                                                                      // auf
+                                                                                      // das
+                                                                                      // Objekt-Timeline
+        erisTimeline.angezeigtesDatum = erisWert2Datum(ui.value);
+  	    $(ui.handle).text(erisTimeline.angezeigtesDatum);			// neuer
+                                                              // Datumswert im
                                                           // Schieber
-  	    },
+  	  },
   	
   	  change: function (e, ui) {
-  	    $("#sliderView").slider( "option", "min", erisDatum2Wert(erisBerechneDatum(this.angezeigtesDatum, -5)) );
-  	    $("#sliderView").slider( "option", "max", erisDatum2Wert(erisBerechneDatum(this.angezeigtesDatum, +7)) );
-  	    }
+        // Achtung: this verweist hier auf das jQuery-Objekt '#sliderView'
+        var erisTimeline = $('#sliderView .ui-slider-handle').data('erisTimeline');  // Referenz
+                                                                                      // auf
+                                                                                      // das
+                                                                                      // Objekt-Timeline
+  	    $("#sliderView").slider( "option", "min", erisDatum2Wert(erisBerechneDatum(erisTimeline.angezeigtesDatum, -5)) );
+  	    $("#sliderView").slider( "option", "max", erisDatum2Wert(erisBerechneDatum(erisTimeline.angezeigtesDatum, +7)) );
+  	  }
 		});
+		
 		$('#sliderView .ui-slider-handle')
+      // Achtung: this verweist hier auf das Objekt Timeline
 			.text(this.angezeigtesDatum) // Zeige aktuelles Datum im Schieber an
+			.data('erisTimeline', this) // Referenz auf das Timeline-Objekt
 			.css('width', '100')
 			.css('text-align', 'center');
-	}
+
+	} // end view
 	
-}
+} // end class
