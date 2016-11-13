@@ -13,11 +13,11 @@
 class Platz {
 
 	/**
-   * @param name =
+   * @param platzName =
    *          Bezeichung des Platzes
-   * @param teilbezeichung =
+   * @param teilBezeichung =
    *          Kurzbezeichung für Platzteile
-   * @param anzahlteile =
+   * @param anzahlTeile =
    *          Anzahl der reservierbaren Platzteile
    * 
    * @description Konstruktor für ein Platzobjekt.
@@ -25,37 +25,23 @@ class Platz {
    */
   
   
-	constructor(timeline, name, teilbezeichung, anzahlteile) {
+	constructor(timeline, platzName, teilBezeichung, anzahlTeile) {
 	  this.timeline = timeline;           // Referenz auf den TimeSlider mit dem
                                         // aktuellen Datum
-		this.name = name;						        // Bezeichnung des Platzes
-    this.pid = 0;                       // Nummerierung der Platzteile auf dem
+		this.platzName = platzName;					// Bezeichnung des Platzes
+    this.platzteilNummer = 0;           // Nummerierung der Platzteile auf dem
                                         // Platz
-		this.teilbezeichung = teilbezeichung	
-		this.anzahlteile  = anzahlteile;		// Anzahl der reservierbaren
+		this.teilBezeichung = teilBezeichung	
+		this.anzahlTeile  = anzahlTeile;		// Anzahl der reservierbaren
                                         // Platzteile je Zeiteinheit
-		this.PlatzWidth = 120;
-		this.PlatzTeilMargin = 1;
-    this.MarkerPadding = 5;
-    this.AnzahlPlatzteileJeStunde = 4;  // kleinstes Reservierungsraster 1/4-tel
-                                        // Stunde
-
 		this.platzfarbe = 'green';				  // default Farbe des Platzes
-    this.von = 8                        // Anzeige ab 8:00 Uhr
-    this.bis = 22                       // Anzeige bis 22:00 Uhr
-    this.achsenlaenge = 392;            // Pixel
-    this.pixelStunde = Math.floor(this.achsenlaenge / (this.bis - this.von)); // Anzahl
-                                                                              // der
-                                                                              // Pixel
-                                                                              // je
-                                                                              // Stunde
-    this.pixelViertelstunde = Math.floor(this.pixelStunde/4)-1; // Anzahl der
-                                                                // Pixel je
-                                                                // Viertelstunde
+    this.von = 8;                       // Anzeige ab 8:00 Uhr
+    this.bis = 22;                      // Anzeige bis 22:00 Uhr
+
     // Breiten für Platzteile und kleinste Marker bestimmen
     // ----------------------------------------------------
-    this.PlatzTeilWidth = this.PlatzWidth / this.anzahlteile - this.PlatzTeilMargin; 
-    this.MarkerMinWidth = this.PlatzTeilWidth - this.MarkerPadding;
+    this.PlatzTeilWidth = erisPlatzWidth / this.anzahlTeile - erisPlatzTeilMargin; 
+    this.MarkerMinWidth = this.PlatzTeilWidth - erisMarkerPadding;
     
 
 	
@@ -88,7 +74,7 @@ class Platz {
       // Container für Platzkopfbeschriftungen
       // ------------------------------------
       $('<div/>') // Container 1
-        .attr('id', 'Kopf' + this.name)
+        .attr('id', 'Kopf' + this.platzName)
         .addClass('Platzteile')
         .appendTo('#'+PlatzKopfId);
       
@@ -96,28 +82,28 @@ class Platz {
       // ------------------------
       $('<div/>')
         .addClass('Platzname')
-        .attr('id', 'Platzname'+ this.name)
-        .css('width', this.PlatzWidth)
-        .html(this.name)
-        .appendTo('#Kopf' + this.name);
+        .attr('id', 'Platzname'+ this.platzName)
+        .css('width', erisPlatzWidth)
+        .html(this.platzName)
+        .appendTo('#Kopf' + this.platzName);
       
       // Container für Platzteilbeschriftungen
       // ------------------------------------
       $('<div/>') // Container 2
-        .attr('id', 'Platzteile' + this.name)
-        .appendTo('#Kopf' + this.name);
+        .attr('id', 'Platzteile' + this.platzName)
+        .appendTo('#Kopf' + this.platzName);
       
       // Platzteilbeschriftungen
       // ------------------------------------
-      for (var pl = 0; pl < this.anzahlteile; pl++) {
-        var ptn = this.teilbezeichung;
+      for (var pl = 0; pl < this.anzahlTeile; pl++) {
+        var ptn = this.teilBezeichung;
         var pz=pl+1;
         $('<div>' + ptn + pz + '</div>') // neue Bezeichung der
                                          // Platzteile erzeugen
           .addClass('PlatzKopfTeil')
-          .attr('id', 'PlatzKopfTeil' +  this.name)
+          .attr('id', 'PlatzKopfTeil' +  this.platzName)
           .css('width', this.PlatzTeilWidth)
-          .appendTo('#Platzteile' +  this.name);
+          .appendTo('#Platzteile' +  this.platzName);
       }
 
   } // end jQueryUI_Platzkopf
@@ -131,19 +117,19 @@ class Platz {
     // ------------------------
     $('<div/>')
       .addClass('Platz')
-      .attr('id', 'Platz'+ this.name)
+      .attr('id', 'Platz'+ this.platzName)
       .appendTo('#'+containerId);
 
     // Breite des Platz-Containers festlegen
     // --------------------------------------
-    $('#Platz' + this.name).width(this.PlatzWidth); // Breite des
+    $('#Platz' + this.platzName).width(erisPlatzWidth); // Breite des
                                                 // Platzes anpassen
 
     // erzeuge das Belegungsraster im Platz
     // ------------------------------------
-    for (var uhr = this.von * this.AnzahlPlatzteileJeStunde; uhr < this.bis * this.AnzahlPlatzteileJeStunde; uhr++) {
-      for (var pl = 0; pl < this.anzahlteile; pl++) {
-        new Platzteil(this.pid++, this).view(); // erzeuge neues Platzteil und
+    for (var uhr = this.von * erisAnzahlPlatzTeilejeStunde; uhr < this.bis * erisAnzahlPlatzTeilejeStunde; uhr++) {
+      for (var pl = 0; pl < this.anzahlTeile; pl++) {
+        new Platzteil(this.platzteilNummer++, this, pl+1).view(); // erzeuge neues Platzteil und
                                                 // zeige es an
       }
     }
@@ -151,24 +137,40 @@ class Platz {
   }
 } // end class
 
+// ********************************************************************************************
 
 class Platzteil {
-  
-  constructor (pid, platz) {
-    this.pid = pid;             // Nummerierung der Platzteile
-    this.platz = platz;         // Referenz auf das Platz-Objekt, zu dem das
-                                // Platzteil gehört
 
+  /**
+   * @param platzteilNummer =
+   *          lfd. Nummer des zu erzeugenden Platteils
+   * @param platz =
+   *          Referenz auf das Platz-Objekt zu em das Teil gehört
+   * 
+   * @param pl =
+   *          Teilnummer des Platzes (1 ... anzahlTeile), entspricht dem ersten reservierten Platzteil
+   * 
+   * @description Konstruktor für ein Platzteilobjekt.
+   * 
+   * @example Aufrufbeispiel: new Platzteil(12, Platz).view();
+   */
+  
+  constructor (platzteilNummer, platz, platzSpalte) {
+    this.platzteilNummer = platzteilNummer; // Nummerierung der Platzteile
+    this.platz = platz;                     // Referenz auf das Platz-Objekt, zu dem das
+                                            // Platzteil gehört
+    this.platzSpalte = platzSpalte;         // Teilnummer des Platzes (1 ... anzahlTeile)
+    
     // start-Stunde
-    var Stunde = pid / platz.anzahlteile / platz.AnzahlPlatzteileJeStunde + platz.von; 
+    var Stunde = platzteilNummer / platz.anzahlTeile / erisAnzahlPlatzTeilejeStunde + platz.von; 
     var vonStunde = Math.floor(Stunde); // volle Stunde aus Zeile berechnet
     vonStunde = ('00' + vonStunde).slice(-2); // mit führenden Nullen
 
     // start-Minute
-    var Minute = (vonStunde - platz.von) * platz.anzahlteile * platz.AnzahlPlatzteileJeStunde;
-    Minute = pid - Minute; // 0 - 15tes Platzteilraster innerhalb einer Stunde
+    var Minute = (vonStunde - platz.von) * platz.anzahlTeile * erisAnzahlPlatzTeilejeStunde;
+    Minute = platzteilNummer - Minute; // 0 - 15tes Platzteilraster innerhalb einer Stunde
 
-    var vonMinute = Math.floor(Minute / platz.anzahlteile);
+    var vonMinute = Math.floor(Minute / platz.anzahlTeile);
     if (vonMinute === 0) vonMinute = '00';
     if (vonMinute === 1) vonMinute = '15';
     if (vonMinute === 2) vonMinute = '30';
@@ -184,20 +186,20 @@ class Platzteil {
     // ------------------------------------------------
     $('<div/>')
       .addClass('PlatzTeil')
-      .attr('id', this.pid + this.platz.name)             // Format:
+      .attr('id', this.platzteilNummer + this.platz.platzName)             // Format:
                                                           // "99..99Platzname"
       .css({'width': this.platz.PlatzTeilWidth,           // zum Platz passende
                                                           // Breite der
                                                           // Platzteile
-           'height': this.platz.pixelViertelstunde})      // zum Platz passende
+           'height': erisPlatzteilHeight})                // zum Platz passende
                                                           // Höhe der Platzteile
       .data('erisPlatzteil', this)                        // Referenz auf das
                                                           // Platzteil-Objekt
-      .appendTo('#Platz' + this.platz.name);
+      .appendTo('#Platz' + this.platz.platzName);
 
     // mache das erzeugte Platzteil droppable
     // --------------------------------------
-    $('#'+ this.pid + this.platz.name).droppable({
+    $('#'+ this.platzteilNummer + this.platz.platzName).droppable({
       tolerance: "pointer",   // Wirft den Marker in das PlatzTeil auf das der
                               // Mouse-Pointer zeigt
 
@@ -214,16 +216,37 @@ class Platzteil {
                                                             // wurde
         var MarkerID = $(ui.draggable).attr('id'); // ID des Markers der
                                                     // gedropped wird
-        var erisMarker = $('#' + MarkerID).data('erisObject'); // Objekt des
+        var erisMarker = $('#' + MarkerID).data('erisEventMarker'); // Objekt des
                                                                 // bewegten
                                                                 // Markers
         
         // Parameter im Marker-Objekt aktualisieren
         // ----------------------------------------
         
-        // Name des Platzes, in das der Marker bewegt wurde
-        erisMarker.Platz = erisPlatzteil.platz.name; 
+        // Referenz auf den Platz, auf dem der Marker jetzt liegt
+        erisMarker.liegtAufPlatz = erisPlatzteil.platz;
+        erisMarker.erstesBelegtesTeil = erisPlatzteil.platzSpalte; // Spalte, in der der Marker abgelegt wurde
+       
+        // Attribute des Platzes auf Marker übertragen
+        if (erisMarker.Platz !== erisPlatzteil.platz.platzName) {
+          erisMarker.Platz = erisPlatzteil.platz.platzName;  // aktueller Platzname
+          var platzWechsel = true;
+        }
         
+        // neue Marker auf die ganze Platzgröße anpassen
+        if (platzWechsel) {
+          erisMarker.anzahlBelegteTeile = erisPlatzteil.platz.anzahlTeile;
+          erisMarker.setBelegtePlatzteile();
+          erisMarker.setMarkerWidth(ui);
+        }
+        
+        // ragt, das Platzteil über den Platz hinaus?
+        if (erisMarker.erstesBelegtesTeil + erisMarker.anzahlBelegteTeile > erisMarker.liegtAufPlatz.anzahlTeile) {
+          erisMarker.anzahlBelegteTeile=erisMarker.liegtAufPlatz.anzahlTeile-erisMarker.erstesBelegtesTeil+1;
+          erisMarker.setMarkerWidth(ui);
+        }
+        erisMarker.setBelegtePlatzteile();
+
         // angezeigtes Datum aus der Timeline
         erisMarker.dateStart[0] = erisPlatzteil.platz.timeline.angezeigtesDatum; 
         
@@ -235,7 +258,7 @@ class Platzteil {
 
         // Marker ins Ziel-Platzteil ablegen
         $(ui.draggable)
-          .appendTo($('#' + erisPlatzteil.pid + erisPlatzteil.platz.name)); 
+          .appendTo($('#' + erisPlatzteil.platzteilNummer + erisPlatzteil.platz.platzName)); 
         
         // Marker-Position im Ziel = oben, links
         $(ui.draggable).css({
@@ -243,6 +266,9 @@ class Platzteil {
             'left': 0
         }); 
   
+        // ToolTip aktualisieren
+        erisMarker.jQueryQtipMarker();
+        
       } // end drop
     });
    
