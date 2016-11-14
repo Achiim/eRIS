@@ -15,6 +15,11 @@
 /* global erisBerechneDatum */
 /* global erisWert2Datum */
 /* global erisTrace */
+/* global erisPlatzWidth */
+/* global erisPlatzTeilMargin */
+/* global erisMarkerPadding */
+/* global erisMarkerHeightViertelstunde */
+
 
 class ErisEvent {
 
