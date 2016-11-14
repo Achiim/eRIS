@@ -94,6 +94,11 @@ class Datumsachse {
 	
 	loadEvents(field, datum) {
 	  
+	  jQuery.each($('.Marker'), function( index ) {   
+	   delete $(this).data('erisEventMarker'); // Lösche das eris-Objekt zum Marker
+	   this.remove();   // Lösche das jQueryUI-Objekt zum Marker
+	  }); 
+	  
     var url = 'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/event/field/' + field;
     url += '/time/' + datum + '%2008%3A00/' + datum + '%2022%3A00';
   
