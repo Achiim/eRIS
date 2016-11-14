@@ -29,6 +29,9 @@ class Datumsachse {
 	constructor(angezeigtesDatum) {
 		this.angezeigtesDatum = angezeigtesDatum;							// aktuelles Datum
                                                           // dd.mm.jjjj
+		this.markerNummer = 0;                                // initialisiere die Nummerierung der Marker
+		
+		this.loadPlaetze(this);                               // lade alle Plätze und zeige diese an
 	}
 	
 	view(containerId) {
@@ -77,7 +80,8 @@ class Datumsachse {
   	    $("#sliderView").slider( "option", "min", erisDatum2Wert(erisBerechneDatum(erisTimeline.angezeigtesDatum, -5)) );
   	    $("#sliderView").slider( "option", "max", erisDatum2Wert(erisBerechneDatum(erisTimeline.angezeigtesDatum, +7)) );
   	    
-  	    erisTimeline.loadEvents('Kunstrasen', erisTimeline.angezeigtesDatum);
+
+  	    erisTimeline.loadEvents('Kunstrasen', erisTimeline.angezeigtesDatum, erisTimeline.markerNummer);
 
   	  }
 		});
@@ -92,7 +96,7 @@ class Datumsachse {
 
 	} // end view
 	
-	loadEvents(field, datum) {
+	loadEvents(field, datum, markerNummer) {
 	  
 	  jQuery.each($('.Marker'), function( index ) {   
 	   delete $(this).data('erisEventMarker'); // Lösche das eris-Objekt zum Marker
@@ -104,21 +108,55 @@ class Datumsachse {
   
     $.ajax({ type: "GET", url: url, dataType: 'json'})
     .done(function( responseJson ) {
-      console.log("ajax done");
-      console.log(responseJson);
-      if (responseJson.items.length>0) {
-        for (var a = 0; a < responseJson.items.length; a++) {
-          new ErisEvent(responseJson.items[a].id, 
-                        responseJson.items[a].startTime, 
-                        responseJson.items[a].duration,
-                        responseJson.items[a].description,
-                        responseJson.items[a].team,
-                        responseJson.items[a].match,
-                        responseJson.items[a].partOfSeries,
-                        responseJson.items[a].field,
-                        responseJson.items[a].portion).view('#PlatzKunstrasen');
+      console.log("ajax loadEvents done");
+      console.log(url);
+      if (responseJson != undefined ) {
+        console.log(responseJson);
+        if (responseJson.items != undefined && responseJson.items.length>0) {
+          for (var a = 0; a < responseJson.items.length; a++) {
+            markerNummer++;  // nächste Markernummer
+            new ErisEvent(responseJson.items[a].id, 
+                          responseJson.items[a].startTime, 
+                          responseJson.items[a].duration,
+                          responseJson.items[a].description,
+                          responseJson.items[a].team,
+                          responseJson.items[a].match,
+                          responseJson.items[a].partOfSeries,
+                          responseJson.items[a].field,
+                          responseJson.items[a].portion,
+                          markerNummer).view('#PlatzKunstrasen');
+          }
         }
       }
     });
 	}
+
+  loadPlaetze(timeline) {
+    
+    jQuery.each($('.Platz'), function( index ) {   
+     this.remove();   // Lösche das jQueryUI-Objekt zum Platz
+    }); 
+    
+    var url = 'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/field';
+  
+    $.ajax({ type: "GET", url: url, dataType: 'json'})
+    .done(function( responseJson ) {
+      console.log("ajax loadPlaetze done");
+      console.log(url);
+      if (responseJson != undefined ) {
+        console.log(responseJson);
+        if (responseJson.items != undefined && responseJson.items.length>0) {
+          for (var a = 0; a < responseJson.items.length; a++) {
+           
+            erisPlatzArray[a] = new Platz(timeline, 
+                      responseJson.items[a].title, // lösche Blanks aus dem Namen 
+                      responseJson.items[a].portionName,
+                      responseJson.items[a].portions);
+            erisPlatzArray[a].view('PlatzContainer', 'PlatzMitteKopf');
+          }
+        }
+      }
+    });
+  }
+
 } // end class

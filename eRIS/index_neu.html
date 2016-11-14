@@ -71,6 +71,7 @@
 
 					var zeitlinks = new Zeitachse('Links');
 					zeitlinks.view('Platzleiste');
+/**					
 					var kunstrasen = new Platz(Timeline, 'Kunstrasen', 'K', 2);
 					kunstrasen.view('PlatzContainer', 'PlatzMitteKopf');
 					var Stadion = new Platz(Timeline, 'Stadion', 'S', 3);
@@ -85,12 +86,13 @@
 					Schwabenland.view('PlatzContainer', 'PlatzMitteKopf');
 					var Schoenbuch = new Platz(Timeline, 'Schoenbuch', 'H', 1);
 					Schoenbuch.view('PlatzContainer', 'PlatzMitteKopf');
+**/					
 					var zeitrechts = new Zeitachse('Rechts');
 					zeitrechts.view('Platzleiste');
 					
-					var aJugend = new ErisEvent(undefined, undefined, '60', 'Training', 'A', undefined, undefined, undefined, undefined);
+					var aJugend = new ErisEvent(null, null, '60', 'Training', 'A', null, null, null, null, 0);
 					aJugend.view();
-					var bJugend = new ErisEvent(undefined, undefined, '60', 'Training', 'B', undefined, undefined, undefined, undefined);
+					var bJugend = new ErisEvent(null, null, '60', 'Training', 'B', null, null, null, null, 1);
 					bJugend.view();
 			
 					$('#PlatzMitte').on('scroll', function () {

@@ -28,3 +28,4 @@ const erisPlatzTeilMargin = 1;                            // jedes Platzteil hat
 const erisAnzahlPlatzTeilejeStunde = 4                    // ein Platzteil repräsentiert 15 Minuten (1/4 Stunde)
 const erisPlatzteilHeight = erisPixelViertelstunde - 1;   // 6 Pixel Höhe des Platzteils ( 1 Pixel für Margin unten abgezogen)
 
+var erisPlatzArray = [];                                  // sammelt alle Plätze
