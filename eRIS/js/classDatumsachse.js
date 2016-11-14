@@ -76,6 +76,9 @@ class Datumsachse {
                                                                                       // Objekt-Timeline
   	    $("#sliderView").slider( "option", "min", erisDatum2Wert(erisBerechneDatum(erisTimeline.angezeigtesDatum, -5)) );
   	    $("#sliderView").slider( "option", "max", erisDatum2Wert(erisBerechneDatum(erisTimeline.angezeigtesDatum, +7)) );
+  	    
+  	    erisTimeline.loadEvents('Kunstrasen', erisTimeline.angezeigtesDatum);
+
   	  }
 		});
 		
@@ -85,7 +88,32 @@ class Datumsachse {
 			.data('erisTimeline', this) // Referenz auf das Timeline-Objekt
 			.css('width', '100')
 			.css('text-align', 'center');
+		
 
 	} // end view
 	
+	loadEvents(field, datum) {
+	  
+    var url = 'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/event/field/' + field;
+    url += '/time/' + datum + '%2008%3A00/' + datum + '%2022%3A00';
+  
+    $.ajax({ type: "GET", url: url, dataType: 'json'})
+    .done(function( responseJson ) {
+      console.log("ajax done");
+      console.log(responseJson);
+      if (responseJson.items.length>0) {
+        for (var a = 0; a < responseJson.items.length; a++) {
+          new ErisEvent(responseJson.items[a].id, 
+                        responseJson.items[a].startTime, 
+                        responseJson.items[a].duration,
+                        responseJson.items[a].description,
+                        responseJson.items[a].team,
+                        responseJson.items[a].match,
+                        responseJson.items[a].partOfSeries,
+                        responseJson.items[a].field,
+                        responseJson.items[a].portion).view('#PlatzKunstrasen');
+        }
+      }
+    });
+	}
 } // end class
