@@ -88,7 +88,10 @@ Platzkopf================ Ebene 3 + 4 + 5
 	overflow: hidden;			/* ???? */
 }
 
-.Platzteile, .Platzname  {
+.Platzname  {					/* t.b.d. */
+}
+
+.Platzteile  {
 	width: 120px;				/* Beschriftung über dem platz ist so breit wie ein Platz */
 	margin-left: 5px;			/* Abstand zwischen den Plätzen */
 	float: left;
@@ -107,7 +110,7 @@ Platzleiste ==================== Ebene 2
 
 .Platzleiste {
 	height: 420px;
-	overflow: scroll;		/* heir scroll es vertikal über die Zeitachse */
+	overflow-y: auto;		/* heir scroll es vertikal über die Zeitachse */
 }
 
 /****************************************
@@ -141,7 +144,6 @@ Zeitachse=============== Ebene 3 + 4 + 5
 }
 
 
-
 /****************************************
 Platzmitte============== Ebene 3 + 4 + 5
 ****************************************/
@@ -169,7 +171,7 @@ Platzmitte============== Ebene 3 + 4 + 5
 	float: left;
 	margin-top: 1px;			/* Abstand zwischen den Platzteilen */
 	margin-right: 1px;			/* Abstand zwischen den Platzteilen */
-	height: 10px;
+
 }
 
 

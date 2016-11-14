@@ -1,119 +1,277 @@
 /**
  * 
-     ****************************************
-	* Sportstaetten-Reservierungs-System   *
-	****************************************
-	
-	@author		Achim
-	@version	2016
-	@copyright 	alle Rechte vorbehalten
-
-	@description
-  	Definition der Klasse "Platz" mit allen Eigenschaften und Methoden.
-*/
+ * Sportstaetten-Reservierungs-System
+ * 
+ * @author Achim
+ * @version 2016
+ * @copyright alle Rechte vorbehalten
+ * 
+ * @description Definition der Klasse "Platz" mit allen Eigenschaften und
+ *              Methoden.
+ */
 
 class Platz {
-	
 
 	/**
-	 * @param name = Bezeichung des Platzes
-	 * @param teilbezeichung = Kurzbezeichung für Platzteile
-	 * @param anzahlteile = Anzahl der reservierbaren Platzteile
-	 * 
-	 * @description
-	 * Konstruktor für ein Platzobjekt. 
-	 * @example
-	 * Aufrufbeispiel: var kunstrasen = new Platz('Kunstrasen', 'K', 2); 
-	 */
+   * @param platzName =
+   *          Bezeichung des Platzes
+   * @param teilBezeichung =
+   *          Kurzbezeichung für Platzteile
+   * @param anzahlTeile =
+   *          Anzahl der reservierbaren Platzteile
+   * 
+   * @description Konstruktor für ein Platzobjekt.
+   * @example Aufrufbeispiel: var kunstrasen = new Platz('Kunstrasen', 'K', 2);
+   */
+  
+  
+	constructor(timeline, platzName, teilBezeichung, anzahlTeile) {
+	  this.timeline = timeline;           // Referenz auf den TimeSlider mit dem
+                                        // aktuellen Datum
+		this.platzName = platzName;					// Bezeichnung des Platzes
+    this.platzteilNummer = 0;           // Nummerierung der Platzteile auf dem
+                                        // Platz
+		this.teilBezeichung = teilBezeichung	
+		this.anzahlTeile  = anzahlTeile;		// Anzahl der reservierbaren
+                                        // Platzteile je Zeiteinheit
+		this.platzfarbe = 'green';				  // default Farbe des Platzes
+    this.von = 8;                       // Anzeige ab 8:00 Uhr
+    this.bis = 22;                      // Anzeige bis 22:00 Uhr
 
-	constructor(name, teilbezeichung, anzahlteile) {
-		this.name = name;						// Bezeichnung es Platzes
-		this.teilbezeichung = teilbezeichung	// 
-		this.anzahlteile  = anzahlteile;		// Anzahl der reservierbaren Plartteile je Zeiteinheit
-		this.platzfarbe = 'green';				// default Farbe des Platzes
-		this.reservierbarab = '08:00';			// Uhrzeit ab der Reservierungen möglich sind
-		this.reservierbarbis = '22:00';			// Uhrzeit bis zu der Reservierungen möglich sind
-	}
+    // Breiten für Platzteile und kleinste Marker bestimmen
+    // ----------------------------------------------------
+    this.PlatzTeilWidth = erisPlatzWidth / this.anzahlTeile - erisPlatzTeilMargin; 
+    this.MarkerMinWidth = this.PlatzTeilWidth - erisMarkerPadding;
+    
+
 	
-	view(containerId, PlatzKopfId) {
+	} // end constructor
+	
+  view(containerId, PlatzKopfId) {
 		
-        // Breiten für Platzteile und Marker bestimmen
-        // ------------------------------------------------
-        PlatzTeilWidth = PlatzWidth / this.anzahlteile - PlatzTeilMargin; // Width = Width + Margin
-        MarkerMinWidth = PlatzTeilWidth - MarkerPadding; // neue kleinste Markergröße
+    // erzeuge die jQueryUI-Elemente für den Platzkopf
+    // -----------------------------------------------
+    this.jQueryUI_Platzkopf(PlatzKopfId);
+   
+    // erzeuge die jQueryUI-Elemente für den Platz und die Platzteile
+    // -----------------------------
+    this.jQueryUI_Platz(containerId);
+   
+  } // end view
+/*
+ * store() { var msg = ''; if (erisEvent.ID === undefined || erisEvent.ID ===
+ * '') { msg = makeEventMessage(MarkerID); postEvent(msg, ui.draggable); // in
+ * DB speichern } else { msg = makeEventUpdateMessage(MarkerID);
+ * postEventUpdate(msg); } createEventAttributes(MarkerID, erisEvent); //
+ * erzeuge Objekt + .data aus Position und Größe des Marker } // end store
+ */
 	
-		/*******************************************
-		Platzkopfdaten
-			- Platzname
-			- Platzteilbezeichungen
-		********************************************/
-
-        // Container für Platzkopfbeschriftungen
-        // ------------------------------------
-        $('<div/>') // Container 1
-            .attr('id', 'Kopf' + this.name)
-            .addClass('Platzteile')
-            .appendTo('#'+PlatzKopfId);
-
-
-        // Beschriftung des Platzes
-        // ------------------------
-        $('<div/>')
+  jQueryUI_Platzkopf(PlatzKopfId) {
+    /***************************************************************************
+     * Platzkopfdaten = Platzname und Platzteilbezeichungen
+     **************************************************************************/
+      
+      // Container für Platzkopfbeschriftungen
+      // ------------------------------------
+      $('<div/>') // Container 1
+        .attr('id', 'Kopf' + this.platzName)
+        .addClass('Platzteile')
+        .appendTo('#'+PlatzKopfId);
+      
+      // Beschriftung des Platzes
+      // ------------------------
+      $('<div/>')
         .addClass('Platzname')
-        .attr('id', 'Platzname'+ this.name)
-        .css('width', PlatzWidth)
-        .html(this.name)
-        .appendTo('#Kopf' + this.name);
+        .attr('id', 'Platzname'+ this.platzName)
+        .css('width', erisPlatzWidth)
+        .html(this.platzName)
+        .appendTo('#Kopf' + this.platzName);
+      
+      // Container für Platzteilbeschriftungen
+      // ------------------------------------
+      $('<div/>') // Container 2
+        .attr('id', 'Platzteile' + this.platzName)
+        .appendTo('#Kopf' + this.platzName);
+      
+      // Platzteilbeschriftungen
+      // ------------------------------------
+      for (var pl = 0; pl < this.anzahlTeile; pl++) {
+        var ptn = this.teilBezeichung;
+        var pz=pl+1;
+        $('<div>' + ptn + pz + '</div>') // neue Bezeichung der
+                                         // Platzteile erzeugen
+          .addClass('PlatzKopfTeil')
+          .attr('id', 'PlatzKopfTeil' +  this.platzName)
+          .css('width', this.PlatzTeilWidth)
+          .appendTo('#Platzteile' +  this.platzName);
+      }
 
-        // Container für Platzteilbeschriftungen
-        // ------------------------------------
-        $('<div/>') // Container 2
-            .attr('id', 'Platzteile' + this.name)
-            .appendTo('#Kopf' + this.name);
+  } // end jQueryUI_Platzkopf
 
-        // Platzteilbeschriftungen
-        // ------------------------------------
-        for (var pl = 0; pl < this.anzahlteile; pl++) {
-            var ptn = this.teilbezeichung;
-        	var pz=pl+1;
-            $('<div>' + ptn + pz + '</div>') // neue Bezeichung der Platzteile erzeugen
-                .addClass('PlatzKopfTeil')
-                .attr('id', 'PlatzKopfTeil' +  this.name)
-                .css('width', PlatzTeilWidth)
-                .appendTo('#Platzteile' +  this.name);
+  jQueryUI_Platz(containerId) {
+    
+    /***************************************************************************
+     * Platz und Platzteile
+     **************************************************************************/
+    // Platz
+    // ------------------------
+    $('<div/>')
+      .addClass('Platz')
+      .attr('id', 'Platz'+ this.platzName)
+      .appendTo('#'+containerId);
+
+    // Breite des Platz-Containers festlegen
+    // --------------------------------------
+    $('#Platz' + this.platzName).width(erisPlatzWidth); // Breite des
+                                                // Platzes anpassen
+
+    // erzeuge das Belegungsraster im Platz
+    // ------------------------------------
+    for (var uhr = this.von * erisAnzahlPlatzTeilejeStunde; uhr < this.bis * erisAnzahlPlatzTeilejeStunde; uhr++) {
+      for (var pl = 0; pl < this.anzahlTeile; pl++) {
+        new Platzteil(this.platzteilNummer++, this, pl+1).view(); // erzeuge neues Platzteil und
+                                                // zeige es an
+      }
+    }
+
+  }
+} // end class
+
+// ********************************************************************************************
+
+class Platzteil {
+
+  /**
+   * @param platzteilNummer =
+   *          lfd. Nummer des zu erzeugenden Platteils
+   * @param platz =
+   *          Referenz auf das Platz-Objekt zu em das Teil gehört
+   * 
+   * @param pl =
+   *          Teilnummer des Platzes (1 ... anzahlTeile), entspricht dem ersten reservierten Platzteil
+   * 
+   * @description Konstruktor für ein Platzteilobjekt.
+   * 
+   * @example Aufrufbeispiel: new Platzteil(12, Platz).view();
+   */
+  
+  constructor (platzteilNummer, platz, platzSpalte) {
+    this.platzteilNummer = platzteilNummer; // Nummerierung der Platzteile
+    this.platz = platz;                     // Referenz auf das Platz-Objekt, zu dem das
+                                            // Platzteil gehört
+    this.platzSpalte = platzSpalte;         // Teilnummer des Platzes (1 ... anzahlTeile)
+    
+    // start-Stunde
+    var Stunde = platzteilNummer / platz.anzahlTeile / erisAnzahlPlatzTeilejeStunde + platz.von; 
+    var vonStunde = Math.floor(Stunde); // volle Stunde aus Zeile berechnet
+    vonStunde = ('00' + vonStunde).slice(-2); // mit führenden Nullen
+
+    // start-Minute
+    var Minute = (vonStunde - platz.von) * platz.anzahlTeile * erisAnzahlPlatzTeilejeStunde;
+    Minute = platzteilNummer - Minute; // 0 - 15tes Platzteilraster innerhalb einer Stunde
+
+    var vonMinute = Math.floor(Minute / platz.anzahlTeile);
+    if (vonMinute === 0) vonMinute = '00';
+    if (vonMinute === 1) vonMinute = '15';
+    if (vonMinute === 2) vonMinute = '30';
+    if (vonMinute === 3) vonMinute = '45';
+
+    this.von = vonStunde + ':' + vonMinute;
+    
+  } // end constructor
+  
+  
+  view() {
+    // erzeuge ein Platzteil mit Referenz auf den Platz
+    // ------------------------------------------------
+    $('<div/>')
+      .addClass('PlatzTeil')
+      .attr('id', this.platzteilNummer + this.platz.platzName)             // Format:
+                                                          // "99..99Platzname"
+      .css({'width': this.platz.PlatzTeilWidth,           // zum Platz passende
+                                                          // Breite der
+                                                          // Platzteile
+           'height': erisPlatzteilHeight})                // zum Platz passende
+                                                          // Höhe der Platzteile
+      .data('erisPlatzteil', this)                        // Referenz auf das
+                                                          // Platzteil-Objekt
+      .appendTo('#Platz' + this.platz.platzName);
+
+    // mache das erzeugte Platzteil droppable
+    // --------------------------------------
+    $('#'+ this.platzteilNummer + this.platz.platzName).droppable({
+      tolerance: "pointer",   // Wirft den Marker in das PlatzTeil auf das der
+                              // Mouse-Pointer zeigt
+
+      drop: function(event, ui) { // Marker wurde in ein Platzteil
+                                  // fallengelassen
+        
+        // Achtung: this verweist hier auf das jQuery-Objekt 'Platzteil' in das
+        // gedropped wurde
+        
+        var erisPlatzteil = $(this).data('erisPlatzteil'); // ermittle die
+                                                            // Referenz auf das
+                                                            // Platzteil-Objekt,
+                                                            // in das gedroppt
+                                                            // wurde
+        var MarkerID = $(ui.draggable).attr('id'); // ID des Markers der
+                                                    // gedropped wird
+        var erisMarker = $('#' + MarkerID).data('erisEventMarker'); // Objekt des
+                                                                // bewegten
+                                                                // Markers
+        
+        // Parameter im Marker-Objekt aktualisieren
+        // ----------------------------------------
+        
+        // Referenz auf den Platz, auf dem der Marker jetzt liegt
+        erisMarker.liegtAufPlatz = erisPlatzteil.platz;
+        erisMarker.erstesBelegtesTeil = erisPlatzteil.platzSpalte; // Spalte, in der der Marker abgelegt wurde
+       
+        // Attribute des Platzes auf Marker übertragen
+        if (erisMarker.Platz !== erisPlatzteil.platz.platzName) {
+          erisMarker.Platz = erisPlatzteil.platz.platzName;  // aktueller Platzname
+          var platzWechsel = true;
         }
         
-        
-
-		/***************************************
-		Platz
-			- Platzteile
-		****************************************/
-        // Platzes
-        // ------------------------
-        $('<div/>')
-        .addClass('Platz')
-        .attr('id', 'Platz'+ this.name)
-        .appendTo('#'+containerId);
-
-	
-        // Breite des Platz-Containers festlegen
-        // --------------------------------------
-        $('#Platz' + this.name).width(PlatzWidth); // Breite der Platz anpassen
-
-        // erzeuge das Belegungsraster im Platz
-        // ------------------------------------
-        for (var uhr = BeginnZeitLeiste * AnzahlPlatzteileJeStunde; uhr < EndeZeitLeiste * AnzahlPlatzteileJeStunde; uhr++) {
-            for (var pl = 0; pl < this.anzahlteile; pl++) {
-                $('<div/>')
-                    .addClass('PlatzTeil')
-                    .attr('id', pid++ + this.name)
-                    .css('width', PlatzTeilWidth)
-                    .appendTo('#Platz' + this.name);
-            }
+        // neue Marker auf die ganze Platzgröße anpassen
+        if (platzWechsel) {
+          erisMarker.anzahlBelegteTeile = erisPlatzteil.platz.anzahlTeile;
+          erisMarker.setBelegtePlatzteile();
+          erisMarker.setMarkerWidth(ui);
         }
-	
-	
-	}
-}
+        
+        // ragt, das Platzteil über den Platz hinaus?
+        if (erisMarker.erstesBelegtesTeil + erisMarker.anzahlBelegteTeile > erisMarker.liegtAufPlatz.anzahlTeile) {
+          erisMarker.anzahlBelegteTeile=erisMarker.liegtAufPlatz.anzahlTeile-erisMarker.erstesBelegtesTeil+1;
+          erisMarker.setMarkerWidth(ui);
+        }
+        erisMarker.setBelegtePlatzteile();
 
+        // angezeigtes Datum aus der Timeline
+        erisMarker.dateStart[0] = erisPlatzteil.platz.timeline.angezeigtesDatum; 
+        
+        // Uhrzeit aus dem Platzteils, in das der Marker bewegt wurde
+        erisMarker.dateStart[1] = erisPlatzteil.von;  
+
+        // Datum + Uhrzeit kombiniert
+        erisMarker.start = erisMarker.dateStart[0] + ' ' + erisPlatzteil.von;
+
+        // Marker ins Ziel-Platzteil ablegen
+        $(ui.draggable)
+          .appendTo($('#' + erisPlatzteil.platzteilNummer + erisPlatzteil.platz.platzName)); 
+        
+        // Marker-Position im Ziel = oben, links
+        $(ui.draggable).css({
+            'top': 0,
+            'left': 0
+        }); 
+  
+        // ToolTip aktualisieren
+        erisMarker.jQueryQtipMarker();
+        
+      } // end drop
+    });
+   
+  } // end constructor
+   
+} // end class Platzteil

@@ -1,0 +1,96 @@
+@CHARSET "ISO-8859-1";
+/**
+    ****************************************
+	* Sportstaetten-Reservierungs-System   *
+	****************************************
+	
+	Autor:	Achim
+	Jahr:	2016
+	
+	Default-Layout
+	
+	Quelle fuer HTML-Farbnamen: http://www.w3schools.com/colors/colors_groups.asp
+	Style-Guide: https://material.google.com/style/color.html#color-color-palette
+
+ 	Quelle fuer Linear-Gradient der Marker: http://www.cssmatic.com/gradient-generator
+*/
+
+.Marker {  
+ 	font-size: 1rem;
+    font-weight: bold;   
+	color: white;
+	opacity: 1.0;	
+/*  background-image: url(../images/marker.png); */	
+}
+
+.Marker {  
+    border-radius: 5px;
+    height: 37px;
+	width: 169px;
+	position: relative;
+	float: left;
+	padding: 5px;
+	text-align: center;
+	vertical-align: middle;
+}
+
+div.ui-draggable-dragging {
+  -moz-box-shadow: 0 0 .5em rgba(0, 0, 0, .8);
+  -webkit-box-shadow: 0 0 .5em rgba(0, 0, 0, .8);
+  box-shadow: 0 0 .5em rgba(0, 0, 0, .8);
+}
+
+.EventAH, .AH, .alteHerren  {
+   background: #BDB76B;
+/*   background: linear-gradient(to top, #bdb86b 0%, #454327 100%); */ 
+   opacity: 0.9;
+}
+
+.EventAk, .Aktive {
+   background: #2F4F4F;
+/*   background: linear-gradient(to top, #9bbcd8 0%, #28323b 100%); */ 
+   opacity: 0.9;
+}
+
+.EventA, .A-Jugend, .A-Junioren {
+    background: #92B6D5;
+/* 	background: linear-gradient(to top, #5ac2dc 0%, #36434e 100%); */
+   opacity: 0.9;
+}
+
+.EventB, .B-Jugend, .B-Junioren {
+   background: #AD5D5D;
+/*	background: linear-gradient(to top, #75ad5d 0%, #2b3f22 100%);  */
+   opacity: 0.9;
+}
+
+.EventC, .C-Jugend, .C-Junioren {
+   background: #AF9483;
+/*	background: linear-gradient(to top, #ddca18 0%, #514a09 100%); */
+   opacity: 0.9;
+}
+
+.EventD, .D-Jugend, .D-Junioren {
+   background: #D8AE47;
+/*	background: linear-gradient(to top, #dd1818 0%, #510909 100%); */
+   opacity: 0.9;
+}
+
+.EventE, .E-Jugend, .E-Junioren {
+   background: #B76BA3;
+/*	background: linear-gradient(to top, #18b3dd 0%, #094251 100%); */
+   opacity: 0.9;
+}
+
+.EventF, .F-Jugend, .F-Junioren {
+   background: #F7786B;
+/*	background: linear-gradient(to top, #ea7719 0%, #562c0a 100%); */
+   opacity: 0.9;
+}
+
+.EventG, .Bambini, .G-Junioren {
+   background: #F3386B;
+/*	background: linear-gradient(to top, #dfe833 0%, #525513 100%); */
+   opacity: 0.9;
+}
+
