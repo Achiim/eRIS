@@ -42,8 +42,12 @@ class ErisEvent {
 		this.Serie = partOfSeries; // Teil einer Terminserie
 		this.PlatzName = field; // Platz
 		this.PlatzteilArray = portion; // Platzteile
-		this.anzahlBelegteTeile = undefined; // Default-Wert, Markr liegt noch auf keinem Platz
+		this.anzahlBelegteTeile = undefined; // Default-Wert, Marker liegt noch auf keinem Platz
+		if (portion.length != 0) this.anzahlBelegteTeile = portion.length ;
 		this.erstesBelegtesTeil = 1;  // Defaultwert
+		if (portion.length != 0) {
+		    this.erstesBelegtesTeil = portion[0];
+		}
 		
     this.liegtAufPlatz = leererPlatz;     // Default-Platz
     
@@ -94,6 +98,9 @@ class ErisEvent {
 	
 	jQueryShowMarker() {
 	  
+	  this.MarkerWidth = this.anzahlBelegteTeile * this.liegtAufPlatz.PlatzTeilWidth - erisMarkerPadding;
+	  this.MarkerWidth += this.anzahlBelegteTeile * erisPlatzTeilMargin;
+
     var hoehe = this.minutesToPixel(this.Dauer);
     var breite = this.MarkerWidth;
     var markerID = this.TeamID + this.mid;
@@ -115,7 +122,7 @@ class ErisEvent {
       if (minute == 30) minute = 2;
       if (minute == 45) minute = 3;
       
-      var Teil = (hour * erisAnzahlPlatzTeilejeStunde * this.liegtAufPlatz.anzahlTeile) + (minute * this.liegtAufPlatz.anzahlTeile) + this.erstesBelegtesTeil;
+      var Teil = (hour * erisAnzahlPlatzTeilejeStunde * this.liegtAufPlatz.anzahlTeile) + (minute * this.liegtAufPlatz.anzahlTeile) + this.erstesBelegtesTeil -1;
     
       $('#' + markerID)
       .appendTo('#'+ Teil + this.liegtAufPlatz.innerPlatzName); // aus den Platz legen
@@ -318,12 +325,12 @@ class ErisEvent {
 	store() {
 	  
 //    var urlSave = 'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/addEvent/';
-    
+
 //    var urlUpdate = 'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/event/update/';
     
-    if (!this.ID) {
+    if (this.ID === null) {
       var url = 'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/addEvent/';
-      var msg = this.Beschreibung + '/' + this.start + '/' + this.Dauer + '/' + this.TeamID + '/' + this.PlatzName + '/' + this.PlatzNameteilArray;
+      var msg = this.Beschreibung + '/' + this.start + '/' + this.Dauer + '/' + this.TeamID + '/' + this.PlatzName + '/' + this.PlatzteilArray;
     } else {
       var url = 'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/event/update/';
       var msg = this.ID + '/' + this.start + '/' + this.Dauer + '/' + this.PlatzName + '/' + this.PlatzteilArray;;
@@ -348,7 +355,7 @@ class ErisEvent {
         console.log(url);
       });
     
-    if (!newMarkerNummer) {
+    if (newMarkerNummer != undefined) {
       this.id = newMarkerNummer;
       this.jQueryQtipMarker();
     }

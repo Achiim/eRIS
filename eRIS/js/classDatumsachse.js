@@ -80,8 +80,18 @@ class Datumsachse {
   	    $("#sliderView").slider( "option", "min", erisDatum2Wert(erisBerechneDatum(erisTimeline.angezeigtesDatum, -5)) );
   	    $("#sliderView").slider( "option", "max", erisDatum2Wert(erisBerechneDatum(erisTimeline.angezeigtesDatum, +7)) );
   	    
+  	    
+  	    jQuery.each($('.Marker'), function( index ) {   
+  	      delete $(this).data('erisEventMarker'); // Lösche das eris-Objekt zum Marker
+  	      this.remove();   // Lösche das jQueryUI-Objekt zum Marker
+  	     }); 
 
-  	    erisTimeline.loadEvents('Kunstrasen', erisTimeline.angezeigtesDatum, erisTimeline.markerNummer);
+  	    $('.Platz').addClass('verschwommen');
+
+  	    for (var a = 0; a < erisPlatzArray.length; a++ ) {
+  	      erisTimeline.loadEvents(erisPlatzArray[a].platzName, erisTimeline.angezeigtesDatum);
+  	    }
+  	    
 
   	  }
 		});
@@ -96,35 +106,36 @@ class Datumsachse {
 
 	} // end view
 	
-	loadEvents(field, datum, markerNummer) {
-	  
-	  jQuery.each($('.Marker'), function( index ) {   
-	   delete $(this).data('erisEventMarker'); // Lösche das eris-Objekt zum Marker
-	   this.remove();   // Lösche das jQueryUI-Objekt zum Marker
-	  }); 
+	loadEvents(field, datum) {
 	  
     var url = 'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/event/field/' + field;
-    url += '/time/' + datum + '%2008%3A00/' + datum + '%2022%3A00';
+//    url += '/time/' + datum + '%2008%3A00/' + datum + '%2022%3A00';   // Funktion momentan in Überarbeitung
   
     $.ajax({ type: "GET", url: url, dataType: 'json'})
     .done(function( responseJson ) {
       console.log("ajax loadEvents done");
       console.log(url);
+      
+      $('.Platz').removeClass('verschwommen');
+
       if (responseJson != undefined ) {
         console.log(responseJson);
         if (responseJson.items != undefined && responseJson.items.length>0) {
           for (var a = 0; a < responseJson.items.length; a++) {
-            markerNummer++;  // nächste Markernummer
-            new ErisEvent(responseJson.items[a].id, 
-                          responseJson.items[a].startTime, 
-                          responseJson.items[a].duration,
-                          responseJson.items[a].description,
-                          responseJson.items[a].team,
-                          responseJson.items[a].match,
-                          responseJson.items[a].partOfSeries,
-                          responseJson.items[a].field,
-                          responseJson.items[a].portion,
-                          markerNummer).view('#PlatzKunstrasen');
+            var dat = responseJson.items[a].startTime.split(' ');
+            if (dat[0] == Timeline.angezeigtesDatum) {
+              Timeline.markerNummer++;  // nächste Markernummer
+              new ErisEvent(responseJson.items[a].id, 
+                            responseJson.items[a].startTime, 
+                            responseJson.items[a].duration,
+                            responseJson.items[a].description,
+                            responseJson.items[a].team,
+                            responseJson.items[a].match,
+                            responseJson.items[a].partOfSeries,
+                            responseJson.items[a].field,
+                            responseJson.items[a].portion,
+                            Timeline.markerNummer).view('#PlatzKunstrasen');
+            }
           }
         }
       }
