@@ -9,6 +9,13 @@
  * @description Definition der Klasse "Platz" mit allen Eigenschaften und
  *              Methoden.
  */
+ 
+/* global $ */
+/* global erisAnzahlPlatzTeilejeStunde */
+/* global erisPlatzWidth */
+/* global erisPlatzTeilMargin */
+/* global erisMarkerPadding */
+/* global erisPlatzteilHeight */
 
 class Platz {
 

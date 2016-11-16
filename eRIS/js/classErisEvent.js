@@ -193,9 +193,7 @@ class ErisEvent {
           ui.size.height = hoehe;
 
         // belegte Platzteile ermitteln
-        
         erisEventMarker.setBelegtePlatzteile();
-        
         
         // berechne die neue Dauer des Event
         erisEventMarker.Dauer = erisEventMarker.pixelToMinutes(hoehe); // Minuten aus Pixel berechnet

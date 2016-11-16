@@ -11,10 +11,15 @@
  */
 
 /* global $ */
+/* global jQuery */
 /* global erisDatum2Wert */
 /* global erisBerechneDatum */
 /* global erisWert2Datum */
+/* global erisPlatzArray */
 /* global erisTrace */
+/* global Timeline */
+/* global ErisEvent */
+/* global Platz */
 
 
 class Datumsachse {
