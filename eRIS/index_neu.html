@@ -57,9 +57,19 @@
 		<script src="js/classDatumsachse.js"></script>
 		
 		<script>
+		/* global $ */
+		/* global Timeline:true */
+		/* global Datumsachse */
+		/* global Zeitachse */
+		/* global ErisEvent */
+		
+		/* global erisTraceLevel:true */
+		/* global erisTrace */
+		/* global erisHeute */
 		
 		$(document).ready(							// sobald die Seite geladen ist (jQuery)
 				function() {
+
 		  			erisTraceLevel = 1;
 				    erisTrace('doLayout - Beginn');
 				    $('#erisViews').tabs(); // Tabs erzeugen
@@ -107,10 +117,6 @@
 	</head>
 	
 	<body>
-
-
-
-
 		<div id="erisViews">
 		  <ul>
 		    <li><a href="#Tagesplan">Tagesplan</a></li>
@@ -161,6 +167,7 @@
 		</div>
 
 		<script>
+		/* global $ */
 
 		$('<div/>')
 		.addClass('Datumsleiste')
