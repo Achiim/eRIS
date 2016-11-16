@@ -29,6 +29,8 @@ class Platz {
 	  this.timeline = timeline;           // Referenz auf den TimeSlider mit dem
                                         // aktuellen Datum
 		this.platzName = platzName;					// Bezeichnung des Platzes
+		this.innerPlatzName = platzName
+		               .replace(/\s/g, ''); // ohne Blanks
     this.platzteilNummer = 0;           // Nummerierung der Platzteile auf dem
                                         // Platz
 		this.teilBezeichung = teilBezeichung	
@@ -74,7 +76,7 @@ class Platz {
       // Container für Platzkopfbeschriftungen
       // ------------------------------------
       $('<div/>') // Container 1
-        .attr('id', 'Kopf' + this.platzName)
+        .attr('id', 'Kopf' + this.innerPlatzName)
         .addClass('Platzteile')
         .appendTo('#'+PlatzKopfId);
       
@@ -82,16 +84,16 @@ class Platz {
       // ------------------------
       $('<div/>')
         .addClass('Platzname')
-        .attr('id', 'Platzname'+ this.platzName)
+        .attr('id', 'Platzname'+ this.innerPlatzName)
         .css('width', erisPlatzWidth)
         .html(this.platzName)
-        .appendTo('#Kopf' + this.platzName);
+        .appendTo('#Kopf' + this.innerPlatzName);
       
       // Container für Platzteilbeschriftungen
       // ------------------------------------
       $('<div/>') // Container 2
-        .attr('id', 'Platzteile' + this.platzName)
-        .appendTo('#Kopf' + this.platzName);
+        .attr('id', 'Platzteile' + this.innerPlatzName)
+        .appendTo('#Kopf' + this.innerPlatzName);
       
       // Platzteilbeschriftungen
       // ------------------------------------
@@ -101,9 +103,9 @@ class Platz {
         $('<div>' + ptn + pz + '</div>') // neue Bezeichung der
                                          // Platzteile erzeugen
           .addClass('PlatzKopfTeil')
-          .attr('id', 'PlatzKopfTeil' +  this.platzName)
+          .attr('id', 'PlatzKopfTeil' +  this.innerPlatzName)
           .css('width', this.PlatzTeilWidth)
-          .appendTo('#Platzteile' +  this.platzName);
+          .appendTo('#Platzteile' +  this.innerPlatzName);
       }
 
   } // end jQueryUI_Platzkopf
@@ -117,12 +119,12 @@ class Platz {
     // ------------------------
     $('<div/>')
       .addClass('Platz')
-      .attr('id', 'Platz'+ this.platzName)
+      .attr('id', 'Platz'+ this.innerPlatzName)
       .appendTo('#'+containerId);
 
     // Breite des Platz-Containers festlegen
     // --------------------------------------
-    $('#Platz' + this.platzName).width(erisPlatzWidth); // Breite des
+    $('#Platz' + this.innerPlatzName).width(erisPlatzWidth); // Breite des
                                                 // Platzes anpassen
 
     // erzeuge das Belegungsraster im Platz
@@ -186,7 +188,7 @@ class Platzteil {
     // ------------------------------------------------
     $('<div/>')
       .addClass('PlatzTeil')
-      .attr('id', this.platzteilNummer + this.platz.platzName)             // Format:
+      .attr('id', this.platzteilNummer + this.platz.innerPlatzName)             // Format:
                                                           // "99..99Platzname"
       .css({'width': this.platz.PlatzTeilWidth,           // zum Platz passende
                                                           // Breite der
@@ -195,11 +197,11 @@ class Platzteil {
                                                           // Höhe der Platzteile
       .data('erisPlatzteil', this)                        // Referenz auf das
                                                           // Platzteil-Objekt
-      .appendTo('#Platz' + this.platz.platzName);
+      .appendTo('#Platz' + this.platz.innerPlatzName);
 
     // mache das erzeugte Platzteil droppable
     // --------------------------------------
-    $('#'+ this.platzteilNummer + this.platz.platzName).droppable({
+    $('#'+ this.platzteilNummer + this.platz.innerPlatzName).droppable({
       tolerance: "pointer",   // Wirft den Marker in das PlatzTeil auf das der
                               // Mouse-Pointer zeigt
 
@@ -228,8 +230,8 @@ class Platzteil {
         erisMarker.erstesBelegtesTeil = erisPlatzteil.platzSpalte; // Spalte, in der der Marker abgelegt wurde
        
         // Attribute des Platzes auf Marker übertragen
-        if (erisMarker.Platz !== erisPlatzteil.platz.platzName) {
-          erisMarker.Platz = erisPlatzteil.platz.platzName;  // aktueller Platzname
+        if (erisMarker.PlatzName !== erisPlatzteil.platz.platzName) {
+          erisMarker.PlatzName = erisPlatzteil.platz.platzName;  // aktueller Platzname
           var platzWechsel = true;
         }
         
@@ -256,22 +258,25 @@ class Platzteil {
         // Datum + Uhrzeit kombiniert
         erisMarker.start = erisMarker.dateStart[0] + ' ' + erisPlatzteil.von;
 
-        // Marker ins Ziel-Platzteil ablegen
-        $(ui.draggable)
-          .appendTo($('#' + erisPlatzteil.platzteilNummer + erisPlatzteil.platz.platzName)); 
-        
         // Marker-Position im Ziel = oben, links
         $(ui.draggable).css({
             'top': 0,
             'left': 0
         }); 
   
+        // Marker ins Ziel-Platzteil ablegen
+        $(ui.draggable)
+          .appendTo($('#' + erisPlatzteil.platzteilNummer + erisPlatzteil.platz.innerPlatzName)); 
+        
         // ToolTip aktualisieren
         erisMarker.jQueryQtipMarker();
+        
+        // Marker speichern
+        erisMarker.store();
         
       } // end drop
     });
    
-  } // end constructor
+  } // end view
    
 } // end class Platzteil

@@ -24,20 +24,20 @@
 class ErisEvent {
 
 	
-	constructor(id, startTime, duration, description, team, match, partOfSeries, field, portion) {
+	constructor(id, startTime, duration, description, team, match, partOfSeries, field, portion, markerNummer) {
 		var leererPlatz = {                   // leerer Platz
 		        timeline : null,              // keiner timeline zugeordnet (Datumsachse)
-		        platzName : 'leerer Platz',   // Default
+		        PlatzName : 'leerer Platz',   // Default
 		        platzteilNummer : -1,         // keine gültige platzteilId
 		        teilBezeichung : '?',         // Default 
 		        anzahlTeile : 1,              // Marker besteht aus einem Platzteil
 		        platzfarbe : 'green',         // nicht unterstützt
 		        von : 8,                      // fixer Wert 8 Uhr
 		        bis : 22,                     // fixer Wert 22 Uhr
-		        PlatzTeilWidth : 120 / 1 -1,  // Default-Wert im Sammler
+		        PlatzTeilWidth : (120/1)-1,   // Default-Wert im Sammler (ohne Border)
 		};
 		
-		this.liegtAufPlatz = leererPlatz;
+
 		this.ID = id; // interner Schlüssel
 		this.start = startTime; // Datum und Uhrzeit des Beginns
 		this.Dauer = duration; // Dauer in Minuten
@@ -45,16 +45,30 @@ class ErisEvent {
 		this.TeamID = team; // Team Kürzel
 		this.Spiel = match; // Spiel J/N
 		this.Serie = partOfSeries; // Teil einer Terminserie
-		this.Platz = field; // Platz
+		this.PlatzName = field; // Platz
 		this.PlatzteilArray = portion; // Platzteile
-		this.anzahlBelegteTeile = undefined; // Default-Wert, Markr liegt noch auf keinem Platz
+		this.anzahlBelegteTeile = undefined; // Default-Wert, Marker liegt noch auf keinem Platz
+		if (portion.length != 0) this.anzahlBelegteTeile = portion.length ;
 		this.erstesBelegtesTeil = 1;  // Defaultwert
-		if(this.startTime) 
+		if (portion.length != 0) {
+		    this.erstesBelegtesTeil = portion[0];
+		}
+		
+    this.liegtAufPlatz = leererPlatz;     // Default-Platz
+    
+    // Suche das Platzobjekt auf dem der Marker liegen soll
+    for (var a = 0; a < erisPlatzArray.length; a++) {
+       if (erisPlatzArray[a].platzName == this.PlatzName) {
+         this.liegtAufPlatz = erisPlatzArray[a];    // Marker liegt auf diesem Platz
+       }
+    }
+
+		if(this.start) 
 		  this.dateStart  = startTime.split(' '); // Array [0] = Datum, [1]
 		else
-		  this.dateStart  = [];
-                                            // = Zeit
-		this.mid = 0; // Nummerierung der Marker
+		  this.dateStart  = []; // ohne Zeit als leeres Array
+                                            
+		this.mid = markerNummer; // Nummerierung der Marker
 		
 		if (this.start) {
   		var dateStart = this.start.split(' ');
@@ -79,7 +93,6 @@ class ErisEvent {
 	
 	view(containerId) {
 
-	  this.mid++;
     this.jQueryShowMarker(); // zeige den Maker mit Query an
     this.jQueryDraggableMarker(); // mache den Marker beweglich
     this.jQueryResizeableMarker(); // mache den Marker in der Größe änderbar
@@ -90,6 +103,9 @@ class ErisEvent {
 	
 	jQueryShowMarker() {
 	  
+	  this.MarkerWidth = this.anzahlBelegteTeile * this.liegtAufPlatz.PlatzTeilWidth - erisMarkerPadding;
+	  this.MarkerWidth += this.anzahlBelegteTeile * erisPlatzTeilMargin;
+
     var hoehe = this.minutesToPixel(this.Dauer);
     var breite = this.MarkerWidth;
     var markerID = this.TeamID + this.mid;
@@ -100,13 +116,28 @@ class ErisEvent {
     .height(hoehe)
     .width(breite)
     .data('erisEventMarker', this)
-    .appendTo('#Container');
+    .appendTo('#Container'); // in den Sammler legen
+    
+    var markerID = this.TeamID + this.mid;
+    if (this.liegtAufPlatz.timeline != null) {
+      var dateStart = this.start.split(' ');
+      var hour = parseInt(dateStart[1].split(':')[0], 10) - this.liegtAufPlatz.von; // relative Stunde x - Beginn der Zeitleiste
+      var minute = parseInt(dateStart[1].split(':')[1], 10);
+      if (minute == 15) minute = 1;
+      if (minute == 30) minute = 2;
+      if (minute == 45) minute = 3;
+      
+      var Teil = (hour * erisAnzahlPlatzTeilejeStunde * this.liegtAufPlatz.anzahlTeile) + (minute * this.liegtAufPlatz.anzahlTeile) + this.erstesBelegtesTeil -1;
+    
+      $('#' + markerID)
+      .appendTo('#'+ Teil + this.liegtAufPlatz.innerPlatzName); // aus den Platz legen
+    }
  	}
   
   jQueryDraggableMarker() {
     var markerID = this.TeamID + this.mid;
     $('#' + markerID)
-    .draggable({ scroll: true })
+    .draggable({ containment : 'window' })
     .draggable("option", "revert", "invalid")
     .draggable("option", "cursorAt", { left: 0, top: 0 });
   }
@@ -177,6 +208,7 @@ class ErisEvent {
   
   jQueryQtipMarker() {
     // qTip für den Marker
+        
     var markerID = this.TeamID + this.mid;
     var markup = this.erisToolTip();
     $('#'+markerID).qtip({ // Grab some elements to apply the tooltip to
@@ -239,7 +271,7 @@ class ErisEvent {
 	erisToolTip() {
     erisTrace('erisToolTip - Beginn');
     var tt = '';
-    if (this.Platz) tt += 'erisPlatz = ' + this.Platz + '<br\>';
+    if (this.PlatzName) tt += 'erisPlatz = ' + this.PlatzName + '<br\>';
     if (this.start) tt += 'erisStart = ' + this.start + '<br\>';
     if (this.Dauer) tt += 'erisDauer = ' + this.Dauer + ' Minuten<br\>';
     if (this.Beschreibung) tt += 'erisBeschreibung = ' + this.Beschreibung + '<br\>';
@@ -248,9 +280,9 @@ class ErisEvent {
     if (this.Serie) tt += 'erisSerie = ' + this.Serie + '<br\>';
     if (this.PlatzteilArray) tt += 'erisPlatzteil = ' + this.PlatzteilArray + '<br\>';
     if (this.anzahlBelegteTeile) tt += 'erisAnzahlBelegteTeile = ' + this.anzahlBelegteTeile + '<br\>'; 
-    if (this.ID) tt += 'erisID = ' + this.ID + '<br\>';
 //  if (this.dateStart) tt += 'erisDateStart = ' + this.dateStart;
-    if (this.erstesBelegtesTeil) tt += 'erstesBelegtesTeil = ' + this.erstesBelegtesTeil;
+    if (this.erstesBelegtesTeil) tt += 'erstesBelegtesTeil = ' + this.erstesBelegtesTeil + '<br\>';
+    if (this.ID) tt += 'erisID = ' + this.ID;
 
     erisTrace('erisToolTip - Ende');
     return tt;
@@ -295,4 +327,44 @@ class ErisEvent {
 	    return '';
 	}
 
+	store() {
+	  
+//    var urlSave = 'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/addEvent/';
+
+//    var urlUpdate = 'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/event/update/';
+    
+    if (this.ID === null) {
+      var url = 'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/addEvent/';
+      var msg = this.Beschreibung + '/' + this.start + '/' + this.Dauer + '/' + this.TeamID + '/' + this.PlatzName + '/' + this.PlatzteilArray;
+    } else {
+      var url = 'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/event/update/';
+      var msg = this.ID + '/' + this.start + '/' + this.Dauer + '/' + this.PlatzName + '/' + this.PlatzteilArray;;
+    }
+    msg = msg.replace(/\s/g, '%20'); // maskiere Blank durch %20
+    msg = msg.replace(/\./g, '%2E'); // maskiere . durch %2E
+    msg = msg.replace(/\s/g, '%20'); // maskiere Blank durch %20
+    msg = msg.replace(/\:/g, '%3A'); // maskiere : durch %3A
+    msg = msg.replace(/\,/g, '%2B'); // ersetzte Komma durch %2B
+
+    url += msg;
+    
+    var newMarkerNummer;
+    
+    $.ajax({ type: "GET", url: url, dataType: 'json'})
+      .done(function( responseJson ) {
+        console.log("ajax erisEvent store done");
+        if (responseJson != undefined ) {
+          console.log(responseJson);
+          newMarkerNummer = responseJson.id; // ID des gespeicherten ersObjekt in der Cloud 
+        }
+        console.log(url);
+      });
+    
+    if (newMarkerNummer != undefined) {
+      this.id = newMarkerNummer;
+      this.jQueryQtipMarker();
+    }
+
+
+	}
 }
