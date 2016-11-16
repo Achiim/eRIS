@@ -15,6 +15,8 @@
 /* global erisBerechneDatum */
 /* global erisWert2Datum */
 /* global erisTrace */
+/* global erisPlatzArray */
+/* global erisAnzahlPlatzTeilejeStunde */
 /* global erisPlatzWidth */
 /* global erisPlatzTeilMargin */
 /* global erisMarkerPadding */
@@ -147,6 +149,13 @@ class ErisEvent {
     
     $('#' + markerID)
     .resizable({
+      stop: function(event, ui) {
+        // Achtung: this verweist hier auf das jQuery-Objekt 'Marker'
+        var erisEventMarker = $(this).data('erisEventMarker');
+        
+        // speichere den geänderten Marker
+        erisEventMarker.store();
+      },
       resize: function(event, ui) {
         // Achtung: this verweist hier auf das jQuery-Objekt 'Marker'
         var erisEventMarker = $(this).data('erisEventMarker');
@@ -198,6 +207,7 @@ class ErisEvent {
         // berechne die neue Dauer des Event
         erisEventMarker.Dauer = erisEventMarker.pixelToMinutes(hoehe); // Minuten aus Pixel berechnet
         erisEventMarker.jQueryQtipMarker();
+        
 
       } // end resize
 
