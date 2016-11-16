@@ -245,7 +245,7 @@ class ErisEvent {
 				at: 'bottom right'
 			},
 			style: {
-				classes: 'qtip-blue qtip-shadow'
+				classes: 'qtip-dark qtip-shadow'
 			}
 		});
 		
@@ -377,9 +377,7 @@ class ErisEvent {
 		
 		var newMarkerNummer;
 		
-/* TODO Fehlerbehandlung für ajax-Aufruf */
-		
-		$.ajax({ type: "GET", url: url, dataType: 'json'})
+		$.ajax({ type: "GET", url: url, dataType: 'json'}) // TODO Fehlerbehandlung für ajax-Aufruf 
 		.done(function( responseJson ) {
 			console.log("ajax erisEvent store done");
 			if (responseJson != undefined ) {
