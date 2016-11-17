@@ -123,9 +123,9 @@ class Datumsachse {
       
       $('.Platz').removeClass('verschwommen');
 
-      if (responseJson != undefined ) {
+      if (typeof responseJson !== 'undefined' ) {
         console.log(responseJson);
-        if (responseJson.items != undefined && responseJson.items.length>0) {
+        if (typeof responseJson.items !== 'undefined' && responseJson.items.length>0) {
           for (var a = 0; a < responseJson.items.length; a++) {
             var dat = responseJson.items[a].startTime.split(' ');
             if (dat[0] == Timeline.angezeigtesDatum) {
@@ -159,9 +159,9 @@ class Datumsachse {
     .done(function( responseJson ) {
       console.log("ajax loadPlaetze done");
       console.log(url);
-      if (responseJson != undefined ) {
+      if (typeof responseJson !== 'undefined' ) {
         console.log(responseJson);
-        if (responseJson.items != undefined && responseJson.items.length>0) {
+        if (typeof responseJson.items != 'undefined' && responseJson.items.length>0) {
           for (var a = 0; a < responseJson.items.length; a++) {
            
             erisPlatzArray[a] = new Platz(timeline, 

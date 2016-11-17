@@ -16,6 +16,7 @@
 /* global erisPlatzTeilMargin */
 /* global erisMarkerPadding */
 /* global erisPlatzteilHeight */
+/* global erisTrace */
 
 class Platz {
 
@@ -282,8 +283,21 @@ class Platzteil {
         erisMarker.store();
         
       } // end drop
-    });
+    }); // end droppable
+    
+    // binde den Eventhandler für Klick an das Platzteil
+    this.jQueryClickPlatzteil();
    
   } // end view
-   
+  
+  /**
+	* click Event-Handler für das Platzteil erzeugen
+	*/
+	jQueryClickPlatzteil() {
+		$(this).click(function() {
+		  erisTrace('jQueryClickPlatzteil - klick');
+		});
+	}
+	
+
 } // end class Platzteil
