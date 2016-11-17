@@ -8,7 +8,7 @@
  * @copyright  alle Rechte vorbehalten
  *
  * @description
- * Alle global gültigen Komstanten werden hier definiert
+ * Alle global gültigen Konstanten und Variablen werden hier definiert
  */
 
 // Zeitkonstanten
@@ -28,5 +28,6 @@ const erisPlatzTeilMargin = 1;                            // jedes Platzteil hat
 const erisAnzahlPlatzTeilejeStunde = 4                    // ein Platzteil repräsentiert 15 Minuten (1/4 Stunde)
 const erisPlatzteilHeight = erisPixelViertelstunde - 1;   // 6 Pixel Höhe des Platzteils ( 1 Pixel für Margin unten abgezogen)
 
+// globale Variablen
 var erisPlatzArray = [];                                  // sammelt alle Objekte für Plätze
 var Timeline = {};                                        // Objekt mit der Datumsachse
