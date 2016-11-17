@@ -36,10 +36,10 @@ class Platz {
 	constructor(timeline, platzName, teilBezeichung, anzahlTeile) {
 	  this.timeline = timeline;           // Referenz auf den TimeSlider mit dem
                                         // aktuellen Datum
-		this.platzName = platzName;					// Bezeichnung des Platzes
-		this.innerPlatzName = platzName
+	  this.platzName = platzName;					// Bezeichnung des Platzes
+	  this.innerPlatzName = platzName
 		               .replace(/\s/g, ''); // ohne Blanks
-    this.platzteilNummer = 0;           // Nummerierung der Platzteile auf dem
+	  this.platzteilNummer = 0;           // Nummerierung der Platzteile auf dem
                                         // Platz
 		this.teilBezeichung = teilBezeichung	
 		this.anzahlTeile  = anzahlTeile;		// Anzahl der reservierbaren
@@ -68,13 +68,6 @@ class Platz {
     this.jQueryUI_Platz(containerId);
    
   } // end view
-/*
- * store() { var msg = ''; if (erisEvent.ID === undefined || erisEvent.ID ===
- * '') { msg = makeEventMessage(MarkerID); postEvent(msg, ui.draggable); // in
- * DB speichern } else { msg = makeEventUpdateMessage(MarkerID);
- * postEventUpdate(msg); } createEventAttributes(MarkerID, erisEvent); //
- * erzeuge Objekt + .data aus Position und Größe des Marker } // end store
- */
 	
   jQueryUI_Platzkopf(PlatzKopfId) {
     /***************************************************************************
@@ -287,17 +280,67 @@ class Platzteil {
     
     // binde den Eventhandler für Klick an das Platzteil
     this.jQueryClickPlatzteil();
+    
+    // binde den Eventhandler für hover an das Platzteil
+    this.jQueryHoverPlatzteil();
    
   } // end view
   
-  /**
+	/**
 	* click Event-Handler für das Platzteil erzeugen
 	*/
 	jQueryClickPlatzteil() {
-		$(this).click(function() {
-		  erisTrace('jQueryClickPlatzteil - klick');
+		$('#'+ this.platzteilNummer + this.platz.innerPlatzName).click(function() {
+			erisTrace('jQueryClickPlatzteil - klick');
+			var erisPlatzteil = $(this).data('erisPlatzteil'); // ermittle Objekt
+			erisPlatzteil.jQueryMarkerDialog();
 		});
 	}
-	
 
+	
+	jQueryHoverPlatzteil() {
+		$('#'+ this.platzteilNummer + this.platz.innerPlatzName).hover(function() {
+			//	erisTrace('jQueryHoverPlatzteil - hover');
+				$( this ).css( { 'background-color' : 'yellow' });
+			  }, function() {
+			    $( this ).css( { 'background-color' : '' });
+			  });
+	}
+	
+	/**
+	* erzeugt einen Dialog zur Erfassung der Platzbelegung
+	*/
+	jQueryMarkerDialog() {
+		var teil = this;
+		$('#formbelegungsdatum').val(this.platz.timeline.angezeigtesDatum);
+		$('#formplatzname').val(this.platz.platzName);
+		$('#formvon').val(this.von);
+		$('#formteam').val('');
+		$('#formbeschreibung').val('Training');
+		
+	    $('#dialog-form').dialog({
+	        modal: true,
+	        title: "Platzbelegung",
+	        width: '300',
+	        height: '320',
+	        open: function(event, ui) {
+	        	erisTrace('jQueryMarkerDialog - open Dialog');	        	
+	        },
+	        buttons: {
+	            Ok: function() {
+	            	
+	            	erisTrace('jQueryMarkerDialog - ok- close Dialog');
+	            	var m = new ErisEvent(null, $('#formbelegungsdatum').val() + ' ' + $('#formvon').val() , '60', $('#formbeschreibung').val(), $('#formteam').val(), null, null, $('#formplatzname').val(), null, 0);
+	                m.view();
+	            	$(this).dialog("close");
+	            },
+	        	Cancle: function() {
+	            	erisTrace('jQueryMarkerDialog - cacle - close Dialog');
+	                $(this).dialog("close");
+	        	}
+	        }
+	    }); //end dialog
+		
+	} // end jQueryMarkerDialog
+	
 } // end class Platzteil
