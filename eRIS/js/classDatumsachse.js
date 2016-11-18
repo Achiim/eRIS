@@ -32,73 +32,71 @@ class Datumsachse {
    */
 
 	constructor(angezeigtesDatum) {
-		this.angezeigtesDatum = angezeigtesDatum;							// aktuelles Datum
-                                                          // dd.mm.jjjj
-		this.markerNummer = 0;                                // initialisiere die Nummerierung der Marker
-		
-		this.loadPlaetze(this);                               // lade alle Plätze und zeige diese an
-	}
+		this.angezeigtesDatum = angezeigtesDatum;				// aktuelles Datum
+		this.markerNummer = 0;									// initialisiere die Nummerierung der Marker
+		this.loadPlaetze(this);									// lade alle Plätze und zeige diese an
+	} // end constructor
 	
 	view(containerId) {
 		
 		var dt_today = this.angezeigtesDatum;
 		var dt_from = erisBerechneDatum(this.angezeigtesDatum,-5);
 		var dt_to = erisBerechneDatum(this.angezeigtesDatum, +7);
-
-    $('<div/>') // Sliderbereich
-      .attr('id', 'DateSlider')
-      .appendTo('#'+containerId);
-
-    $('<div/>') // Slider
-      .attr('id', 'sliderView')
-      .appendTo('#DateSlider');
-
- 		var tod_val = erisDatum2Wert(dt_today);
-		var min_val = erisDatum2Wert(dt_from);
-		var max_val = erisDatum2Wert(dt_to);
+		
+	    $('<div/>') // Sliderbereich
+	      .attr('id', 'DateSlider')
+	      .appendTo('#'+containerId);
+	
+	    $('<div/>') // Slider
+	      .attr('id', 'sliderView')
+	      .appendTo('#DateSlider');
+	
+	 		var tod_val = erisDatum2Wert(dt_today);
+			var min_val = erisDatum2Wert(dt_from);
+			var max_val = erisDatum2Wert(dt_to);
 
 		$("#sliderView").slider({
-      range: false,
-      min: min_val,
-      max: max_val,
-      step: 24*3600,  // ein Tag
-      value: tod_val,
-      
-      slide: function (e, ui) {
-        // Achtung: this verweist hier auf das jQuery-Objekt '#sliderView'
-        var erisTimeline = $('#sliderView .ui-slider-handle').data('erisTimeline');  // Referenz
-                                                                                      // auf
-                                                                                      // das
-                                                                                      // Objekt-Timeline
-        erisTimeline.angezeigtesDatum = erisWert2Datum(ui.value);
-  	    $(ui.handle).text(erisTimeline.angezeigtesDatum);			// neuer
-                                                              // Datumswert im
-                                                          // Schieber
-  	  },
+	      range: false,
+	      min: min_val,
+	      max: max_val,
+	      step: 24*3600,  // ein Tag
+	      value: tod_val,
+	      
+	      slide: function (e, ui) {
+	        // Achtung: this verweist hier auf das jQuery-Objekt '#sliderView'
+	        var erisTimeline = $('#sliderView .ui-slider-handle').data('erisTimeline');  // Referenz
+	                                                                                      // auf
+	                                                                                      // das
+	                                                                                      // Objekt-Timeline
+	        erisTimeline.angezeigtesDatum = erisWert2Datum(ui.value);
+	  	    $(ui.handle).text(erisTimeline.angezeigtesDatum);			// neuer
+	                                                              // Datumswert im
+	                                                          // Schieber
+	      },
   	
-  	  change: function (e, ui) {
-        // Achtung: this verweist hier auf das jQuery-Objekt '#sliderView'
-        var erisTimeline = $('#sliderView .ui-slider-handle').data('erisTimeline');  // Referenz
-                                                                                      // auf
-                                                                                      // das
-                                                                                      // Objekt-Timeline
-  	    $("#sliderView").slider( "option", "min", erisDatum2Wert(erisBerechneDatum(erisTimeline.angezeigtesDatum, -5)) );
-  	    $("#sliderView").slider( "option", "max", erisDatum2Wert(erisBerechneDatum(erisTimeline.angezeigtesDatum, +7)) );
-  	    
-  	    
-  	    jQuery.each($('.Marker'), function( index ) {   
-  	      delete $(this).data('erisEventMarker'); // Lösche das eris-Objekt zum Marker
-  	      this.remove();   // Lösche das jQueryUI-Objekt zum Marker
-  	     }); 
-
-  	    $('.Platz').addClass('verschwommen');
-
-  	    for (var a = 0; a < erisPlatzArray.length; a++ ) {
-  	      erisTimeline.loadEvents(erisPlatzArray[a].platzName, erisTimeline.angezeigtesDatum);
-  	    }
-  	    
-
-  	  }
+	      change: function (e, ui) {
+	        // Achtung: this verweist hier auf das jQuery-Objekt '#sliderView'
+	        var erisTimeline = $('#sliderView .ui-slider-handle').data('erisTimeline');  // Referenz
+	                                                                                      // auf
+	                                                                                      // das
+	                                                                                      // Objekt-Timeline
+	  	    $("#sliderView").slider( "option", "min", erisDatum2Wert(erisBerechneDatum(erisTimeline.angezeigtesDatum, -5)) );
+	  	    $("#sliderView").slider( "option", "max", erisDatum2Wert(erisBerechneDatum(erisTimeline.angezeigtesDatum, +7)) );
+	  	    
+	  	    
+	  	    jQuery.each($('.Marker'), function( index ) {   
+	  	      delete $(this).data('erisEventMarker'); // Lösche das eris-Objekt zum Marker
+	  	      this.remove();   // Lösche das jQueryUI-Objekt zum Marker
+	  	     }); 
+	
+			// Lade die Events für die Plaetze
+	  	    $('.Platz').addClass('verschwommen');
+	  	    for (var a = 0; a < erisPlatzArray.length; a++ ) {
+	  	      erisTimeline.loadEvents(erisPlatzArray[a].platzName, erisTimeline.angezeigtesDatum);
+	  	    }
+	
+	      }
+	      
 		});
 		
 		$('#sliderView .ui-slider-handle')
@@ -108,7 +106,6 @@ class Datumsachse {
 			.css('width', '100')
 			.css('text-align', 'center');
 		
-
 	} // end view
 	
 	loadEvents(field, datum) {
@@ -139,7 +136,7 @@ class Datumsachse {
                             responseJson.items[a].partOfSeries,
                             responseJson.items[a].field,
                             responseJson.items[a].portion,
-                            Timeline.markerNummer).view('#PlatzKunstrasen');
+                            Timeline.markerNummer).view();
             }
           }
         }
@@ -164,15 +161,16 @@ class Datumsachse {
         if (typeof responseJson.items != 'undefined' && responseJson.items.length>0) {
           for (var a = 0; a < responseJson.items.length; a++) {
            
-            erisPlatzArray[a] = new Platz(timeline, 
-                      responseJson.items[a].title, // lösche Blanks aus dem Namen 
-                      responseJson.items[a].portionName,
-                      responseJson.items[a].portions);
+            erisPlatzArray[a] = new Platz(timeline, 	// erzeuge eine Platz mit allen Platzteilen
+                      responseJson.items[a].title, 			// Platzname 
+                      responseJson.items[a].portionName,	// Kürzel für Platzteile
+                      responseJson.items[a].portions);		// Anzahl der Platzteile
             erisPlatzArray[a].view('PlatzContainer', 'PlatzMitteKopf');
           }
         }
       }
     });
+    
   }
 
 } // end class

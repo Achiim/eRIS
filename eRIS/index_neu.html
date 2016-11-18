@@ -11,7 +11,6 @@
 	****************************************
 	Autor: 		Achim, Tim
 	Jahr:		2016
-	Version:	V0.001
 	
 	Allgemein koennen mit diesem System beliebige Sportstaetten
 	fuer die Nutzung reserviert werden.
@@ -82,36 +81,18 @@
 
 					var zeitlinks = new Zeitachse('Links');
 					zeitlinks.view('Platzleiste');
-/**					
-					var kunstrasen = new Platz(Timeline, 'Kunstrasen', 'K', 2);
-					kunstrasen.view('PlatzContainer', 'PlatzMitteKopf');
-					var Stadion = new Platz(Timeline, 'Stadion', 'S', 3);
-					Stadion.view('PlatzContainer', 'PlatzMitteKopf');
-					var Trainingsplatz = new Platz(Timeline, 'Trainingsplatz', 'T', 4);
-					Trainingsplatz.view('PlatzContainer', 'PlatzMitteKopf');
-					var Rohrau1 = new Platz(Timeline, 'RohrauA', 'R', 2);
-					Rohrau1.view('PlatzContainer', 'PlatzMitteKopf');
-					var Rohrau2 = new Platz(Timeline, 'RohrauB', 'R', 2);
-					Rohrau2.view('PlatzContainer', 'PlatzMitteKopf');
-					var Schwabenland = new Platz(Timeline, 'Schwabenland', 'H', 3);
-					Schwabenland.view('PlatzContainer', 'PlatzMitteKopf');
-					var Schoenbuch = new Platz(Timeline, 'Schoenbuch', 'H', 1);
-					Schoenbuch.view('PlatzContainer', 'PlatzMitteKopf');
-**/					
 					var zeitrechts = new Zeitachse('Rechts');
 					zeitrechts.view('Platzleiste');
-					
+/*					
 					var aJugend = new ErisEvent(null, null, '60', 'Training', 'A', null, null, null, null, 0);
 					aJugend.view();
 					var bJugend = new ErisEvent(null, null, '60', 'Training', 'B', null, null, null, null, 1);
 					bJugend.view();
-			
-					$('#PlatzMitte').on('scroll', function () {
+*/					
+					$('#PlatzMitte').on('scroll', function () {	// Plätze und Platzkopf synchron scrollen
 					    $('#KopfContainer').scrollLeft($(this).scrollLeft());
-					    $('#ZeitLinks').scrollTop($(this).scrollTop());
-					    $('#ZeitRechts').scrollTop($(this).scrollTop());
 					});
-
+					
 				});
 		</script>		
 	</head>
@@ -210,6 +191,29 @@
 		</div>
 
 		<div class="Sammler" id="Container">
+		</div>
+		
+		
+		<div id="dialog-form" title="Platzbelegung">
+		  <form>
+		    <fieldset>
+		      <label for="formbelegungsdatum">Datum</label>
+		      <input type="text" name="formbelegungsdatum" id="formbelegungsdatum" value="" class="text ui-widget-content ui-corner-all">
+		      <label for="formplatzname">Platz</label>
+		      <input type="text" name="formplatzname" id="formplatzname" value="" class="text ui-widget-content ui-corner-all">
+		      <label for="formvon">von</label>
+		      <input type="text" name="formvon" id="formvon" value="" class="text ui-widget-content ui-corner-all">
+		      <label for="formteam">Team</label>
+		      <input type="text" name="formteam" id="formteam" value="" class="text ui-widget-content ui-corner-all">
+		      <label for="formbeschreibung">Text</label>
+		      <input type="text" name="formbeschreibung" id="formbeschreibung" value="" class="text ui-widget-content ui-corner-all">
+		      <label for="formspiel">Spiel</label>
+		      <input type="text" name="formspiel" id="formspiel" value="" class="text ui-widget-content ui-corner-all">
+		 
+		      <!-- Allow form submission with keyboard without duplicating the dialog button -->
+		      <input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+		    </fieldset>
+		  </form>
 		</div>
 		
 	</body>

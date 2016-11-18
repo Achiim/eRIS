@@ -89,9 +89,9 @@ class ErisEvent {
 		this.MarkerHeightjePlatzteil=this.MarkerMinHeight;
 	} // end constructor
 	
-	view(containerId) {
+	view() {
 		
-		this.jQueryShowMarker(); // zeige den Maker mit Query an
+		this.jQueryShowMarker(); // zeige den Maker an
 		this.jQueryDraggableMarker(); // mache den Marker beweglich
 		this.jQueryResizeableMarker(); // mache den Marker in der Größe
 										// änderbar
@@ -389,13 +389,14 @@ class ErisEvent {
 		.done(function( responseJson ) {
 			console.log("ajax erisEvent store done");
 			console.log(url);
-  		if (typeof responseJson !== "undefined" ) { // bei update gibt es keine Antwort
-  			// ID des gespeicherten erisObjekt aus der Cloud merken
-  			newMarkerNummer = responseJson.id;
-  		}
+
+	  		if (typeof responseJson !== 'undefined' ) { // bei update gibt es keine Antwort
+	  			// ID des gespeicherten erisObjekt aus der Cloud merken
+	  			newMarkerNummer = responseJson.id;
+	  		}
 		});
 		
-		if (typeof newMarkerNummer !== 'undefined') {
+		if (typeof newMarkerNummer !== undefined) {
 			this.id = newMarkerNummer;
 			this.jQueryQtipMarker();
 		}
