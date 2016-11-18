@@ -167,8 +167,16 @@ class Datumsachse {
                       responseJson.items[a].portions);		// Anzahl der Platzteile
             erisPlatzArray[a].view('PlatzContainer', 'PlatzMitteKopf');
           }
-        }
-      }
+        } // end responseJson verarbeiten
+      } // end responseJson verfügbar
+      
+      $(document).ready({	// sobald alle Plätze angelegt sind
+      	function() {
+        	for (var a = 0; a < responseJson.items.length; a++) {
+     			timeline.loadEvents(responseJson.items[a].title, timeline.angezeigteDatum);
+        	}
+    	}
+      });
     });
     
   }
