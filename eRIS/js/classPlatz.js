@@ -199,6 +199,8 @@ class Platzteil {
       .data('erisPlatzteil', this)                        // Referenz auf das
                                                           // Platzteil-Objekt
       .appendTo('#Platz' + this.platz.innerPlatzName);
+      
+
 
     // mache das erzeugte Platzteil droppable
     // --------------------------------------
@@ -286,6 +288,13 @@ class Platzteil {
    
   } // end view
   
+	/**
+	* ready Event-Handler für das Platzteil erzeugen
+	*/
+	jQueryReadyPlatzteil() {
+		
+		erisTrace('jQueryReadyPlatzteil - ready');
+	}
 	/**
 	* click Event-Handler für das Platzteil erzeugen
 	*/

@@ -155,6 +155,8 @@ Platzmitte============== Ebene 3 + 4 + 5
 }
 
 .PlatzContainer {
+	background-color: #558b2f;
+	background-image: url("../images/football-no-lines.png");
 	overflow: hidden;
 	width: 880px;				/* 125px * 7 Plätze + 5px Abstand zwischen den Plätzen */
 }
@@ -163,7 +165,6 @@ Platzmitte============== Ebene 3 + 4 + 5
 	margin-left: 5px;
 	width: 120px;
 	float: left;
-	opacity: 1;
 	/* background-image: url(../images/erisPlatz.png); */	
 }
 
@@ -171,7 +172,6 @@ Platzmitte============== Ebene 3 + 4 + 5
 	float: left;
 	margin-top: 1px;			/* Abstand zwischen den Platzteilen */
 	margin-right: 1px;			/* Abstand zwischen den Platzteilen */
-
 }
 
 
