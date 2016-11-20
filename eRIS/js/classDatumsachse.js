@@ -75,7 +75,11 @@ class Datumsachse {
 	      },
   	
 	      change: function (e, ui) {
-	        // Achtung: this verweist hier auf das jQuery-Objekt '#sliderView'
+	    	
+	    	// alte Meldungen entfernen 
+	    	erisClear();
+	        
+	    	// Achtung: this verweist hier auf das jQuery-Objekt '#sliderView'
 	        var erisTimeline = $('#sliderView .ui-slider-handle').data('erisTimeline');  // Referenz
 	                                                                                      // auf
 	                                                                                      // das
@@ -110,38 +114,45 @@ class Datumsachse {
 	
 	loadEvents(field, datum) {
 	  
-    var url = 'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/event/field/' + field;
-//    url += '/time/' + datum + '%2008%3A00/' + datum + '%2022%3A00';   // Funktion momentan in Überarbeitung
-  
-    $.ajax({ type: "GET", url: url, dataType: 'json'})
-    .done(function( responseJson ) {
-      console.log("ajax loadEvents done");
-      console.log(url);
-      
-      $('.Platz').removeClass('verschwommen');
-
-      if (typeof responseJson !== 'undefined' ) {
-        console.log(responseJson);
-        if (typeof responseJson.items !== 'undefined' && responseJson.items.length>0) {
-          for (var a = 0; a < responseJson.items.length; a++) {
-            var dat = responseJson.items[a].startTime.split(' ');
-            if (dat[0] == Timeline.angezeigtesDatum) {
-              Timeline.markerNummer++;  // nächste Markernummer
-              new ErisEvent(responseJson.items[a].id, 
-                            responseJson.items[a].startTime, 
-                            responseJson.items[a].duration,
-                            responseJson.items[a].description,
-                            responseJson.items[a].team,
-                            responseJson.items[a].match,
-                            responseJson.items[a].partOfSeries,
-                            responseJson.items[a].field,
-                            responseJson.items[a].portion,
-                            Timeline.markerNummer).view();
-            }
-          }
-        }
-      }
-    });
+	    var url = 'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/event/field/' + field;
+//	    url += '/time/' + datum + '%2008%3A00/' + datum + '%2022%3A00'; // url mit Datum liefert sporadisch 503
+		url = url.replace(/\s/g, '%20'); // maskiere Blank durch %20
+	  
+	    $.ajax({ type: "GET", url: url, dataType: 'json'})
+	    .success(function( responseJson ) {
+	    	erisTrace("ajax loadEvents success");
+	    	erisTrace(url);
+	      
+	      $('.Platz').removeClass('verschwommen');
+	
+	      if (typeof responseJson !== 'undefined' ) {
+	        console.log(responseJson);
+	        if (typeof responseJson.items !== 'undefined' && responseJson.items.length>0) {
+	          for (var a = 0; a < responseJson.items.length; a++) {
+	            var dat = responseJson.items[a].startTime.split(' ');
+	            if (dat[0] == Timeline.angezeigtesDatum) {
+	              Timeline.markerNummer++;  // nächste Markernummer
+	              new ErisEvent(responseJson.items[a].id, 
+	                            responseJson.items[a].startTime, 
+	                            responseJson.items[a].duration,
+	                            responseJson.items[a].description,
+	                            responseJson.items[a].team,
+	                            responseJson.items[a].match,
+	                            responseJson.items[a].partOfSeries,
+	                            responseJson.items[a].field,
+	                            responseJson.items[a].portion,
+	                            Timeline.markerNummer).view();
+	            }
+	          }
+	        }
+	      }
+	    })
+	    .error(function( responseJson ) {
+	    	erisTrace(url);
+	    	erisError("ajax loadEvents error: " + responseJson.status + ' - ' + responseJson.statusText );
+	    	erisError("ajax loadEvents error: " + responseJson.responseText );
+	    	erisMessage('Lesenfehler der Belegungen, bitte erneut lesen.')
+	    });
 	}
 
   loadPlaetze(timeline) {
@@ -151,11 +162,12 @@ class Datumsachse {
     }); 
     
     var url = 'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/field';
+	url = url.replace(/\s/g, '%20'); // maskiere Blank durch %20
   
     $.ajax({ type: "GET", url: url, dataType: 'json'})
-    .done(function( responseJson ) {
-      console.log("ajax loadPlaetze done");
-      console.log(url);
+    .success(function( responseJson ) {
+    	erisTrace("ajax loadPlaetze success");
+    	erisTrace(url);
       if (typeof responseJson !== 'undefined' ) {
         console.log(responseJson);
         if (typeof responseJson.items != 'undefined' && responseJson.items.length>0) {
@@ -167,10 +179,24 @@ class Datumsachse {
                       responseJson.items[a].portions);		// Anzahl der Platzteile
             erisPlatzArray[a].view('PlatzContainer', 'PlatzMitteKopf');
           }
+          // PlatzMitte anpassen, falls wenigerale 6 Plätze vorhanden sind
+          if (responseJson.items.length < erisMaxFieldsInView) {
+        	  var breite = responseJson.items.length * 125 + 5; /* 125px * 6 Plätze + 5px Abstand zwischen den Plätzen */
+        	  $('.PlatzMitte').css('width', breite);	// sichtbarer Bereich für Plätze
+        	  $('.PlatzContainer').css('width', breite);	// unsichbarer Bereich für Plätze -> Scrollbreite
+        	  $('.KopfContainer').css('width', breite);	// sichtbarer Bereich für Platzkoepfe
+        	  $('.PlatzMitteKopf').css('width', breite);	// unsichbarer Bereich für Platzkoepfe -> Scrollbreite
+        	  $('#erisViews').css('width', breite+120);	// gesamter View
+          }
         }
       }
+    })
+    .error(function( responseJson ) {
+    	erisTrace(url);
+    	erisError("ajax loadPlaetze error: " + responseJson.status + ' - ' + responseJson.statusText );
+    	erisError("ajax loadPlaetze error: " + responseJson.responseText );
+    	erisMessage('Lesenfehler der Plätze, bitte erneut lesen.')
     });
-    
   }
 
 } // end class

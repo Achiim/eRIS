@@ -47,9 +47,11 @@
 		<script src="js/jquery/jquery-ui.js"></script>
 		<script src="js/jquery/jquery.qtip.min.js"></script>	
 
+ 
+		<script src="js/modelGroup.js"></script>    
 		<script src="js/global.js"></script>
 		<script src="js/Zeit.js"></script>
-		<script src="js/cors.js"></script>
+		<script src="js/messages.js"></script>
 		<script src="js/classErisEvent.js"></script>
 		<script src="js/classPlatz.js"></script>
 		<script src="js/classZeitachse.js"></script>
@@ -71,7 +73,11 @@
 
 		  			erisTraceLevel = 1;
 				    erisTrace('doLayout - Beginn');
-				    $('#erisViews').tabs(); // Tabs erzeugen
+				    $('#erisViews').tabs({
+				    	beforeActivate: function( event, ui ) {
+				    		  erisTrace('index.html - tabload-beforeActivate on erisViews: ' + ui.newPanel[0].id);
+				    	  }
+				    }); // Tabs erzeugen
 				    $('#eRIS').tabs(); // Tabs erzeugen
 				    $('.ui-tabs-panel').css({'padding': '0px'}); // keine Polsterung innerhalb des TAB ToDo: in allen TABs
 				    $('.ui-slider').css({'height': '40px'}); // Datums-Slider
@@ -127,6 +133,21 @@
 				  
 				  <div id="erisGroup">
 						<p>erisGroup</p>
+						<script>
+/*
+							// Hauptabschnitt - 
+						    var eG = new erisGruppe();			// View-Objekt generieren
+	
+						    $('<div\>') 					// Platzhalter für Gruppen
+						    .attr('id', 'groupContainer')
+						    .addClass('Gruppe')
+						    .css ({'width': 500})
+						    .appendTo('#erisGroup');
+						    
+						    eG.view('#groupContainer');		// Data-Grid anzeigen und füllen mit der Funktion 'loader'
+						    eG.loading();					// Anzeige der Lade-Meldung
+*/
+						</script>
 				  </div>
 				  <div id="erisTeam">
 						<p>erisTeam</p>
@@ -184,6 +205,11 @@
 		.attr('id', 'PlatzContainer')
 		.addClass('PlatzContainer')
 		.appendTo('#PlatzMitte');
+
+		$('<div/>')
+		.attr('id', 'MeldungsContainer')
+		.addClass('MeldungsContainer')
+		.appendTo('#Belegungsplan');
 
 		</script>		
 			

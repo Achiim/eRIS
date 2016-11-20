@@ -20,11 +20,11 @@ Styles fuer verwendete Farben
     background: #fafafa;				/* Gray 50 */
 }
 
-.Stadion, .StadionHaelfte, .StadionHaelfte1 , .StadionHaelfte2, .PlatzTeil, .Platzganztags {
+.Stadion, .StadionHaelfte, .StadionHaelfte1 , .StadionHaelfte2, .Platzganztags {
 	background: #f5f5f5;				/* Gray 100 */
 }
 
-.Rasen, .RasenHaelfte, .RasenHaelfte1 , .RasenHaelfte2 {
+.Rasen, .RasenHaelfte, .RasenHaelfte1 , .RasenHaelfte2, .PlatzContainer {
 	background: #eeeeee;				/* Gray 200 */
 }
 

@@ -42,7 +42,6 @@ Belegungsplan ================== Ebene 1
 ****************************************/
 
 .Belegungsplan {
-	width: 895px;				/* maximale Breite  */
 	float: left;
 }
 
@@ -103,6 +102,15 @@ Platzkopf================ Ebene 3 + 4 + 5
 	margin-right: 1px;
 }
 
+.Platzkopfart2  {
+	background-image: url("../images/platzkopfart2.png");	
+}
+
+.Platzkopfart4  {
+	background-image: url("../images/platzkopfart4.png");	
+}
+
+
 
 /****************************************
 Platzleiste ==================== Ebene 2
@@ -122,6 +130,7 @@ Zeitachse=============== Ebene 3 + 4 + 5
 	overflow: hidden;		/* ???? */
 	float: left;
 	color: white;			/* Farbe der Uhrzeiten 8:00 - 22:00 */
+	background-image: url("../images/zeit.png");	
 }
 
 #ZeitContainerLinks, #ZeitContainerRechts {
@@ -149,14 +158,12 @@ Platzmitte============== Ebene 3 + 4 + 5
 ****************************************/
 
 .PlatzMitte {
-	width: 755px;				/* 125px * 6 Plätze + 5px Abstand zwischen den Plätzen  + 20px Scrollbar */
-	overflow-x: scroll;			/* hier scroll es hoizontal über die Plätze*/
+ 	width: 755px;				/* 125px * 6 Plätze + 5px Abstand zwischen den Plätzen  + 20px Scrollbar */
+	overflow-x: auto;			/* hier scrollt es hoizontal über die Plätze*/
 	float: left;
 }
 
 .PlatzContainer {
-	background-color: #558b2f;
-	background-image: url("../images/football-no-lines.png");
 	overflow: hidden;
 	width: 880px;				/* 125px * 7 Plätze + 5px Abstand zwischen den Plätzen */
 }
@@ -165,7 +172,14 @@ Platzmitte============== Ebene 3 + 4 + 5
 	margin-left: 5px;
 	width: 120px;
 	float: left;
-	/* background-image: url(../images/erisPlatz.png); */	
+}
+
+.Platzart2  {
+	background-image: url("../images/platzart2.png");	
+}
+
+.Platzart4  {
+	background-image: url("../images/platzart4.png");	
 }
 
 .PlatzTeil {

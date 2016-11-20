@@ -79,6 +79,7 @@ class Platz {
       $('<div/>') // Container 1
         .attr('id', 'Kopf' + this.innerPlatzName)
         .addClass('Platzteile')
+        .addClass('Platzkopfart' + this.anzahlTeile) // steuert die Textur des Platzkopfes
         .appendTo('#'+PlatzKopfId);
       
       // Beschriftung des Platzes
@@ -120,6 +121,7 @@ class Platz {
     // ------------------------
     $('<div/>')
       .addClass('Platz')
+      .addClass('Platzart' + this.anzahlTeile) // steuert die Textur des Platzes
       .attr('id', 'Platz'+ this.innerPlatzName)
       .appendTo('#'+containerId);
 
