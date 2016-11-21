@@ -332,7 +332,7 @@ class Platzteil {
 	    $('#dialog-form').dialog({
 	        modal: true,
 	        title: "Platzbelegung",
-	        width: '300',
+	        width: '310',
 	        height: '320',
 	        open: function(event, ui) {
 	        	erisTrace('jQueryMarkerDialog - open Dialog');	        	
@@ -342,8 +342,9 @@ class Platzteil {
 	            	
 	            	erisTrace('jQueryMarkerDialog - ok- close Dialog');
 	            	var m = new ErisEvent(null, $('#formbelegungsdatum').val() + ' ' + $('#formvon').val() , '60', $('#formbeschreibung').val(), $('#formteam').val(), null, null, $('#formplatzname').val(), null, 0);
-	                m.view();
+	                m.view(); // Marker anzeigen
 	            	$(this).dialog("close");
+	    			m.store(); // speichere die Belegung
 	            },
 	        	Cancle: function() {
 	            	erisTrace('jQueryMarkerDialog - cacle - close Dialog');

@@ -54,6 +54,7 @@ class ErisEvent {
 		if (portion === null) {
 		  this.anzahlBelegteTeile = 1; // Default-Wert
 		  this.erstesBelegtesTeil = 1; // Default-Wert
+		  this.PlatzteilArray = [1]; //Default-Wert
 		} else {
    		if (portion.length !== 0 ) this.anzahlBelegteTeile = portion.length ;
   		if (portion.length !== 0) this.erstesBelegtesTeil = portion[0];
