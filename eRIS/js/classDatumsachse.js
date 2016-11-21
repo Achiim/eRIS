@@ -179,6 +179,7 @@ class Datumsachse {
                       responseJson.items[a].portions);		// Anzahl der Platzteile
             erisPlatzArray[a].view('PlatzContainer', 'PlatzMitteKopf');
           }
+
           // PlatzMitte anpassen, falls wenigerale 6 Plätze vorhanden sind
           if (responseJson.items.length < erisMaxFieldsInView) {
         	  var breite = responseJson.items.length * 125 + 5; /* 125px * 6 Plätze + 5px Abstand zwischen den Plätzen */
@@ -187,16 +188,17 @@ class Datumsachse {
         	  $('.KopfContainer').css('width', breite);	// sichtbarer Bereich für Platzkoepfe
         	  $('.PlatzMitteKopf').css('width', breite);	// unsichbarer Bereich für Platzkoepfe -> Scrollbreite
         	  $('#erisViews').css('width', breite+120);	// gesamter View
-          }
-        }
+          } // end responseJson verarbeiten
+        } // end responseJson verfügbar
       }
-    })
+    }) // end success
     .error(function( responseJson ) {
     	erisTrace(url);
     	erisError("ajax loadPlaetze error: " + responseJson.status + ' - ' + responseJson.statusText );
     	erisError("ajax loadPlaetze error: " + responseJson.responseText );
     	erisMessage('Lesenfehler der Plätze, bitte erneut lesen.')
-    });
-  }
+    }) // end error
+      
+  } // end loadPlaetze
 
 } // end class
