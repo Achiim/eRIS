@@ -20,9 +20,6 @@
     font-weight: bold;   
 	color: white;
 	opacity: 1.0;
-}
-
-.Marker {  
     border-radius: 5px;
     height: 37px;
 	width: 169px;
@@ -41,46 +38,37 @@ div.ui-draggable-dragging {
 
 .EventAH, .AH, .alteHerren  {
    background: #BDB76B;
-/*   background: linear-gradient(to top, #bdb86b 0%, #454327 100%); */ 
 }
 
 .EventAk, .Aktive {
    background: #2F4F4F;
-/*   background: linear-gradient(to top, #9bbcd8 0%, #28323b 100%); */ 
 }
 
 .EventA, .A-Jugend, .A-Junioren {
-    background: #92B6D5;
-/* 	background: linear-gradient(to top, #5ac2dc 0%, #36434e 100%); */
+    background: rgba( 88, 86, 214, 1.0); /* Purple */ 
 }
 
 .EventB, .B-Jugend, .B-Junioren {
-   background: #12AD12;
-/*	background: linear-gradient(to top, #75ad5d 0%, #2b3f22 100%);  */
+   background: rgba( 0, 122, 255, 1.0); /* Blue */
 }
 
 .EventC, .C-Jugend, .C-Junioren {
-   background: #AF9483;
-/*	background: linear-gradient(to top, #ddca18 0%, #514a09 100%); */
+   background: rgba( 90, 200, 250, 1.0); /* Teal Blue */
 }
 
 .EventD, .D-Jugend, .D-Junioren {
-   background: #D8AE47;
-/*	background: linear-gradient(to top, #dd1818 0%, #510909 100%); */
+   background: rgba( 76, 217, 100, 1.0); /* Green */
 }
 
 .EventE, .E-Jugend, .E-Junioren {
-   background: #B76BA3;
-/*	background: linear-gradient(to top, #18b3dd 0%, #094251 100%); */
+   background: rgba( 255, 204, 0, 1.0); /* Yellow */
 }
 
 .EventF, .F-Jugend, .F-Junioren {
-   background: #F7786B;
-/*	background: linear-gradient(to top, #ea7719 0%, #562c0a 100%); */
+   background: rgba( 255, 149, 0, 1.0); /* Orange */
 }
 
 .EventG, .Bambini, .G-Junioren {
-   background: #F3386B;
-/*	background: linear-gradient(to top, #dfe833 0%, #525513 100%); */
+   background: rgba( 255, 59, 48, 1.0); /* Green */
 }
 
