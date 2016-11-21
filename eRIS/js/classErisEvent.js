@@ -301,7 +301,7 @@ class ErisEvent {
 	}
 	
 	erisToolTip() {
-		erisTrace('erisToolTip - Beginn');
+//		erisTrace('erisToolTip - Beginn');
 		var tt = '';
 		if (this.PlatzName) tt += 'erisPlatz = ' + this.PlatzName + '<br\>';
 		if (this.start) tt += 'erisStart = ' + this.start + '<br\>';
@@ -316,7 +316,7 @@ class ErisEvent {
 		if (this.erstesBelegtesTeil) tt += 'erstesBelegtesTeil = ' + this.erstesBelegtesTeil + '<br\>';
 		if (this.ID) tt += 'erisID = ' + this.ID;
 		
-		erisTrace('erisToolTip - Ende');
+//		erisTrace('erisToolTip - Ende');
 		return tt;
 	}
 	
@@ -327,7 +327,7 @@ class ErisEvent {
 	 * @returns Bezeichnung der Alterklasse
 	 */
 	altersKlasse(TeamID) {
-		erisTrace('altersKlasse - Beginn/Ende');
+//		erisTrace('altersKlasse - Beginn/Ende');
 	
 		var AH = ['AH', 'H1', 'H2'];
 		if ($.inArray(TeamID, AH) > -1) return 'alteHerren';
@@ -385,18 +385,25 @@ class ErisEvent {
 		
 		var newMarkerNummer;
 		
-		$.ajax({ type: "GET", url: url, dataType: 'json'}) // TODO Fehlerbehandlung für ajax-Aufruf 
-		.done(function( responseJson ) {
-			console.log("ajax erisEvent store done");
-			console.log(url);
+		$.ajax({ type: "GET", url: url, dataType: 'json'})
+
+		.success(function( responseJson ) {
+			erisTrace("ajax erisEvent store success");
+			erisTrace(url);
 
 	  		if (typeof responseJson !== 'undefined' ) { // bei update gibt es keine Antwort
 	  			// ID des gespeicherten erisObjekt aus der Cloud merken
 	  			newMarkerNummer = responseJson.id;
 	  		}
-		});
+		})
+	    .error(function( responseJson ) {
+	    	erisTrace(url);
+	    	erisError("ajax erisEvent store error: " + responseJson.status + ' - ' + responseJson.statusText );
+	    	erisError("ajax erisEvent store error: " + responseJson.responseText);
+	    	erisMessage('Speicherfehler, bitte erneut lesen und wiederholen.');
+	    });
 		
-		if (typeof newMarkerNummer !== undefined) {
+		if (typeof newMarkerNummer !== 'undefined') {
 			this.id = newMarkerNummer;
 			this.jQueryQtipMarker();
 		}

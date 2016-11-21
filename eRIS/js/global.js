@@ -10,7 +10,9 @@
  * @description
  * Alle global gültigen Konstanten und Variablen werden hier definiert
  */
-
+// ViewKonstanten
+const erisMaxFieldsInView = 6;								// max. Anzahl der nebeneinander darstellbaren Plätze,  bevor gescrollt wird
+	
 // Zeitkonstanten
 const erisPixelStunde = 28;                               // 28 Pixel repräsentieren eine Stunden
 const erisPixelViertelstunde = erisPixelStunde/4;         // 7 Pixel je Viertelstunde

@@ -79,6 +79,7 @@ class Platz {
       $('<div/>') // Container 1
         .attr('id', 'Kopf' + this.innerPlatzName)
         .addClass('Platzteile')
+        .addClass('Platzkopfart' + this.anzahlTeile) // steuert die Textur des Platzkopfes
         .appendTo('#'+PlatzKopfId);
       
       // Beschriftung des Platzes
@@ -120,6 +121,7 @@ class Platz {
     // ------------------------
     $('<div/>')
       .addClass('Platz')
+      .addClass('Platzart' + this.anzahlTeile) // steuert die Textur des Platzes
       .attr('id', 'Platz'+ this.innerPlatzName)
       .appendTo('#'+containerId);
 
@@ -199,6 +201,8 @@ class Platzteil {
       .data('erisPlatzteil', this)                        // Referenz auf das
                                                           // Platzteil-Objekt
       .appendTo('#Platz' + this.platz.innerPlatzName);
+      
+
 
     // mache das erzeugte Platzteil droppable
     // --------------------------------------
@@ -286,6 +290,13 @@ class Platzteil {
    
   } // end view
   
+	/**
+	* ready Event-Handler für das Platzteil erzeugen
+	*/
+	jQueryReadyPlatzteil() {
+		
+		erisTrace('jQueryReadyPlatzteil - ready');
+	}
 	/**
 	* click Event-Handler für das Platzteil erzeugen
 	*/
