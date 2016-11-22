@@ -184,8 +184,8 @@ Platzmitte============== Ebene 3 + 4 + 5
 
 .PlatzTeil {
 	float: left;
-	margin-top: 1px;			/* Abstand zwischen den Platzteilen */
-	margin-right: 1px;			/* Abstand zwischen den Platzteilen */
+	margin-top: 0px;			/* Abstand zwischen den Platzteilen */
+	margin-right: 0px;			/* Abstand zwischen den Platzteilen */
 }
 
 
