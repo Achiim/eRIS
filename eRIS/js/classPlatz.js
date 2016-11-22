@@ -51,7 +51,7 @@ var Platz = function(timeline, platzName, teilBezeichung, anzahlTeile) {
 	this.PlatzTeilWidth = erisPlatzWidth / this.anzahlTeile - erisPlatzTeilMargin; 
 	this.MarkerMinWidth = this.PlatzTeilWidth - erisMarkerPadding;
 
-}
+};
 /**
 * Methoden der Klasse Platz
 * =========================
@@ -68,7 +68,7 @@ Platz.prototype.jQueryViewPlatz = function(containerId, PlatzKopfId) {
 	// -----------------------------
 	this.jQueryPlatz(containerId);
 
-}; // end view
+}; // end jQueryViewPlatz
 
 Platz.prototype.jQueryPlatzkopf = function jQueryUI_Platzkopf(PlatzKopfId) {
 	/***************************************************************************
@@ -153,7 +153,7 @@ Platz.prototype.jQueryPlatz = function jQueryUI_Platz(containerId) {
 * @param pl = Teilnummer des Platzes (1 ... anzahlTeile), entspricht dem ersten reservierten Platzteil
 * 
 * @description Konstruktor für ein Platzteilobjekt.
-* @example Aufrufbeispiel: new Platzteil(12, Platz).view();
+* @example Aufrufbeispiel: new Platzteil(12, Platz).jQueryViewPlatzteil();
 */
   
 var Platzteil = function(platzteilNummer, platz, platzSpalte) {
@@ -288,7 +288,7 @@ Platzteil.prototype.jQueryViewPlatzteil = function() {
 	// binde den Eventhandler für hover an das Platzteil
 	this.jQueryHoverPlatzteil();
 
-}; // end view
+}; // end jQueryViewPlatzteil
   
 	/**
 * ready Event-Handler für das Platzteil erzeugen
@@ -297,6 +297,7 @@ Platzteil.prototype.jQueryReadyPlatzteil = function() {
 	
 	erisTrace('jQueryReadyPlatzteil - ready');
 };
+
 /**
 * click Event-Handler für das Platzteil erzeugen
 */
@@ -341,7 +342,7 @@ Platzteil.prototype.jQueryMarkerDialog = function(){
 				
 				erisTrace('jQueryMarkerDialog - ok- close Dialog');
 				var m = new ErisEvent(null, $('#formbelegungsdatum').val() + ' ' + $('#formvon').val() , '60', $('#formbeschreibung').val(), $('#formteam').val(), null, null, $('#formplatzname').val(), null, 0);
-				m.view(); // Marker anzeigen
+				m.jQueryViewMarker(); // Marker anzeigen
 				$(this).dialog("close");
 				m.store(); // speichere die Belegung
 			},
@@ -353,5 +354,3 @@ Platzteil.prototype.jQueryMarkerDialog = function(){
 	}); //end dialog
 	
 }; // end jQueryMarkerDialog
-
-

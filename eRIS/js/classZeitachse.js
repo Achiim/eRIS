@@ -38,43 +38,43 @@ var Zeitachse = function(art) {
     this.pixelStunde = Math.floor((erisZeitAchsenlaenge-14) /       // ??? 14 Pixel Abzug wegen 14 Stunden und Margin
             (this.bis - this.von)); // Anzahl der Pixel je Stunde
 
+}
 
-	this.view = function(containerId) {
-		
-				
-		if (this.art == 'Links') {
-			$('<div/>') // Anzeige der Zeit links
-		    .addClass(this.art)
-		    .attr('id', 'ZeitContainer'+this.art)
-		    .prependTo('#'+containerId);
+Zeitachse.prototype.jQueryViewZeit = function(containerId) {
+	
+			
+	if (this.art == 'Links') {
+		$('<div/>') // Anzeige der Zeit links
+	    .addClass(this.art)
+	    .attr('id', 'ZeitContainer'+this.art)
+	    .prependTo('#'+containerId);
 
-			$('<div/>') // Anzeige der Zeit links
-		    .addClass(this.art)
-		    .attr('id', 'Zeit'+this.art)
-		    .prependTo('#ZeitContainer'+this.art);
-		} else {
-			$('<div/>') // Anzeige der Zeit links
-		    .addClass(this.art)
-		    .attr('id', 'ZeitContainer'+this.art)
-		    .appendTo('#'+containerId);
+		$('<div/>') // Anzeige der Zeit links
+	    .addClass(this.art)
+	    .attr('id', 'Zeit'+this.art)
+	    .prependTo('#ZeitContainer'+this.art);
+	} else {
+		$('<div/>') // Anzeige der Zeit links
+	    .addClass(this.art)
+	    .attr('id', 'ZeitContainer'+this.art)
+	    .appendTo('#'+containerId);
 
-			$('<div/>') // Anzeige der Zeit links
-		    .addClass(this.art)
-		    .attr('id', 'Zeit'+this.art)
-		    .appendTo('#ZeitContainer'+this.art);
-		}
-
-	    // Linke Zeitskala erzeugen 8:00 - 22:00 Uhr
-	    // --------------------------------------------------
-	    for (var uhr = this.von; uhr < this.bis; uhr++) { // Zeitspalte links
-	        $('<div>' + uhr + '<sup>00</sup></div>')
-	            .addClass('Uhrzeit')
-	            .attr('id', 'LU' + uhr)
-	            .css({
-           // 'height': StundeInPixel - erisPlatzTeilMargin
-                'height': this.pixelStunde
-	            })
-	            .appendTo('#Zeit'+this.art);
-	    }
+		$('<div/>') // Anzeige der Zeit links
+	    .addClass(this.art)
+	    .attr('id', 'Zeit'+this.art)
+	    .appendTo('#ZeitContainer'+this.art);
 	}
+
+    // Linke Zeitskala erzeugen 8:00 - 22:00 Uhr
+    // --------------------------------------------------
+    for (var uhr = this.von; uhr < this.bis; uhr++) { // Zeitspalte links
+        $('<div>' + uhr + '<sup>00</sup></div>')
+            .addClass('Uhrzeit')
+            .attr('id', 'LU' + uhr)
+            .css({
+       // 'height': StundeInPixel - erisPlatzTeilMargin
+            'height': this.pixelStunde
+            })
+            .appendTo('#Zeit'+this.art);
+    }
 }
