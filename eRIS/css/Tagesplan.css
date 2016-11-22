@@ -98,8 +98,8 @@ Platzkopf================ Ebene 3 + 4 + 5
 
 .PlatzKopfTeil{					/* Formatierung wie das Platzteil */
 	float: left;
-	margin-top: 1px;
-	margin-right: 1px;
+	margin-top: 0px;
+	margin-right: 0px;
 }
 
 .Platzkopfart2  {
