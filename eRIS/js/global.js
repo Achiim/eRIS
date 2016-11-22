@@ -10,6 +10,9 @@
  * @description
  * Alle global gültigen Konstanten und Variablen werden hier definiert
  */
+// Trace
+const erisTraceLevel = 0;									// 1 - Trace eingeschalten | 0 - Trace ausgeschalten
+
 // ViewKonstanten
 const erisMaxFieldsInView = 6;								// max. Anzahl der nebeneinander darstellbaren Plätze,  bevor gescrollt wird
 	
@@ -25,10 +28,10 @@ const erisMarkerHeightViertelstunde = erisPixelViertelstunde - 1;
 // Platz Konstanten
 const erisPlatzWidth = 120;                               // jeder Platz wird mit 120 Pixel in der Breite dargestellt
 const erisPlatzHeight = erisZeitAchsenlaenge;             // jeder Platz ist so lange wie die Zeitachse
-const erisPlatzTeilMargin = 1;                            // jedes Platzteil hat unten 1 Pixel Abstand zum nächsten
+const erisPlatzTeilMargin = 0;                            // jedes Platzteil hat unten 1 Pixel Abstand zum nächsten
 
 const erisAnzahlPlatzTeilejeStunde = 4                    // ein Platzteil repräsentiert 15 Minuten (1/4 Stunde)
-const erisPlatzteilHeight = erisPixelViertelstunde - 1;   // 6 Pixel Höhe des Platzteils ( 1 Pixel für Margin unten abgezogen)
+const erisPlatzteilHeight = erisPixelViertelstunde;		  // 7 Pixel Höhe des Platzteils ( 1 Pixel für Margin unten abgezogen)
 
 // globale Variablen
 var erisPlatzArray = [];                                  // sammelt alle Objekte für Plätze

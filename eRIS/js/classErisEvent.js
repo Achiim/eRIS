@@ -391,6 +391,8 @@ ErisEvent.prototype.store = function() {
 	
 	var newMarkerNummer;
 	
+	erisClear();
+	
 	$.ajax({ type: "GET", url: url, dataType: 'json'})
 
 	.success(function( responseJson ) {
@@ -401,6 +403,7 @@ ErisEvent.prototype.store = function() {
   			// ID des gespeicherten erisObjekt aus der Cloud merken
   			newMarkerNummer = responseJson.id;
   		}
+    	erisMessage('Speichern erfolgreich.');
 	})
     .error(function( responseJson ) {
     	erisTrace(url);

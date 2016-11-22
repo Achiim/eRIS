@@ -136,7 +136,7 @@ Datumsachse.prototype.loadEvents = function(field, datum) {
 		$('.Platz').removeClass('verschwommen');
 
 		if (typeof responseJson !== 'undefined' ) {
-			console.log(responseJson);
+			erisObjectTrace(responseJson);
 			if (typeof responseJson.items !== 'undefined' && responseJson.items.length>0) {
 				for (var a = 0; a < responseJson.items.length; a++) {
 					var dat = responseJson.items[a].startTime.split(' ');
@@ -179,7 +179,7 @@ Datumsachse.prototype.loadPlaetze = function(timeline) {
 			erisTrace("ajax loadPlaetze success");
 			erisTrace(url);
 			if (typeof responseJson !== 'undefined' ) {
-				console.log(responseJson);
+				erisObjectTrace(responseJson);
 				if (typeof responseJson.items != 'undefined' && responseJson.items.length>0) {
 					for (var a = 0; a < responseJson.items.length; a++) {
 				   

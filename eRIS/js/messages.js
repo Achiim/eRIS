@@ -35,6 +35,13 @@ function erisTrace(msg) {
   if (erisTraceLevel) console.info(erisTimestamp() + ': eRIS - Trace: ' + msg);
 }
 /*******************************************************************************
+ * Funktion: erisObjectTrace Zweck: gibt eine rohe Meldung für Objekte aus
+ */
+function erisObjectTrace(msg) {
+
+  if (erisTraceLevel) console.info(msg);
+}
+/*******************************************************************************
  * Funktion: erisMessage Zweck: Ausgabe einer Meldung im sichtbaren Meldungsbereich
  */
 function erisMessage(msg) {
