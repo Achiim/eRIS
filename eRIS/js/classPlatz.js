@@ -17,6 +17,7 @@
 /* global erisMarkerPadding */
 /* global erisPlatzteilHeight */
 /* global erisTrace */
+/* global ErisEvent */
 
 class Platz {
 
@@ -33,7 +34,7 @@ class Platz {
    */
   
   
-	constructor(timeline, platzName, teilBezeichung, anzahlTeile) {
+  constructor(timeline, platzName, teilBezeichung, anzahlTeile) {
 	  this.timeline = timeline;           // Referenz auf den TimeSlider mit dem
                                         // aktuellen Datum
 	  this.platzName = platzName;					// Bezeichnung des Platzes
@@ -53,9 +54,7 @@ class Platz {
     this.PlatzTeilWidth = erisPlatzWidth / this.anzahlTeile - erisPlatzTeilMargin; 
     this.MarkerMinWidth = this.PlatzTeilWidth - erisMarkerPadding;
     
-
-	
-	} // end constructor
+  } // end constructor
 	
   view(containerId, PlatzKopfId) {
 		
@@ -68,6 +67,8 @@ class Platz {
     this.jQueryUI_Platz(containerId);
    
   } // end view
+	
+
 	
   jQueryUI_Platzkopf(PlatzKopfId) {
     /***************************************************************************
