@@ -179,7 +179,7 @@ var Datumsachse = function (angezeigtesDatum) {
 								  responseJson.items[a].title, 			// Platzname 
 								  responseJson.items[a].portionName,	// Kürzel für Platzteile
 								  responseJson.items[a].portions);		// Anzahl der Platzteile
-							erisPlatzArray[a].view('PlatzContainer', 'PlatzMitteKopf');
+							erisPlatzArray[a].jQueryViewPlatz('PlatzContainer', 'PlatzMitteKopf');
 						}
 
 						// PlatzMitte anpassen, falls wenigerale 6 Plätze vorhanden sind
