@@ -27,7 +27,7 @@
 /* global Platz */
 
 
-class Datumsachse {
+// class Datumsachse {
 	/**
    * @param angezeigtesDatum =
    *          aktuelles Datum
@@ -36,13 +36,12 @@ class Datumsachse {
    * @example Aufrufbeispiel: var timeline = new Datumsachse('30.10.2016');
    */
 
-	constructor(angezeigtesDatum) {
-		this.angezeigtesDatum = angezeigtesDatum;				// aktuelles Datum
-		this.markerNummer = 0;									// initialisiere die Nummerierung der Marker
-		this.loadPlaetze(this);									// lade alle Plätze und zeige diese an
-	}
-	
-	view(containerId) {
+//	constructor
+Datumsachse = function (angezeigtesDatum) {
+	this.angezeigtesDatum = angezeigtesDatum;				// aktuelles Datum
+	this.markerNummer = 0;									// initialisiere die Nummerierung der Marker
+
+	this.view = function(containerId) {
 		
 		var dt_today = this.angezeigtesDatum;
 		var dt_from = erisBerechneDatum(this.angezeigtesDatum,-5);
@@ -117,7 +116,7 @@ class Datumsachse {
 		
 	}; // end view
 
-	loadEvents(field, datum) {
+	this.loadEvents = function(field, datum) {
 	  
 		var url = 'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/event/field/' + field;
 	//	    url += '/time/' + datum + '%2008%3A00/' + datum + '%2022%3A00'; // url mit Datum liefert sporadisch 503
@@ -151,16 +150,16 @@ class Datumsachse {
 					}
 				}
 			}
-		})
+		}) // end success
 		.error(function( responseJson ) {
 			erisTrace(url);
 			erisError("ajax loadEvents error: " + responseJson.status + ' - ' + responseJson.statusText );
 			erisError("ajax loadEvents error: " + responseJson.responseText );
 			erisMessage('Lesenfehler der Belegungen, bitte erneut lesen.');
-		});
+		}); // end error
 	}; // end loadEvents
 
-	loadPlaetze(timeline) {
+	this.loadPlaetze = function(timeline) {
 		
 		jQuery.each($('.Platz'), function( index ) {   
 			this.remove();   // Lösche das jQueryUI-Objekt zum Platz
@@ -204,4 +203,7 @@ class Datumsachse {
 				erisMessage('Lesenfehler der Plätze, bitte erneut lesen.')
 			}); // end error
 	}; // end loadPlaetze
+	
+	this.loadPlaetze(this);									// lade alle Plätze und zeige diese an
+
 } // end class
