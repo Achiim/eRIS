@@ -27,7 +27,6 @@
 /* global Platz */
 
 
-// class Datumsachse {
 	/**
    * @param angezeigtesDatum =
    *          aktuelles Datum
@@ -36,8 +35,7 @@
    * @example Aufrufbeispiel: var timeline = new Datumsachse('30.10.2016');
    */
 
-//	constructor
-Datumsachse = function (angezeigtesDatum) {
+var Datumsachse = function (angezeigtesDatum) {
 	this.angezeigtesDatum = angezeigtesDatum;				// aktuelles Datum
 	this.markerNummer = 0;									// initialisiere die Nummerierung der Marker
 

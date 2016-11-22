@@ -20,10 +20,7 @@
 /* global erisMarkerHeightViertelstunde */
 
 
-class ErisEvent {
-
-	
-	constructor(id, startTime, duration, description, team, match, partOfSeries, field, portion, markerNummer) {
+var ErisEvent = function(id, startTime, duration, description, team, match, partOfSeries, field, portion, markerNummer) {
 		var leererPlatz = {						// leerer Platz
 				timeline : null,				// keiner timeline zugeordnet
 												// (Datumsachse)
@@ -58,7 +55,7 @@ class ErisEvent {
 		} else {
    		if (portion.length !== 0 ) this.anzahlBelegteTeile = portion.length ;
   		if (portion.length !== 0) this.erstesBelegtesTeil = portion[0];
-  	}
+		}
 
 		this.liegtAufPlatz = leererPlatz; // Default-Platz
 		// Suche das Platzobjekt auf dem der Marker liegen soll
@@ -88,9 +85,9 @@ class ErisEvent {
 		this.MarkerMaxHeight = (this.liegtAufPlatz.bis - this.liegtAufPlatz.von) * 4 * erisMarkerHeightViertelstunde;
 		
 		this.MarkerHeightjePlatzteil=this.MarkerMinHeight;
-	} // end constructor
+
 	
-	view() {
+	this.view = function() {
 		
 		this.jQueryShowMarker(); // zeige den Maker an
 		this.jQueryDraggableMarker(); // mache den Marker beweglich
@@ -102,7 +99,7 @@ class ErisEvent {
 	
 	} // end view
 	
-	jQueryShowMarker() {
+	this.jQueryShowMarker = function() {
 	
 		this.MarkerWidth = this.anzahlBelegteTeile * this.liegtAufPlatz.PlatzTeilWidth - erisMarkerPadding;
 		this.MarkerWidth += this.anzahlBelegteTeile * erisPlatzTeilMargin;
@@ -123,36 +120,36 @@ class ErisEvent {
 		// Platzteil finden und den Marker dort ablegen
 		if (this.liegtAufPlatz.timeline != null) {
 
-      var dateStart = this.start.split(' ');
+			var dateStart = this.start.split(' ');
   			
-  		// relativer Start auf der Zeitachse = 
-  		// aktuelle Stunde (hour) - Beginn der Zeitleiste (liegtAufPlatz.von)
-  		var hour = parseInt(dateStart[1].split(':')[0], 10) - this.liegtAufPlatz.von; 
-  		// Platzteil im 15 Minutenraster
-  		var minute = parseInt(dateStart[1].split(':')[1], 10);
-  		if (minute == 15) minute = 1;
-  		if (minute == 30) minute = 2;
-  		if (minute == 45) minute = 3;
-  			
-  		// berechne die ID des Platzteil, in dem der Marker abgelegt werden soll
-  		var Teil = (hour * erisAnzahlPlatzTeilejeStunde * this.liegtAufPlatz.anzahlTeile) 
-  				+ (minute * this.liegtAufPlatz.anzahlTeile) + this.erstesBelegtesTeil - 1;
+	  		// relativer Start auf der Zeitachse = 
+	  		// aktuelle Stunde (hour) - Beginn der Zeitleiste (liegtAufPlatz.von)
+	  		var hour = parseInt(dateStart[1].split(':')[0], 10) - this.liegtAufPlatz.von; 
+	  		// Platzteil im 15 Minutenraster
+	  		var minute = parseInt(dateStart[1].split(':')[1], 10);
+	  		if (minute == 15) minute = 1;
+	  		if (minute == 30) minute = 2;
+	  		if (minute == 45) minute = 3;
+	  			
+	  		// berechne die ID des Platzteil, in dem der Marker abgelegt werden soll
+	  		var Teil = (hour * erisAnzahlPlatzTeilejeStunde * this.liegtAufPlatz.anzahlTeile) 
+	  				+ (minute * this.liegtAufPlatz.anzahlTeile) + this.erstesBelegtesTeil - 1;
 
 
 			$('#' + markerID) // Marker auf den Platz legen
 			.appendTo('#'+ Teil + this.liegtAufPlatz.innerPlatzName); 
 		}
- 	}
+ 	} // end jQueryShowMarker
 	
-	jQueryDraggableMarker() {
+	this.jQueryDraggableMarker = function() {
 		var markerID = this.TeamID + this.mid;
 		$('#' + markerID)
 		.draggable({ containment : 'window' })
 		.draggable("option", "revert", "invalid")
 		.draggable("option", "cursorAt", { left: 0, top: 0 });
-	}
+	} // end jQueryDraggableMarker
 		
-	jQueryResizeableMarker() {
+	this.jQueryResizeableMarker = function() {
 		var markerID = this.TeamID + this.mid;
 		
 		$('#' + markerID)
@@ -228,7 +225,7 @@ class ErisEvent {
 	/**
 	* click Event-Handler für den Marker erzeugen
 	*/
-	jQueryClickMarker() {
+	this.jQueryClickMarker = function() {
 		var markerID = this.TeamID + this.mid;
 		$('#'+markerID).click(function() {
 		  erisTrace('jQueryClickMarker - klick');
@@ -238,7 +235,7 @@ class ErisEvent {
 	/**
 	* qTip für den Marker erzeugen
 	*/
-	jQueryQtipMarker() {
+	this.jQueryQtipMarker = function() {
 		var markerID = this.TeamID + this.mid;
 		var markup = this.erisToolTip();
 		$('#'+markerID).qtip({ // Grab some elements to apply the tooltip to
@@ -261,7 +258,7 @@ class ErisEvent {
 	/**
 	 * berechnet die belegten Platzteile
 	 */
-	setBelegtePlatzteile() {
+	this.setBelegtePlatzteile = function() {
 		var ebt = this.erstesBelegtesTeil;
 		if (this.anzahlBelegteTeile === 1) this.PlatzteilArray = [ebt];
 		if (this.anzahlBelegteTeile === 2) this.PlatzteilArray = [ebt, ebt+1];
@@ -273,7 +270,7 @@ class ErisEvent {
 	/**
 	 * rechnet Minuten in Pixel um
 	 */
-	minutesToPixel(hh) {
+	this.minutesToPixel = function(hh) {
 		const StundeInMinuten = 60;
 		const StundeInPixel = 28;
 		return (Math.round(hh / StundeInMinuten * StundeInPixel)) - 
@@ -284,7 +281,7 @@ class ErisEvent {
 	 * 
 	 * rechnet Pixel in Minuten um
 	 */
-	pixelToMinutes(hh) {
+	this.pixelToMinutes = function(hh) {
 		const StundeInMinuten = 60;
 		const StundeInPixel = 28;
 		const PlatzTeilMargin = 1;
@@ -294,14 +291,14 @@ class ErisEvent {
 		return anzVirtelstunden*15;
 	}
 	
-	setMarkerWidth(ui) {
+	this.setMarkerWidth = function(ui) {
 		var breite = this.anzahlBelegteTeile * this.liegtAufPlatz.PlatzTeilWidth - erisMarkerPadding;
 		breite += this.anzahlBelegteTeile * erisPlatzTeilMargin;
 		// Markergröße setzen
 		$(ui.draggable).css({'width' : breite}); 
 	}
 	
-	erisToolTip() {
+	this.erisToolTip = function() {
 //		erisTrace('erisToolTip - Beginn');
 		var tt = '';
 		if (this.PlatzName) tt += 'erisPlatz = ' + this.PlatzName + '<br\>';
@@ -327,7 +324,7 @@ class ErisEvent {
 	 * @param TeamID
 	 * @returns Bezeichnung der Alterklasse
 	 */
-	altersKlasse(TeamID) {
+	this.altersKlasse = function(TeamID) {
 //		erisTrace('altersKlasse - Beginn/Ende');
 	
 		var AH = ['AH', 'H1', 'H2'];
@@ -365,7 +362,7 @@ class ErisEvent {
 		var urlSave = 'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/addEvent/';
 		var urlUpdate =	'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/event/update/';
 	*/	
-	store() {
+	this.store = function() {
 	  var url = '';
 	  var msg = '';
 	  

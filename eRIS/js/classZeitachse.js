@@ -17,7 +17,7 @@
 /* global erisPlatzTeilMargin */
 
 
-class Zeitachse {
+
 	
 	/**
    * @param art =
@@ -31,15 +31,15 @@ class Zeitachse {
    * @example Aufrufbeispiel: var zeitleiste = new Zeitachse('Rechts');
    */
 
-	constructor(art) {
-		this.art = art;							// Links oder Rechts
+var Zeitachse = function(art) {
+	this.art = art;							// Links oder Rechts
     this.von = 8                // Anzeige ab 8:00 Uhr
     this.bis = 22               // Anzeige bis 22:00 Uhr
     this.pixelStunde = Math.floor((erisZeitAchsenlaenge-14) /       // ??? 14 Pixel Abzug wegen 14 Stunden und Margin
             (this.bis - this.von)); // Anzahl der Pixel je Stunde
- 	}
 
-	view(containerId) {
+
+	this.view = function(containerId) {
 		
 				
 		if (this.art == 'Links') {

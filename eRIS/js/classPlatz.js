@@ -20,22 +20,20 @@
 /* global ErisEvent */
 /* global erisTrace */
 
-// class Platz {
 
-	/**
-	* @param platzName =
-	*          Bezeichung des Platzes
-	* @param teilBezeichung =
-	*          Kurzbezeichung für Platzteile
-	* @param anzahlTeile =
-	*          Anzahl der reservierbaren Platzteile
-	* 
-	* @description Konstruktor für ein Platzobjekt.
-	* @example Aufrufbeispiel: var kunstrasen = new Platz('Kunstrasen', 'K', 2);
-	*/
-  
-  
-//	constructor
+/**
+* Klasse Platz
+* ============
+* @param platzName =
+*          Bezeichung des Platzes
+* @param teilBezeichung =
+*          Kurzbezeichung für Platzteile
+* @param anzahlTeile =
+*          Anzahl der reservierbaren Platzteile
+* 
+* @description Konstruktor für ein Platzobjekt.
+* @example Aufrufbeispiel: var kunstrasen = new Platz('Kunstrasen', 'K', 2);
+*/
 var Platz = function(timeline, platzName, teilBezeichung, anzahlTeile) {
 		this.timeline = timeline;			// Referenz auf den TimeSlider mit dem
 											// aktuellen Datum
@@ -145,23 +143,22 @@ var Platz = function(timeline, platzName, teilBezeichung, anzahlTeile) {
 
 // ********************************************************************************************
 
-// class Platzteil {
-
-  /**
-   * @param platzteilNummer =
-   *          lfd. Nummer des zu erzeugenden Platteils
-   * @param platz =
-   *          Referenz auf das Platz-Objekt zu em das Teil gehört
-   * 
-   * @param pl =
-   *          Teilnummer des Platzes (1 ... anzahlTeile), entspricht dem ersten reservierten Platzteil
-   * 
-   * @description Konstruktor für ein Platzteilobjekt.
-   * 
-   * @example Aufrufbeispiel: new Platzteil(12, Platz).view();
-   */
+/**
+* Klasse Platz
+* ============
+* @param platzteilNummer =
+*          lfd. Nummer des zu erzeugenden Platteils
+* @param platz =
+*          Referenz auf das Platz-Objekt zu em das Teil gehört
+* 
+* @param pl =
+*          Teilnummer des Platzes (1 ... anzahlTeile), entspricht dem ersten reservierten Platzteil
+* 
+* @description Konstruktor für ein Platzteilobjekt.
+* 
+* @example Aufrufbeispiel: new Platzteil(12, Platz).view();
+*/
   
-//  constructor 
 var Platzteil = function(platzteilNummer, platz, platzSpalte) {
     this.platzteilNummer = platzteilNummer; // Nummerierung der Platzteile
     this.platz = platz;                     // Referenz auf das Platz-Objekt, zu dem das
