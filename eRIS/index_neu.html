@@ -47,8 +47,6 @@
 		<script src="js/jquery/jquery-ui.js"></script>
 		<script src="js/jquery/jquery.qtip.min.js"></script>	
 
- 
-		<script src="js/modelGroup.js"></script>    
 		<script src="js/global.js"></script>
 		<script src="js/Zeit.js"></script>
 		<script src="js/messages.js"></script>
@@ -83,18 +81,13 @@
 				    $('.ui-slider').css({'height': '40px'}); // Datums-Slider
 				    
 				    Timeline = new Datumsachse(erisHeute());
-					Timeline.view('Datumsleiste');
+					Timeline.jQueryViewTimeline('Datumsleiste');
 
 					var zeitlinks = new Zeitachse('Links');
-					zeitlinks.view('Platzleiste');
+					zeitlinks.jQueryViewZeit('Platzleiste');
 					var zeitrechts = new Zeitachse('Rechts');
-					zeitrechts.view('Platzleiste');
-/*					
-					var aJugend = new ErisEvent(null, null, '60', 'Training', 'A', null, null, null, null, 0);
-					aJugend.view();
-					var bJugend = new ErisEvent(null, null, '60', 'Training', 'B', null, null, null, null, 1);
-					bJugend.view();
-*/					
+					zeitrechts.jQueryViewZeit('Platzleiste');
+
 					$('#PlatzMitte').on('scroll', function () {	// Plätze und Platzkopf synchron scrollen
 					    $('#KopfContainer').scrollLeft($(this).scrollLeft());
 					});
@@ -133,21 +126,6 @@
 				  
 				  <div id="erisGroup">
 						<p>erisGroup</p>
-						<script>
-/*
-							// Hauptabschnitt - 
-						    var eG = new erisGruppe();			// View-Objekt generieren
-	
-						    $('<div\>') 					// Platzhalter für Gruppen
-						    .attr('id', 'groupContainer')
-						    .addClass('Gruppe')
-						    .css ({'width': 500})
-						    .appendTo('#erisGroup');
-						    
-						    eG.view('#groupContainer');		// Data-Grid anzeigen und füllen mit der Funktion 'loader'
-						    eG.loading();					// Anzeige der Lade-Meldung
-*/
-						</script>
 				  </div>
 				  <div id="erisTeam">
 						<p>erisTeam</p>
