@@ -21,6 +21,13 @@
 
 
 var ErisEvent = function(id, startTime, duration, description, team, match, partOfSeries, field, portion, markerNummer) {
+		
+		// Pruefe ob der Constructor mit new aufgerufen wurde
+		if (!(this instanceof ErisEvent)) {
+			return new ErisEvent(id, startTime, duration, description, team, match, partOfSeries, field, portion, markerNummer);
+		}
+		
+		// Default-Werte für leeres Platz-Objekt
 		var leererPlatz = {						// leerer Platz
 				timeline : null,				// keiner timeline zugeordnet
 												// (Datumsachse)

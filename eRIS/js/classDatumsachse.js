@@ -36,6 +36,11 @@
    */
 
 var Datumsachse = function (angezeigtesDatum) {
+	// Pruefe ob der Constructor mit new aufgerufen wurde
+	if (!(this instanceof Datumsachse)) {
+		return new Datumsachse(angezeigtesDatum);
+	}
+	
 	this.angezeigtesDatum = angezeigtesDatum;				// aktuelles Datum
 	this.markerNummer = 0;									// initialisiere die Nummerierung der Marker	
 	this.loadPlaetze(this);									// lade alle Plätze und zeige diese an

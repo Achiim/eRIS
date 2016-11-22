@@ -32,6 +32,11 @@
 * @example Aufrufbeispiel: var kunstrasen = new Platz('Kunstrasen', 'K', 2);
 */
 var Platz = function(timeline, platzName, teilBezeichung, anzahlTeile) {
+	// Pruefe ob der Constructor mit new aufgerufen wurde
+	if (!(this instanceof Platz)) {
+		return new Platz(timeline, platzName, teilBezeichung, anzahlTeile);
+	}
+	
 	this.timeline = timeline;			// Referenz auf den TimeSlider mit dem
 										// aktuellen Datum
 	this.platzName = platzName;			// Bezeichnung des Platzes
@@ -157,6 +162,11 @@ Platz.prototype.jQueryPlatz = function jQueryUI_Platz(containerId) {
 */
   
 var Platzteil = function(platzteilNummer, platz, platzSpalte) {
+	// Pruefe ob der Constructor mit new aufgerufen wurde
+	if (!(this instanceof Platzteil)) {
+		return new Platzteil(platzteilNummer, platz, platzSpalte);
+	}
+	
     this.platzteilNummer = platzteilNummer; // Nummerierung der Platzteile
     this.platz = platz;                     // Referenz auf das Platz-Objekt, zu dem das
                                             // Platzteil gehört

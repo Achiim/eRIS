@@ -32,6 +32,11 @@
    */
 
 var Zeitachse = function(art) {
+	// Pruefe ob der Constructor mit new aufgerufen wurde
+	if (!(this instanceof Zeitachse)) {
+		return new Zeitachse(art);
+	}
+
 	this.art = art;							// Links oder Rechts
     this.von = 8                // Anzeige ab 8:00 Uhr
     this.bis = 22               // Anzeige bis 22:00 Uhr
