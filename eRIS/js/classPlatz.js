@@ -271,7 +271,7 @@ Platzteil.prototype.jQueryViewPlatzteil = function() {
 			erisMarker.dateStart[1] = erisPlatzteil.von;  
 
 			// Datum + Uhrzeit kombiniert
-			erisMarker.start = erisMarker.dateStart[0] + ' ' + erisPlatzteil.von;
+			erisMarker.startTime = erisMarker.dateStart[0] + ' ' + erisPlatzteil.von;
 
 			// Marker-Position im Ziel = oben, links
 			$(ui.draggable).css({
@@ -351,10 +351,16 @@ Platzteil.prototype.jQueryMarkerDialog = function(){
 			Ok: function() {
 				
 				erisTrace('jQueryMarkerDialog - ok- close Dialog');
-				var m = new ErisEvent(null, $('#formbelegungsdatum').val() + ' ' + $('#formvon').val() , '60', $('#formbeschreibung').val(), $('#formteam').val(), null, null, $('#formplatzname').val(), null, 0);
-				m.jQueryViewMarker(); // Marker anzeigen
+				var erisMarker = new ErisEvent({
+					startTime : $('#formbelegungsdatum').val() + ' ' + $('#formvon').val() , 
+					description : $('#formbeschreibung').val(), 
+					team : $('#formteam').val(), 
+					PlatzName : $('#formplatzname').val(), 
+					markerNummer : 0
+				});
+				erisMarker.jQueryViewMarker(); // Marker anzeigen
 				$(this).dialog("close");
-				m.store(); // speichere die Belegung
+				erisMarker.store(); // speichere die Belegung
 			},
 			Cancle: function() {
 				erisTrace('jQueryMarkerDialog - cacle - close Dialog');
