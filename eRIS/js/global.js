@@ -11,7 +11,7 @@
  * Alle global gültigen Konstanten und Variablen werden hier definiert
  */
 // Trace
-const erisTraceLevel = 0;									// 1 - Trace eingeschalten | 0 - Trace ausgeschalten
+const erisTraceLevel = 1;									// 1 - Trace eingeschalten | 0 - Trace ausgeschalten
 
 // ViewKonstanten
 const erisMaxFieldsInView = 6;								// max. Anzahl der nebeneinander darstellbaren Plätze,  bevor gescrollt wird
@@ -32,6 +32,18 @@ const erisPlatzTeilMargin = 0;                            // jedes Platzteil hat
 
 const erisAnzahlPlatzTeilejeStunde = 4                    // ein Platzteil repräsentiert 15 Minuten (1/4 Stunde)
 const erisPlatzteilHeight = erisPixelViertelstunde;		  // 7 Pixel Höhe des Platzteils ( 1 Pixel für Margin unten abgezogen)
+															
+const  erisLeererPlatz = {									// Default-Werte für einen leeren Platz
+		timeline : null,									// keine timeline zugeordnet (Datumsachse)
+		platzName : 'leerer Platz',							// Default
+		platzteilNummer : -1,								// keine gültige platzteilId
+		teilBezeichung : '?',								// Default
+		anzahlTeile : 1,									// Marker besteht aus einem Platzteil
+		platzfarbe : 'green',								// momentan nicht unterstützt
+		von : 8,											// fixer Wert 8 Uhr
+		bis : 22,											// fixer Wert 22 Uhr
+		PlatzTeilWidth : (erisPlatzWidth/1)-1,				// Default-Wert im Sammler (ohne Border)
+};
 
 // globale Variablen
 var erisPlatzArray = [];                                  // sammelt alle Objekte für Plätze

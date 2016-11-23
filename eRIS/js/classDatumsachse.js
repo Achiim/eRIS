@@ -142,16 +142,18 @@ Datumsachse.prototype.loadEvents = function(field, datum) {
 					var dat = responseJson.items[a].startTime.split(' ');
 					if (dat[0] == Timeline.angezeigtesDatum) {
 						Timeline.markerNummer++;  // nächste Markernummer
-						new ErisEvent(responseJson.items[a].id, 
-								responseJson.items[a].startTime, 
-								responseJson.items[a].duration,
-								responseJson.items[a].description,
-								responseJson.items[a].team,
-								responseJson.items[a].match,
-								responseJson.items[a].partOfSeries,
-								responseJson.items[a].field,
-								responseJson.items[a].portion,
-								Timeline.markerNummer).jQueryViewMarker();
+						new ErisEvent({
+							erisCloudId : responseJson.items[a].id, 
+							startTime : responseJson.items[a].startTime, 
+							duration : responseJson.items[a].duration,
+							description : responseJson.items[a].description,
+							team : responseJson.items[a].team,
+							match : responseJson.items[a].match,
+							partOfSeries : responseJson.items[a].partOfSeries,
+							PlatzName : responseJson.items[a].field,
+							PlatzteilArray : responseJson.items[a].portion,
+							markerNummer : Timeline.markerNummer
+							}).jQueryViewMarker();
 					}
 				}
 			}

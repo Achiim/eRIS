@@ -15,7 +15,7 @@
  */
 "use strict"; // Verwendung des Strict-Modus zur Laufzeit
 
-// *********************************************************************
+//*********************************************************************
 /**
  * liefert das aktuelle Datum im Format TT.DD.JJJJ
  * 
@@ -28,6 +28,28 @@ function erisHeute() {
   var jahr = today.getFullYear(); // aktuelles Jahr
   var heute = tag + '.' + monat + '.' + jahr; // Formatiere Rückgabe
   return heute;
+}
+
+// *********************************************************************
+
+//*********************************************************************
+/**
+ * liefert das aktuelle Datum und Zeit im Format TT.DD.JJJJ hh:mm:ss
+ * 
+ * @return jetzt
+ */
+function erisJetzt() {
+  var today = new Date(); // aktuelles Datum
+  var tag = today.getDate(); // aktueller Tag
+  var monat = today.getMonth() + 1; // aktueller Monat
+  var jahr = today.getFullYear(); // aktuelles Jahr
+
+  var stunde = today.getHours(); // aktuelle Stunden
+  var minute = today.getMinutes(); // aktuelle Minuten
+  var sekunde = today.getSeconds(); // aktuelle Sekunden
+
+  var jetzt = tag + '.' + monat + '.' + jahr + ' ' + stunde + ':' + minute + ':' + sekunde; // Formatiere Rückgabe
+  return jetzt;
 }
 
 // *********************************************************************
