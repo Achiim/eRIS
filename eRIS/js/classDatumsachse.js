@@ -127,7 +127,7 @@ Datumsachse.prototype.loadEvents = function(field, datum) {
 //	    url += '/time/' + datum + '%2008%3A00/' + datum + '%2022%3A00'; // url mit Datum liefert sporadisch 503
 	url = url.replace(/\s/g, '%20'); // maskiere Blank durch %20
   
-	return $.ajax({ type: "GET", url: url, dataType: 'json'})
+	return $.ajax({ type: "GET", url: url, dataType: 'json', crossDomain : true, contentType: 'text/plain' })
 	.success(function( responseJson ) {
 		erisTrace("ajax loadEvents success");
 		erisTrace(url);
@@ -178,7 +178,7 @@ Datumsachse.prototype.loadPlaetze = function(timeline) {
 	var url = 'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/field';
 	url = url.replace(/\s/g, '%20'); // maskiere Blank durch %20
   
-	return $.ajax({ type: "GET", url: url, dataType: 'json'})
+	return $.ajax({ type: "GET", url: url, dataType: 'json', crossDomain : true, contentType: 'text/plain' })
 		.success(function( responseJson ) {
 			erisTrace("ajax loadPlaetze success");
 			erisTrace(url);
