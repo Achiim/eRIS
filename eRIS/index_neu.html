@@ -82,14 +82,17 @@
 				    
 				    Timeline = new Datumsachse(erisHeute());
 					Timeline.jQueryViewTimeline('Datumsleiste'); // Timeline mit Slider anzeigen
-					Timeline.loadPlaetze(Timeline);				// lade alle Plätze und zeige diese an
+					var first = Timeline.loadPlaetze(Timeline),  // lade alle Plätze und zeige diese an
 
-					// Lade die Events für die Plaetze
-					for (var a = 0; a < erisPlatzArray.length; a++ ) {
-						$('#Platz'+erisPlatzArray[a].innerPlatzName).addClass('verschwommen');
-						Timeline.loadEvents(erisPlatzArray[a].platzName, Timeline.angezeigtesDatum);
-					}
+					  chained = first.then(function( plaetze ) { // nachdem die Plaetze über ajax geladen wurden 
 
+							// Lade die Events für die Plaetze
+							for (var a = 0; a < erisPlatzArray.length; a++ ) {
+								$('#Platz'+erisPlatzArray[a].innerPlatzName).addClass('verschwommen');
+								Timeline.loadEvents(erisPlatzArray[a].platzName, Timeline.angezeigtesDatum);
+							}
+					  });
+					
 					var zeitlinks = new Zeitachse('Links');
 					zeitlinks.jQueryViewZeit('Platzleiste');
 					var zeitrechts = new Zeitachse('Rechts');
