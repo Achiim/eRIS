@@ -103,9 +103,9 @@ Datumsachse.prototype.jQueryViewTimeline = function(containerId) {
 		 }); 
 
 		// Lade die Events für die Plaetze
-		$('.Platz').addClass('verschwommen');
 		for (var a = 0; a < erisPlatzArray.length; a++ ) {
-		  erisTimeline.loadEvents(erisPlatzArray[a].platzName, erisTimeline.angezeigtesDatum);
+			$('#Platz'+erisPlatzArray[a].innerPlatzName).addClass('verschwommen');
+			erisTimeline.loadEvents(erisPlatzArray[a].platzName, erisTimeline.angezeigtesDatum);
 		}
 
 	  }
