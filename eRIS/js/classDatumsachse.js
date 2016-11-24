@@ -43,9 +43,8 @@ var Datumsachse = function (angezeigtesDatum) {
 	
 	this.angezeigtesDatum = angezeigtesDatum;				// aktuelles Datum
 	this.markerNummer = 0;									// initialisiere die Nummerierung der Marker	
-	this.loadPlaetze(this);									// lade alle Plätze und zeige diese an
 
-} // end class
+}; // end class
 
 Datumsachse.prototype.jQueryViewTimeline = function(containerId) {
 	

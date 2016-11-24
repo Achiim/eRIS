@@ -80,7 +80,8 @@
 				    $('.ui-slider').css({'height': '40px'}); // Datums-Slider
 				    
 				    Timeline = new Datumsachse(erisHeute());
-					Timeline.jQueryViewTimeline('Datumsleiste');
+					Timeline.jQueryViewTimeline('Datumsleiste'); // Timeline mit Slider anzeigen
+					Timeline.loadPlaetze(Timeline);				// lade alle Plätze und zeige diese an
 
 					var zeitlinks = new Zeitachse('Links');
 					zeitlinks.jQueryViewZeit('Platzleiste');
