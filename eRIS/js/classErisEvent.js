@@ -22,7 +22,6 @@
 /* global erisMarkerPadding */
 /* global erisMarkerHeightViertelstunde */
 /* global erisLeererPlatz */
-/* global erisJetzt */
 
 var ErisEvent = function(inOpts) {
 
@@ -31,28 +30,42 @@ var ErisEvent = function(inOpts) {
 			return new ErisEvent(inOpts);
 		}
 
+	// *****************************************************************************
+	// Beginn der Constructor-Funktion für das ErisEvent
+	
 		// Default-Werte für ein ErisEvent
 		var defaultOpts = {
-			duration : 60,
-			description : 'Training',
-			match : false,
-			partOfSeries : false,
-			PlatzName : erisLeererPlatz.platzName,
-			PlatzteilArray : [1],
-			markerNummer : 0,
-			anzahlBelegteTeile : 1,
-			erstesBelegtesTeil : 1,
-			liegtAufPlatz : erisLeererPlatz,
-			dateStart : [],
-			
-			MarkerWidth : erisPlatzWidth - erisPlatzTeilMargin - erisMarkerPadding,
-			MarkerMaxWidth : erisPlatzWidth - erisMarkerPadding - erisPlatzTeilMargin,
-			MarkerMinHeight : erisMarkerPadding + erisPlatzTeilMargin,
-			MarkerHeightjePlatzteil : this.MarkerMinHeight
+			duration :					60,
+			description :				'Training',
+			match : 					false,
+			partOfSeries :				false,
+			PlatzName : 				erisLeererPlatz.platzName,
+			PlatzteilArray :			[1],
+			markerNummer :				0,
+			anzahlBelegteTeile :		1,
+			erstesBelegtesTeil :		1,
+			liegtAufPlatz : 			erisLeererPlatz,
+			dateStart : 				[],
+
+			// Konstanten
+			MarkerWidth :				erisPlatzWidth - erisPlatzTeilMargin - erisMarkerPadding,
+			MarkerMaxWidth :			erisPlatzWidth - erisMarkerPadding - erisPlatzTeilMargin,
+			MarkerMinHeight :			erisMarkerPadding + erisPlatzTeilMargin,
+			MarkerHeightjePlatzteil :	this.MarkerMinHeight
 		};
 		
 		// erweitere die Eingangsparameter um Default-Werte
 		$.extend(this, defaultOpts, inOpts);
+
+		// laufende Nummer der Marker innerhalb eines Platzes
+		this.mid = this.markerNummer;
+		
+		// Platzkonstanten berechnen
+		// TODO ueberfuehrten ins Options-Objekt
+		this.MarkerMinWidth = this.liegtAufPlatz.PlatzTeilWidth - 
+				erisMarkerPadding;
+		this.MarkerMaxHeight = (this.liegtAufPlatz.bis - 
+				this.liegtAufPlatz.von) * 4 * erisMarkerHeightViertelstunde;
 
 		// Platzteilgröße und -position
 		if (this.PlatzteilArray.length !== 0 ) {
@@ -60,9 +73,10 @@ var ErisEvent = function(inOpts) {
 			this.erstesBelegtesTeil = this.PlatzteilArray[0];
 		}
 		
-		// suche den Platz mit dem PlatzNamen
+		// Annahme: Marker liegt auf keinem Platz
 		this.liegtAufPlatz = erisLeererPlatz; // Default-Platz
-		// Suche das Platzobjekt auf dem der Marker liegen soll
+		
+		// Suche den Platz, auf dem der Marker liegt
 		for (var a = 0; a < erisPlatzArray.length; a++) {
 			if (erisPlatzArray[a].platzName == this.PlatzName) {
 				// Marker liegt auf diesem Platz
@@ -71,32 +85,35 @@ var ErisEvent = function(inOpts) {
 		}
 		
 		if(this.startTime) 
-		  this.dateStart= this.startTime.split(' ');	// Array [0] = Datum, [1]
+			// Spalte die Beginnzeit auf in Array[0] = Datum, Array[1] = Uhrzeit
+			this.dateStart= this.startTime.split(' ');	
 		else
-		  this.dateStart= [];		// ohne Zeit als leeres Array
-		
-		// laufende Nummer der Marker innerhalb eines Platzes
-		this.mid = this.markerNummer;	// Nummerierung der Marker
-		
-		// Platzkonstanten
-		this.MarkerMinWidth = this.liegtAufPlatz.PlatzTeilWidth - erisMarkerPadding;
-		this.MarkerMaxHeight = (this.liegtAufPlatz.bis - this.liegtAufPlatz.von) * 4 * erisMarkerHeightViertelstunde;
+			// falls noch kein Beginn feststeht -> leeres Array 
+			this.dateStart= [];	
+	//
+	// Ende der Constructor-Funktion für das ErisEvent
+	// *************************************************************************
+	
+	// *************************************************************************
+	// Beginn der Definition der Methoden des Objekts auf dem Prototyp
 
-		// *****************************************************************************
-		// Methoden des Objekts auf dem Prototyp
-
+		/**
+		 * @description
+		 * Mache den Marker sichtbar und statte ihn mit der nötigen 
+		 * "Dekoration" aus.
+		*/
 		ErisEvent.prototype.jQueryViewMarker = function() {
-			
-			this.jQueryShowMarker(); // zeige den Maker an
-			this.jQueryDraggableMarker(); // mache den Marker beweglich
-			this.jQueryResizeableMarker(); // mache den Marker in der Größe
-											// änderbar
-			this.jQueryClickMarker(); // mache den Marker klickbar
-			this.jQueryQtipMarker(); // verpasse dem Marker einen ToolTip
+			this.jQueryShowMarker();		// Maker anzeigen
+			this.jQueryDraggableMarker();	// Marker beweglich machen
+			this.jQueryResizeableMarker();	// Marker-Größe änderbar machen
+			this.jQueryClickMarker();		// Marker klickbar machen
+			this.jQueryQtipMarker();		// Marker einen ToolTip verpassen
+		}; // end jQueryViewMarker
 		
-		
-		} // end jQueryViewMarker
-		
+		/**
+		 * @description
+		 * Mache den Marker sichtbar 
+		*/
 		ErisEvent.prototype.jQueryShowMarker = function() {
 		
 			this.MarkerWidth = this.anzahlBelegteTeile * this.liegtAufPlatz.PlatzTeilWidth - erisMarkerPadding;
@@ -137,16 +154,24 @@ var ErisEvent = function(inOpts) {
 				$('#' + markerID) // Marker auf den Platz legen
 				.appendTo('#'+ Teil + this.liegtAufPlatz.innerPlatzName); 
 			}
-		} // end jQueryShowMarker
+		}; // end jQueryShowMarker
 		
+		/**
+		 * @description
+		 * Mache den Marker beweglich
+		*/
 		ErisEvent.prototype.jQueryDraggableMarker = function() {
 			var markerID = this.team + this.mid;
 			$('#' + markerID)
 			.draggable({ containment : 'window' })
 			.draggable("option", "revert", "invalid")
 			.draggable("option", "cursorAt", { left: 0, top: 0 });
-		} // end jQueryDraggableMarker
+		}; // end jQueryDraggableMarker
 			
+		/**
+		 * @description
+		 * Mache die Marker-Größe änderbar
+		*/
 		ErisEvent.prototype.jQueryResizeableMarker = function() {
 			var markerID = this.team + this.mid;
 			
@@ -218,20 +243,22 @@ var ErisEvent = function(inOpts) {
 				} // end resize
 			
 			}); // resizeable
-		} // end jQueryResizeableMarker
+		}; // end jQueryResizeableMarker
 		
 		/**
-		* click Event-Handler für den Marker erzeugen
+		 * @description
+		 * Mache den Marker klickbar
 		*/
 		ErisEvent.prototype.jQueryClickMarker = function() {
 			var markerID = this.team + this.mid;
 			$('#'+markerID).click(function() {
 			  erisTrace('jQueryClickMarker - klick');
 			});
-		}
+		}; // end jQueryClickMarker
 		
 		/**
-		* qTip für den Marker erzeugen
+		 * @description
+		 * Versehe den Marker mit einem ToolTip
 		*/
 		ErisEvent.prototype.jQueryQtipMarker = function() {
 			var markerID = this.team + this.mid;
@@ -250,7 +277,7 @@ var ErisEvent = function(inOpts) {
 				}
 			});
 			
-		} // end jQueryQtipMarker
+		}; // end jQueryQtipMarker
 			
 		
 		/**
@@ -262,8 +289,11 @@ var ErisEvent = function(inOpts) {
 			if (this.anzahlBelegteTeile === 2) this.PlatzteilArray = [ebt, ebt+1];
 			if (this.anzahlBelegteTeile === 3) this.PlatzteilArray = [ebt, ebt+1, ebt+2];
 			if (this.anzahlBelegteTeile === 4) this.PlatzteilArray = [ebt, ebt+1, ebt+2, ebt+3];
+			if (this.anzahlBelegteTeile > 4 || this.anzahlBelegteTeile < 1 )
+				erisError("Anzahl belegbarer Platzteile nicht unterstützt. Aktueller Wert = " +
+						this.anzahlBelegteTeile);
 			return;
-		}
+		}; // end setBelegtePlatzteile
 		
 		/**
 		 * rechnet Minuten in Pixel um
@@ -273,28 +303,25 @@ var ErisEvent = function(inOpts) {
 			const StundeInPixel = 28;
 			return (Math.round(hh / StundeInMinuten * StundeInPixel)) - 
 				erisMarkerPadding - erisPlatzTeilMargin; 
-		}
+		}; // end minutesToPixel
 		
 		/**
 		 * 
 		 * rechnet Pixel in Minuten um
 		 */
 		ErisEvent.prototype.pixelToMinutes = function(hh) {
-			const StundeInMinuten = 60;
-			const StundeInPixel = 28;
-			const PlatzTeilMargin = 1;
 			var anzVirtelstunden = Math.round((hh + erisMarkerPadding + erisPlatzTeilMargin) / 
 							(erisMarkerHeightViertelstunde + 1)); 
 			erisTrace('class ErisEvent - pixelToMinutes - Höhe = ' + hh + ' anzVirtelstunden = ' + anzVirtelstunden);
 			return anzVirtelstunden*15;
-		}
+		}; // end pixelToMinutes
 		
 		ErisEvent.prototype.setMarkerWidth = function(ui) {
 			var breite = this.anzahlBelegteTeile * this.liegtAufPlatz.PlatzTeilWidth - erisMarkerPadding;
 			breite += this.anzahlBelegteTeile * erisPlatzTeilMargin;
 			// Markergröße setzen
 			$(ui.draggable).css({'width' : breite}); 
-		}
+		}; // end setMarkerWidth
 		
 		ErisEvent.prototype.erisToolTip = function() {
 		//		erisTrace('erisToolTip - Beginn');
@@ -312,9 +339,9 @@ var ErisEvent = function(inOpts) {
 			if (this.erstesBelegtesTeil) tt += 'erstesBelegtesTeil = ' + this.erstesBelegtesTeil + '<br\>';
 			if (this.erisCloudId) tt += 'erisID = ' + this.erisCloudId;
 			
-		//		erisTrace('erisToolTip - Ende');
+		// erisTrace('erisToolTip - Ende');
 			return tt;
-		}
+		}; // end erisToolTip
 		
 		/**
 		 * Hilfsfunktion, solange die Daten nicht aus der DB kommen
@@ -353,16 +380,17 @@ var ErisEvent = function(inOpts) {
 			if ($.inArray(TeamID, G) > -1) return 'G-Junioren';
 		
 			return '';
-		}
+		}; // end altersKlasse
 		
 		/**	
+		 * @description
 		 * Marker speichern ueber Endpoints:
-			var urlSave = 'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/addEvent/';
-			var urlUpdate =	'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/event/update/';
+		 *	var urlSave = 'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/addEvent/';
+		 *	var urlUpdate =	'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/event/update/';
 		*/	
 		ErisEvent.prototype.store = function() {
-		  var url = '';
-		  var msg = '';
+			var url = '';
+			var msg = '';
 		  
 			if (this.erisCloudId === null || this.erisCloudId === undefined) {
 				url = 'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/addEvent/';
@@ -406,7 +434,11 @@ var ErisEvent = function(inOpts) {
 				this.erisCloudId = newMarkerNummer;
 				this.jQueryQtipMarker();
 			}
-		} // end store
+		}; // end store
+		
+	//
+	// Ende der Definition der Methoden des Objekts auf dem Prototyp
+	// *************************************************************************
 
-} // end class ErisEvent
+}; // end class ErisEvent
 
