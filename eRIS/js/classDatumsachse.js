@@ -127,12 +127,15 @@ Datumsachse.prototype.loadEvents = function(field, datum) {
 //	    url += '/time/' + datum + '%2008%3A00/' + datum + '%2022%3A00'; // url mit Datum liefert sporadisch 503
 	url = url.replace(/\s/g, '%20'); // maskiere Blank durch %20
   
-	$.ajax({ type: "GET", url: url, dataType: 'json'})
+	return $.ajax({ type: "GET", url: url, dataType: 'json', crossDomain : true, contentType: 'text/plain' })
 	.success(function( responseJson ) {
 		erisTrace("ajax loadEvents success");
 		erisTrace(url);
 	  
-		$('.Platz').removeClass('verschwommen');
+		// suche den Platz, für den die Events gerade gelesen werden und mache blur weg
+		for (var a = 0; a < erisPlatzArray.length; a++ ) {
+			if (field === erisPlatzArray[a].platzName) $('#Platz'+erisPlatzArray[a].innerPlatzName).removeClass('verschwommen');
+		}
 
 		if (typeof responseJson !== 'undefined' ) {
 			erisObjectTrace(responseJson);
@@ -175,7 +178,7 @@ Datumsachse.prototype.loadPlaetze = function(timeline) {
 	var url = 'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/field';
 	url = url.replace(/\s/g, '%20'); // maskiere Blank durch %20
   
-	$.ajax({ type: "GET", url: url, dataType: 'json'})
+	return $.ajax({ type: "GET", url: url, dataType: 'json', crossDomain : true, contentType: 'text/plain' })
 		.success(function( responseJson ) {
 			erisTrace("ajax loadPlaetze success");
 			erisTrace(url);
