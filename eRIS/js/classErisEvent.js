@@ -325,7 +325,17 @@ var ErisEvent = function(inOpts) {
 		
 		ErisEvent.prototype.erisToolTip = function() {
 		//		erisTrace('erisToolTip - Beginn');
+			
+			// Tag aus Datum extrahieren
+			var dd = this.dateStart[0].split('.'); // tt.mm.jjjj
+			var tag = parseInt(dd[0], 10);
+
+			
 			var tt = '';
+			tt += "<div id='Kalenderblatt'>" + 
+					"<div id='Tagname'>" + erisTagesname(this.dateStart[0]) + "</div>" +
+					"<div id='Tag'>" + tag + "</div>" + 
+					"<div id='Monat'>" + erisMonatsname(this.dateStart[0]) + "</div></div>";
 			if (this.PlatzName) tt += 'erisPlatz = ' + this.PlatzName + '<br\>';
 			if (this.startTime) tt += 'erisStart = ' + this.startTime + '<br\>';
 			if (this.duration) tt += 'erisDauer = ' + this.duration + ' Minuten<br\>';
@@ -338,6 +348,8 @@ var ErisEvent = function(inOpts) {
 			// if (this.dateStart) tt += 'erisDateStart = ' + this.dateStart;
 			if (this.erstesBelegtesTeil) tt += 'erstesBelegtesTeil = ' + this.erstesBelegtesTeil + '<br\>';
 			if (this.erisCloudId) tt += 'erisID = ' + this.erisCloudId;
+			
+
 			
 		// erisTrace('erisToolTip - Ende');
 			return tt;
