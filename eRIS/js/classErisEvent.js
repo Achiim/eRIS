@@ -452,39 +452,61 @@ var ErisEvent = function(inOpts) {
 			.success(function( responseJson ) {
 				erisTrace("ajax erisEvent store success");
 				erisTrace(url);
-		
+				
+				var urlArray = url.split('/');
+					
 		  		if (typeof responseJson !== 'undefined' ) { // bei update gibt es keine Antwort
 		  			// ID des gespeicherten erisObjekt aus der Cloud merken
 		  			newMarkerNummer = responseJson.id;
 		  		}
 		    	erisMessage('Speichern erfolgreich.');
 		    	
-				// erisTrack
-		    	if (erisTracking) erisTrack('send', {
-					  hitType: 'event',
-					  eventCategory: 'erisMarker',
-					  eventAction: 'store success',
-					  eventLabel: msg
-					});
+		    	if (urlArray[8] === 'update') {
+					// erisTrack
+			    	if (erisTracking) erisTrack('send', {
+						  hitType: 'event',
+						  eventCategory: 'erisMarker',
+						  eventAction: 'update success',
+						  eventLabel: urlArray[11]			// Team
+						});
+		    	} else {
+					// erisTrack
+			    	if (erisTracking) erisTrack('send', {
+						  hitType: 'event',
+						  eventCategory: 'erisMarker',
+						  eventAction: 'store success',
+						  eventLabel: urlArray[11]			// Team
+						});
+		    	}
 
 			})
 		    .error(function( responseJson ) {
+				var urlArray = url.split('/');
 		    	erisTrace(url);
 		    	erisError("ajax erisEvent store error: " + responseJson.status + ' - ' + responseJson.statusText );
 		    	erisError("ajax erisEvent store error: " + responseJson.responseText);
 		    	erisMessage('Speicherfehler, bitte erneut lesen und wiederholen. ' + responseJson.responseJSON.error.code + ' : ' + responseJson.responseJSON.error.message );
 
-		    	// erisTrack
-		    	if (erisTracking) erisTrack('send', {
-					  hitType: 'event',
-					  eventCategory: 'erisMarker',
-					  eventAction: 'store error',
-					  eventLabel: msg
-					});
-
+		    	if (urlArray[8] === 'update') {
+			    	// erisTrack
+			    	if (erisTracking) erisTrack('send', {
+						  hitType: 'event',
+						  eventCategory: 'erisMarker',
+						  eventAction: 'update error',
+						  eventLabel: msg
+						});
+		    	} else {
+			    	// erisTrack
+			    	if (erisTracking) erisTrack('send', {
+						  hitType: 'event',
+						  eventCategory: 'erisMarker',
+						  eventAction: 'store error',
+						  eventLabel: msg
+						});
+		    	}
 		    });
 			
-			if (typeof newMarkerNummer !== undefined) {
+			if (newMarkerNummer !== undefined) {
 				this.erisCloudId = newMarkerNummer;
 				this.jQueryQtipMarker();
 			}
