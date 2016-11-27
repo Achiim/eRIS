@@ -51,30 +51,27 @@ var ErisEvent = function(inOpts) {
 			MarkerWidth :				erisPlatzWidth - erisPlatzTeilMargin - erisMarkerPadding,
 			MarkerMaxWidth :			erisPlatzWidth - erisMarkerPadding - erisPlatzTeilMargin,
 			MarkerMinHeight :			erisMarkerPadding + erisPlatzTeilMargin,
-			MarkerHeightjePlatzteil :	this.MarkerMinHeight
 		};
 		
+		// erweitere die Default-Werte
+		$.extend(defaultOpts, {
+			// Platzkonstanten berechnen
+			MarkerHeightjePlatzteil :	defaultOpts.MarkerMinHeight,
+			MarkerMinWidth : 			defaultOpts.liegtAufPlatz.PlatzTeilWidth - erisMarkerPadding,
+			MarkerMaxHeight :			(defaultOpts.liegtAufPlatz.bis - defaultOpts.liegtAufPlatz.von) * 4 * erisMarkerHeightViertelstunde
+		});
+
 		// erweitere die Eingangsparameter um Default-Werte
 		$.extend(this, defaultOpts, inOpts);
 
 		// laufende Nummer der Marker innerhalb eines Platzes
 		this.mid = this.markerNummer;
 		
-		// Platzkonstanten berechnen
-		// TODO ueberfuehrten ins Options-Objekt
-		this.MarkerMinWidth = this.liegtAufPlatz.PlatzTeilWidth - 
-				erisMarkerPadding;
-		this.MarkerMaxHeight = (this.liegtAufPlatz.bis - 
-				this.liegtAufPlatz.von) * 4 * erisMarkerHeightViertelstunde;
-
 		// Platzteilgröße und -position
 		if (this.PlatzteilArray.length !== 0 ) {
 			this.anzahlBelegteTeile = this.PlatzteilArray.length ;
 			this.erstesBelegtesTeil = this.PlatzteilArray[0];
 		}
-		
-		// Annahme: Marker liegt auf keinem Platz
-		this.liegtAufPlatz = erisLeererPlatz; // Default-Platz
 		
 		// Suche den Platz, auf dem der Marker liegt
 		for (var a = 0; a < erisPlatzArray.length; a++) {
@@ -178,6 +175,15 @@ var ErisEvent = function(inOpts) {
 			$('#' + markerID)
 			.resizable({
 				stop: function(event, ui) {
+					
+					// erisTrack
+					if (erisTracking) erisTrack('send', {
+						  hitType: 'event',
+						  eventCategory: 'erisMarker',
+						  eventAction: 'resize',
+						  eventLabel: 'existing Event'
+						});
+
 					// Achtung: this verweist hier auf das jQuery-Objekt 'Marker'
 					var erisEventMarker = $(this).data('erisEventMarker');
 					
@@ -186,6 +192,8 @@ var ErisEvent = function(inOpts) {
 				},
 				
 				resize: function(event, ui) {
+
+
 					// Achtung: this verweist hier auf das jQuery-Objekt 'Marker'
 					var erisEventMarker = $(this).data('erisEventMarker');
 					
@@ -250,6 +258,15 @@ var ErisEvent = function(inOpts) {
 		 * Mache den Marker klickbar
 		*/
 		ErisEvent.prototype.jQueryClickMarker = function() {
+
+			// erisTrack
+			if (erisTracking) erisTrack('send', {
+				  hitType: 'event',
+				  eventCategory: 'erisMarker',
+				  eventAction: 'click',
+				  eventLabel: 'existing Event'
+				});
+
 			var markerID = this.team + this.mid;
 			$('#'+markerID).click(function() {
 			  erisTrace('jQueryClickMarker - klick');
@@ -261,6 +278,7 @@ var ErisEvent = function(inOpts) {
 		 * Versehe den Marker mit einem ToolTip
 		*/
 		ErisEvent.prototype.jQueryQtipMarker = function() {
+			
 			var markerID = this.team + this.mid;
 			var markup = this.erisToolTip();
 			$('#'+markerID).qtip({ // Grab some elements to apply the tooltip to
@@ -434,12 +452,30 @@ var ErisEvent = function(inOpts) {
 		  			newMarkerNummer = responseJson.id;
 		  		}
 		    	erisMessage('Speichern erfolgreich.');
+		    	
+				// erisTrack
+		    	if (erisTracking) erisTrack('send', {
+					  hitType: 'event',
+					  eventCategory: 'erisMarker',
+					  eventAction: 'store success',
+					  eventLabel: msg
+					});
+
 			})
 		    .error(function( responseJson ) {
 		    	erisTrace(url);
 		    	erisError("ajax erisEvent store error: " + responseJson.status + ' - ' + responseJson.statusText );
 		    	erisError("ajax erisEvent store error: " + responseJson.responseText);
-		    	erisMessage('Speicherfehler, bitte erneut lesen und wiederholen.');
+		    	erisMessage('Speicherfehler, bitte erneut lesen und wiederholen. ' + responseJson.responseJSON.error.code + ' : ' + responseJson.responseJSON.error.message );
+
+		    	// erisTrack
+		    	if (erisTracking) erisTrack('send', {
+					  hitType: 'event',
+					  eventCategory: 'erisMarker',
+					  eventAction: 'store error',
+					  eventLabel: msg
+					});
+
 		    });
 			
 			if (typeof newMarkerNummer !== undefined) {

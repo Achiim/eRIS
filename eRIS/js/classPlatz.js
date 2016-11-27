@@ -223,6 +223,14 @@ Platzteil.prototype.jQueryViewPlatzteil = function() {
 		drop: function(event, ui) { // Marker wurde in ein Platzteil
 								  // fallengelassen
 
+			// erisTrack
+			if (erisTracking) erisTrack('send', {
+				  hitType: 'event',
+				  eventCategory: 'erisMarker',
+				  eventAction: 'drop',
+				  eventLabel: 'existing Event'
+				});
+
 			// Achtung: this verweist hier auf das jQuery-Objekt 'Platzteil' in das
 			// gedropped wurde
 
@@ -350,6 +358,14 @@ Platzteil.prototype.jQueryMarkerDialog = function(){
 		buttons: {
 			Ok: function() {
 				
+				// erisTrack
+				if (erisTracking) erisTrack('send', {
+					  hitType: 'event',
+					  eventCategory: 'erisMarker',
+					  eventAction: 'create',
+					  eventLabel: 'new Event'
+					});
+
 				erisTrace('jQueryMarkerDialog - ok- close Dialog');
 				var erisMarker = new ErisEvent({
 					startTime : $('#formbelegungsdatum').val() + ' ' + $('#formvon').val() , 
@@ -363,7 +379,16 @@ Platzteil.prototype.jQueryMarkerDialog = function(){
 				erisMarker.store(); // speichere die Belegung
 			},
 			Cancle: function() {
-				erisTrace('jQueryMarkerDialog - cacle - close Dialog');
+				
+				// erisTrack
+				if (erisTracking) erisTrack('send', {
+					  hitType: 'event',
+					  eventCategory: 'erisMarker',
+					  eventAction: 'cancle',
+					  eventLabel: 'cancle new Event'
+					});
+
+				erisTrace('jQueryMarkerDialog - cancle - close Dialog');
 				$(this).dialog("close");
 			}
 		}

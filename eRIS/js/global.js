@@ -12,6 +12,7 @@
  */
 // Trace
 const erisTraceLevel = 1;									// 1 - Trace eingeschalten | 0 - Trace ausgeschalten
+const erisTracking = true;									// Online-Tracking ein-/ausschalten
 
 // ViewKonstanten
 const erisMaxFieldsInView = 6;								// max. Anzahl der nebeneinander darstellbaren Plätze,  bevor gescrollt wird

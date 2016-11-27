@@ -132,6 +132,14 @@ Datumsachse.prototype.loadEvents = function(field, datum) {
 		erisTrace("ajax loadEvents success");
 		erisTrace(url);
 	  
+		// erisTrack
+		if (erisTracking) erisTrack('send', {
+			  hitType: 'event',
+			  eventCategory: 'erisMarker',
+			  eventAction: 'load success',
+			  eventLabel: field + ' ' + datum
+			});
+
 		// suche den Platz, für den die Events gerade gelesen werden und mache blur weg
 		for (var a = 0; a < erisPlatzArray.length; a++ ) {
 			if (field === erisPlatzArray[a].platzName) $('#Platz'+erisPlatzArray[a].innerPlatzName).removeClass('verschwommen');
@@ -166,6 +174,15 @@ Datumsachse.prototype.loadEvents = function(field, datum) {
 		erisError("ajax loadEvents error: " + responseJson.status + ' - ' + responseJson.statusText );
 		erisError("ajax loadEvents error: " + responseJson.responseText );
 		erisMessage('Lesenfehler der Belegungen, bitte erneut lesen.');
+
+		// erisTrack
+		if (erisTracking) erisTrack('send', {
+			  hitType: 'event',
+			  eventCategory: 'erisMarker',
+			  eventAction: 'load error',
+			  eventLabel: field + ' ' + datum
+			});
+
 	}); // end error
 }; // end loadEvents
 
@@ -182,6 +199,16 @@ Datumsachse.prototype.loadPlaetze = function(timeline) {
 		.success(function( responseJson ) {
 			erisTrace("ajax loadPlaetze success");
 			erisTrace(url);
+
+			// erisTrack
+			if (erisTracking) erisTrack('send', {
+				  hitType: 'event',
+				  eventCategory: 'erisField',
+				  eventAction: 'load success',
+				  eventLabel: timeline.angezeigtesDatum
+				});
+
+
 			if (typeof responseJson !== 'undefined' ) {
 				erisObjectTrace(responseJson);
 				if (typeof responseJson.items != 'undefined' && responseJson.items.length>0) {
@@ -211,5 +238,14 @@ Datumsachse.prototype.loadPlaetze = function(timeline) {
 			erisError("ajax loadPlaetze error: " + responseJson.status + ' - ' + responseJson.statusText );
 			erisError("ajax loadPlaetze error: " + responseJson.responseText );
 			erisMessage('Lesenfehler der Plätze, bitte erneut lesen.')
+
+			// erisTrack
+			if (erisTracking) erisTrack('send', {
+				  hitType: 'event',
+				  eventCategory: 'erisField',
+				  eventAction: 'load error',
+				  eventLabel: timeline.angezeigtesDatum
+				});
+
 		}); // end error
 }; // end loadPlaetze
