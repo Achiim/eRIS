@@ -88,6 +88,7 @@ Datumsachse.prototype.jQueryViewTimeline = function(containerId) {
 		// alte Meldungen entfernen 
 		erisClear();
 		
+
 		// Achtung: this verweist hier auf das jQuery-Objekt '#sliderView'
 		var erisTimeline = $('#sliderView .ui-slider-handle').data('erisTimeline');  // Referenz
 																					  // auf
@@ -96,7 +97,13 @@ Datumsachse.prototype.jQueryViewTimeline = function(containerId) {
 		$("#sliderView").slider( "option", "min", erisDatum2Wert(erisBerechneDatum(erisTimeline.angezeigtesDatum, -5)) );
 		$("#sliderView").slider( "option", "max", erisDatum2Wert(erisBerechneDatum(erisTimeline.angezeigtesDatum, +7)) );
 		
-		
+    	if (erisTracking) erisTrack('send', {
+			  hitType: 'event',
+			  eventCategory: 'erisTimeline',
+			  eventAction: 'change date',
+			  eventLabel: erisTimeline.angezeigtesDatum
+			});
+
 		jQuery.each($('.Marker'), function( index ) {   
 		  delete $(this).data('erisEventMarker'); // Lösche das eris-Objekt zum Marker
 		  this.remove();   // Lösche das jQueryUI-Objekt zum Marker

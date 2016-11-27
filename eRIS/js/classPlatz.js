@@ -256,6 +256,12 @@ Platzteil.prototype.jQueryViewPlatzteil = function() {
 			if (erisMarker.PlatzName !== erisPlatzteil.platz.platzName) {
 				erisMarker.PlatzName = erisPlatzteil.platz.platzName;  // aktueller Platzname
 				var platzWechsel = true;
+		    	if (erisTracking) erisTrack('send', {
+					  hitType: 'event',
+					  eventCategory: 'erisMarker',
+					  eventAction: 'change field',
+					  eventLabel: erisMarker.PlatzName
+					});
 			}
 
 			// neue Marker auf die ganze Platzgröße anpassen

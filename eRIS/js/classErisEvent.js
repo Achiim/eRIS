@@ -113,6 +113,14 @@ var ErisEvent = function(inOpts) {
 		*/
 		ErisEvent.prototype.jQueryShowMarker = function() {
 		
+			// erisTrack
+			if (erisTracking) erisTrack('send', {
+				  hitType: 'event',
+				  eventCategory: 'erisMarker',
+				  eventAction: 'show',
+				  eventLabel: 'existing Event'
+				});
+			
 			this.MarkerWidth = this.anzahlBelegteTeile * this.liegtAufPlatz.PlatzTeilWidth - erisMarkerPadding;
 			this.MarkerWidth += this.anzahlBelegteTeile * erisPlatzTeilMargin;
 			
@@ -258,7 +266,9 @@ var ErisEvent = function(inOpts) {
 		 * Mache den Marker klickbar
 		*/
 		ErisEvent.prototype.jQueryClickMarker = function() {
-
+			var markerID = this.team + this.mid;
+			$('#'+markerID).click(function() {
+			erisTrace('jQueryClickMarker - klick');
 			// erisTrack
 			if (erisTracking) erisTrack('send', {
 				  hitType: 'event',
@@ -266,10 +276,6 @@ var ErisEvent = function(inOpts) {
 				  eventAction: 'click',
 				  eventLabel: 'existing Event'
 				});
-
-			var markerID = this.team + this.mid;
-			$('#'+markerID).click(function() {
-			  erisTrace('jQueryClickMarker - klick');
 			});
 		}; // end jQueryClickMarker
 		
