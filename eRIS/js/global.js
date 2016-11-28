@@ -18,6 +18,7 @@ const erisTracking = true;									// Online-Tracking ein-/ausschalten
 const erisMaxFieldsInView = 6;								// max. Anzahl der nebeneinander darstellbaren Plätze,  bevor gescrollt wird
 	
 // Zeitkonstanten
+const erisMinutenJeStunde = 60;                           // 60 Minuten in einer Stunde
 const erisPixelStunde = 28;                               // 28 Pixel repräsentieren eine Stunden
 const erisPixelViertelstunde = erisPixelStunde/4;         // 7 Pixel je Viertelstunde
 const erisZeitAchsenlaenge = 14*erisPixelStunde;          // 392 = 14h * 28 Pixel je Stunde

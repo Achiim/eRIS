@@ -44,12 +44,18 @@ var Datumsachse = function (angezeigtesDatum) {
 		return new Datumsachse(angezeigtesDatum);
 	}
 
+	// *************************************************************************
+	// Beginn der Constructor-Funktion für die Datumsachse
 	
 	this.angezeigtesDatum = angezeigtesDatum;				// aktuelles Datum
 	this.markerNummer = 0;									// initialisiere die Nummerierung der Marker	
 
-	// *****************************************************************************
-	// Beginn der Constructor-Funktion für das ErisEvent
+	//
+	// Ende der Constructor-Funktion für die Datumsachse
+	// *************************************************************************
+	
+	// *************************************************************************
+	// Beginn der Definition der Methoden des Objekts auf dem Prototyp
 
 	/**
 	 * @description
@@ -194,7 +200,7 @@ var Datumsachse = function (angezeigtesDatum) {
 			erisTrace(url);
 			erisError("ajax loadEvents error: " + responseJson.status + ' - ' + responseJson.statusText );
 			erisError("ajax loadEvents error: " + responseJson.responseText );
-			erisMessage('Lesenfehler der Belegungen, bitte erneut lesen.');
+			erisMessage('Lesenfehler der Belegungen, bitte erneut lesen. ' + responseJson.responseJSON.error.code + ' : ' + responseJson.responseJSON.error.message);
 
 			// erisTrack
 			if (erisTracking) erisTrack('send', {
@@ -262,7 +268,7 @@ var Datumsachse = function (angezeigtesDatum) {
 			erisTrace(url);
 			erisError("ajax loadPlaetze error: " + responseJson.status + ' - ' + responseJson.statusText );
 			erisError("ajax loadPlaetze error: " + responseJson.responseText );
-			erisMessage('Lesenfehler der Plätze, bitte erneut lesen.');
+			erisMessage('Lesenfehler der Plätze, bitte erneut lesen. '  + responseJson.responseJSON.error.code + ' : ' + responseJson.responseJSON.error.message);
 
 			// erisTrack
 			if (erisTracking) erisTrack('send', {

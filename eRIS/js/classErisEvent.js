@@ -199,6 +199,12 @@ var ErisEvent = function(inOpts) {
 					// Achtung: this verweist hier auf das jQuery-Objekt 'Marker'
 					var erisEventMarker = $(this).data('erisEventMarker');
 					
+					// Marker endDate setzen
+					erisEventMarker.setMarkerDateEnd();
+					
+					// ToolTip aktualisieren
+					erisEventMarker.jQueryQtipMarker();
+
 					// speichere den geänderten Marker
 					erisEventMarker.store();
 				},
@@ -344,6 +350,10 @@ var ErisEvent = function(inOpts) {
 			return anzVirtelstunden*15;
 		}; // end pixelToMinutes
 		
+		/**
+		 * 
+		 * setze die Markerbreite
+		 */
 		ErisEvent.prototype.setMarkerWidth = function(ui) {
 			var breite = this.anzahlBelegteTeile * this.liegtAufPlatz.PlatzTeilWidth - erisMarkerPadding;
 			breite += this.anzahlBelegteTeile * erisPlatzTeilMargin;
@@ -351,8 +361,55 @@ var ErisEvent = function(inOpts) {
 			$(ui.draggable).css({'width' : breite}); 
 		}; // end setMarkerWidth
 		
+		/**
+		 * 
+		 * setze die Markerhöhe
+		 */
+		ErisEvent.prototype.setMarkerHeight = function(ui) {
+			var hoehe = this.minutesToPixel(this.duration);
+			// Markerhöhe setzen
+			$(ui.draggable).css({'height' : hoehe}); 
+		}; // end setMarkerHeight
+		
+		/**
+		 * 
+		 * setze die Marker-Endedatum
+		 */
+		ErisEvent.prototype.setMarkerDateEnd = function(ui) {
+			var uhrzeit = this.dateStart[1];
+			var uu = uhrzeit.split(':'); // hh:mm
+			var hh = parseInt(uu[0], 10);
+			var mm = parseInt(uu[1], 10);
+
+			var dh = Math.floor(this.duration/erisMinutenJeStunde);
+			var dm = Math.floor(this.duration%erisMinutenJeStunde);
+			
+			hh += dh;
+			mm += dm;
+			if (mm === 0) mm = '00';
+			
+			// Stundenübertrag berücksichtigen
+			if (mm === 60) {
+				hh++;
+				mm = '00';
+			}
+			
+			uhrzeit = hh + ':' + mm;
+			
+			// Markerendedatum setzen
+			this.endTime = this.dateStart[0] + ' ' + uhrzeit; 
+			this.dateEnd = [];
+			this.dateEnd[0] = this.dateStart[0]; 
+			this.dateEnd[1] = uhrzeit; 
+			
+		}; // end setMarkerHeight
+		
+		/**
+		 * 
+		 * baue den ToolTip-Inhalt zusammen
+		 */
 		ErisEvent.prototype.erisToolTip = function() {
-		//		erisTrace('erisToolTip - Beginn');
+			//	erisTrace('erisToolTip - Beginn');
 			
 			// Tag aus Datum extrahieren
 			var dd = this.dateStart[0].split('.'); // tt.mm.jjjj
@@ -366,6 +423,7 @@ var ErisEvent = function(inOpts) {
 					"<div id='Monat'>" + erisMonatsname(this.dateStart[0]) + "</div></div>";
 			if (this.PlatzName) tt += 'erisPlatz = ' + this.PlatzName + '<br\>';
 			if (this.startTime) tt += 'erisStart = ' + this.startTime + '<br\>';
+			if (this.endTime) tt += 'erisEnde = ' + this.endTime + '<br\>';
 			if (this.duration) tt += 'erisDauer = ' + this.duration + ' Minuten<br\>';
 			if (this.description) tt += 'erisBeschreibung = ' + this.description + '<br\>';
 			// if (this.team) tt += 'erisTeamID = ' + this.team + '<br\>';
@@ -377,9 +435,7 @@ var ErisEvent = function(inOpts) {
 			if (this.erstesBelegtesTeil) tt += 'erstesBelegtesTeil = ' + this.erstesBelegtesTeil + '<br\>';
 			if (this.erisCloudId) tt += 'erisID = ' + this.erisCloudId;
 			
-
-			
-		// erisTrace('erisToolTip - Ende');
+			// erisTrace('erisToolTip - Ende');
 			return tt;
 		}; // end erisToolTip
 		
