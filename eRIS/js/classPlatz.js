@@ -281,8 +281,10 @@ Platzteil.prototype.jQueryViewPlatzteil = function() {
 			erisMarker.setBelegtePlatzteile();
 
 			// ist der Marker zu lang?
-			if (erisMarker.duration > 14*60)
-				erisMarker.duration = erisMarker.pixelToMinutes(erisMarker.MarkerMaxHeight);
+			if (erisMarker.duration > (erisMarker.liegtAufPlatz.bis-erisMarker.liegtAufPlatz.von)*erisMinutenJeStunde) {
+				erisMarker.duration = (erisMarker.liegtAufPlatz.bis-erisMarker.liegtAufPlatz.von)*erisMinutenJeStunde;
+				erisMarker.setMarkerHeight(ui);
+			}
 
 					// angezeigtes Datum aus der Timeline
 			erisMarker.dateStart[0] = erisPlatzteil.platz.timeline.angezeigtesDatum; 
@@ -293,6 +295,10 @@ Platzteil.prototype.jQueryViewPlatzteil = function() {
 			// Datum + Uhrzeit kombiniert
 			erisMarker.startTime = erisMarker.dateStart[0] + ' ' + erisPlatzteil.von;
 
+			
+			// Marker endDate setzen
+			erisMarker.setMarkerDateEnd();
+			
 			// Marker-Position im Ziel = oben, links
 			$(ui.draggable).css({
 				'top': 0,
