@@ -280,7 +280,11 @@ Platzteil.prototype.jQueryViewPlatzteil = function() {
 			}
 			erisMarker.setBelegtePlatzteile();
 
-			// angezeigtes Datum aus der Timeline
+			// ist der Marker zu lang?
+			if (erisMarker.duration > 14*60)
+				erisMarker.duration = erisMarker.pixelToMinutes(erisMarker.MarkerMaxHeight);
+
+					// angezeigtes Datum aus der Timeline
 			erisMarker.dateStart[0] = erisPlatzteil.platz.timeline.angezeigtesDatum; 
 
 			// Uhrzeit aus dem Platzteils, in das der Marker bewegt wurde
