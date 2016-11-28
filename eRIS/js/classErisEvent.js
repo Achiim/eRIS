@@ -22,6 +22,10 @@
 /* global erisMarkerPadding */
 /* global erisMarkerHeightViertelstunde */
 /* global erisLeererPlatz */
+/* global erisTracking */
+/* global erisTrack */
+/* global erisTagesname */
+/* global erisMonatsname */
 
 var ErisEvent = function(inOpts) {
 
@@ -517,4 +521,3 @@ var ErisEvent = function(inOpts) {
 	// *************************************************************************
 
 }; // end class ErisEvent
-

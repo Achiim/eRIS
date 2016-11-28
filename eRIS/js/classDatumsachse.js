@@ -21,6 +21,9 @@
 /* global erisClear */
 /* global erisError */
 /* global erisMessage */
+/* global erisTracking */
+/* global erisTrack */
+/* global erisObjectTrace */
 
 /* global Timeline */
 /* global ErisEvent */
@@ -244,7 +247,7 @@ Datumsachse.prototype.loadPlaetze = function(timeline) {
 			erisTrace(url);
 			erisError("ajax loadPlaetze error: " + responseJson.status + ' - ' + responseJson.statusText );
 			erisError("ajax loadPlaetze error: " + responseJson.responseText );
-			erisMessage('Lesenfehler der Plätze, bitte erneut lesen.')
+			erisMessage('Lesenfehler der Plätze, bitte erneut lesen.');
 
 			// erisTrack
 			if (erisTracking) erisTrack('send', {
