@@ -1,0 +1,49 @@
+@CHARSET "ISO-8859-1";
+/**
+    ****************************************
+	* Sportstaetten-Reservierungs-System   *
+	****************************************
+	
+	Autor:	Achim
+	Jahr:	2016
+	
+	Default-Layout
+	
+	Quelle fuer HTML-Farbnamen: http://www.w3schools.com/colors/colors_groups.asp
+	Style-Guide: https://material.google.com/style/color.html#color-color-palette
+
+ 	Quelle fuer Linear-Gradient der Marker: http://www.cssmatic.com/gradient-generator
+*/
+
+/*******************************************
+Styles fuer ToolTip Kalenderblatt
+*******************************************/
+
+#Kalenderblatt {
+ width:50px;
+ height:50px;
+ background:lightGrey; 
+ border-radius: 6px; 
+ font-family: "Arial", Verdana, san-serif;
+}
+
+#Tagname {
+ background:red;
+ color: white;
+ padding:2px;
+ font-size: 8px;
+ text-align: center;
+ border-top-left-radius: 6px; 
+ border-top-right-radius: 6px; 
+}
+
+#Tag {
+  font-size: 15px;
+  text-align: center;
+}
+
+#Monat {
+  font-size: 8px;
+  text-align: center;
+}
+

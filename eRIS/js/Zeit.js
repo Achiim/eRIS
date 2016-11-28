@@ -120,7 +120,7 @@ function erisWert2Datum(wert) {
   return heute;
 }
 
-// *********************************************************************
+//*********************************************************************
 /**
  * liefert das aktuelle Datum im Format TT.DD.JJJJ hh:mm:ss.ms
  * 
@@ -139,4 +139,60 @@ function erisTimestamp() {
   var timestamp = tag + '.' + monat + '.' + jahr + ' ' + stunde + ':' + minute
           + ':' + sekunde + '.' + millisekunde; // Formatiere Rückgabe
   return timestamp;
+}
+
+//*********************************************************************
+/**
+ * liefert zu einem Datum TT.MM.JJJJ den Monatsnamen
+ * 
+ * @return monatsname = Monatsname in deutsch
+ */
+function erisMonatsname(datum) {
+	var dd = datum.split('.'); // tt.mm.jjjj
+	var tt = parseInt(dd[0], 10);
+	var mm = parseInt(dd[1], 10);
+	var jj = parseInt(dd[2], 10);
+	var monatsname = '';
+	
+	if (mm === 1) monatsname = 'Januar';
+	if (mm === 2) monatsname = 'Februar';
+	if (mm === 3) monatsname = 'März';
+	if (mm === 4) monatsname = 'April';
+	if (mm === 5) monatsname = 'Mai';
+	if (mm === 6) monatsname = 'Juni';
+	if (mm === 7) monatsname = 'Juli';
+	if (mm === 8) monatsname = 'August';
+	if (mm === 9) monatsname = 'September';
+	if (mm === 10) monatsname = 'Oktober';
+	if (mm === 11) monatsname = 'November';
+	if (mm === 12) monatsname = 'Dezember';
+	
+	return monatsname;
+}
+
+//*********************************************************************
+/**
+ * liefert zu einem Datum TT.MM.JJJJ den Tagesnamen
+ * 
+ * @return tagesname = Tagesname in deutsch
+ */
+function erisTagesname(datum) {
+	var dd = datum.split('.'); // tt.mm.jjjj
+	var tt = parseInt(dd[0], 10);
+	var mm = parseInt(dd[1], 10);
+	var jj = parseInt(dd[2], 10);
+
+	var td = new Date(jj, mm - 1, tt);
+	var tn = td.getDay();
+	var tagesname = '';
+	
+	if (tn === 0) tagesname = 'Sonntag';
+	if (tn === 1) tagesname = 'Montag';
+	if (tn === 2) tagesname = 'Dienstag';
+	if (tn === 3) tagesname = 'Mitwoch';
+	if (tn === 4) tagesname = 'Donnerstag';
+	if (tn === 5) tagesname = 'Freitag';
+	if (tn === 6) tagesname = 'Samstag';
+	
+	return tagesname;
 }

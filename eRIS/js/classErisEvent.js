@@ -51,30 +51,27 @@ var ErisEvent = function(inOpts) {
 			MarkerWidth :				erisPlatzWidth - erisPlatzTeilMargin - erisMarkerPadding,
 			MarkerMaxWidth :			erisPlatzWidth - erisMarkerPadding - erisPlatzTeilMargin,
 			MarkerMinHeight :			erisMarkerPadding + erisPlatzTeilMargin,
-			MarkerHeightjePlatzteil :	this.MarkerMinHeight
 		};
 		
+		// erweitere die Default-Werte
+		$.extend(defaultOpts, {
+			// Platzkonstanten berechnen
+			MarkerHeightjePlatzteil :	defaultOpts.MarkerMinHeight,
+			MarkerMinWidth : 			defaultOpts.liegtAufPlatz.PlatzTeilWidth - erisMarkerPadding,
+			MarkerMaxHeight :			(defaultOpts.liegtAufPlatz.bis - defaultOpts.liegtAufPlatz.von) * 4 * erisMarkerHeightViertelstunde
+		});
+
 		// erweitere die Eingangsparameter um Default-Werte
 		$.extend(this, defaultOpts, inOpts);
 
 		// laufende Nummer der Marker innerhalb eines Platzes
 		this.mid = this.markerNummer;
 		
-		// Platzkonstanten berechnen
-		// TODO ueberfuehrten ins Options-Objekt
-		this.MarkerMinWidth = this.liegtAufPlatz.PlatzTeilWidth - 
-				erisMarkerPadding;
-		this.MarkerMaxHeight = (this.liegtAufPlatz.bis - 
-				this.liegtAufPlatz.von) * 4 * erisMarkerHeightViertelstunde;
-
 		// Platzteilgröße und -position
 		if (this.PlatzteilArray.length !== 0 ) {
 			this.anzahlBelegteTeile = this.PlatzteilArray.length ;
 			this.erstesBelegtesTeil = this.PlatzteilArray[0];
 		}
-		
-		// Annahme: Marker liegt auf keinem Platz
-		this.liegtAufPlatz = erisLeererPlatz; // Default-Platz
 		
 		// Suche den Platz, auf dem der Marker liegt
 		for (var a = 0; a < erisPlatzArray.length; a++) {
@@ -116,6 +113,14 @@ var ErisEvent = function(inOpts) {
 		*/
 		ErisEvent.prototype.jQueryShowMarker = function() {
 		
+			// erisTrack
+			if (erisTracking) erisTrack('send', {
+				  hitType: 'event',
+				  eventCategory: 'erisMarker',
+				  eventAction: 'show',
+				  eventLabel: 'existing Event'
+				});
+			
 			this.MarkerWidth = this.anzahlBelegteTeile * this.liegtAufPlatz.PlatzTeilWidth - erisMarkerPadding;
 			this.MarkerWidth += this.anzahlBelegteTeile * erisPlatzTeilMargin;
 			
@@ -178,6 +183,15 @@ var ErisEvent = function(inOpts) {
 			$('#' + markerID)
 			.resizable({
 				stop: function(event, ui) {
+					
+					// erisTrack
+					if (erisTracking) erisTrack('send', {
+						  hitType: 'event',
+						  eventCategory: 'erisMarker',
+						  eventAction: 'resize',
+						  eventLabel: 'existing Event'
+						});
+
 					// Achtung: this verweist hier auf das jQuery-Objekt 'Marker'
 					var erisEventMarker = $(this).data('erisEventMarker');
 					
@@ -186,6 +200,8 @@ var ErisEvent = function(inOpts) {
 				},
 				
 				resize: function(event, ui) {
+
+
 					// Achtung: this verweist hier auf das jQuery-Objekt 'Marker'
 					var erisEventMarker = $(this).data('erisEventMarker');
 					
@@ -252,7 +268,14 @@ var ErisEvent = function(inOpts) {
 		ErisEvent.prototype.jQueryClickMarker = function() {
 			var markerID = this.team + this.mid;
 			$('#'+markerID).click(function() {
-			  erisTrace('jQueryClickMarker - klick');
+			erisTrace('jQueryClickMarker - klick');
+			// erisTrack
+			if (erisTracking) erisTrack('send', {
+				  hitType: 'event',
+				  eventCategory: 'erisMarker',
+				  eventAction: 'click',
+				  eventLabel: 'existing Event'
+				});
 			});
 		}; // end jQueryClickMarker
 		
@@ -261,6 +284,7 @@ var ErisEvent = function(inOpts) {
 		 * Versehe den Marker mit einem ToolTip
 		*/
 		ErisEvent.prototype.jQueryQtipMarker = function() {
+			
 			var markerID = this.team + this.mid;
 			var markup = this.erisToolTip();
 			$('#'+markerID).qtip({ // Grab some elements to apply the tooltip to
@@ -325,7 +349,17 @@ var ErisEvent = function(inOpts) {
 		
 		ErisEvent.prototype.erisToolTip = function() {
 		//		erisTrace('erisToolTip - Beginn');
+			
+			// Tag aus Datum extrahieren
+			var dd = this.dateStart[0].split('.'); // tt.mm.jjjj
+			var tag = parseInt(dd[0], 10);
+
+			
 			var tt = '';
+			tt += "<div id='Kalenderblatt'>" + 
+					"<div id='Tagname'>" + erisTagesname(this.dateStart[0]) + "</div>" +
+					"<div id='Tag'>" + tag + "</div>" + 
+					"<div id='Monat'>" + erisMonatsname(this.dateStart[0]) + "</div></div>";
 			if (this.PlatzName) tt += 'erisPlatz = ' + this.PlatzName + '<br\>';
 			if (this.startTime) tt += 'erisStart = ' + this.startTime + '<br\>';
 			if (this.duration) tt += 'erisDauer = ' + this.duration + ' Minuten<br\>';
@@ -338,6 +372,8 @@ var ErisEvent = function(inOpts) {
 			// if (this.dateStart) tt += 'erisDateStart = ' + this.dateStart;
 			if (this.erstesBelegtesTeil) tt += 'erstesBelegtesTeil = ' + this.erstesBelegtesTeil + '<br\>';
 			if (this.erisCloudId) tt += 'erisID = ' + this.erisCloudId;
+			
+
 			
 		// erisTrace('erisToolTip - Ende');
 			return tt;
@@ -416,21 +452,61 @@ var ErisEvent = function(inOpts) {
 			.success(function( responseJson ) {
 				erisTrace("ajax erisEvent store success");
 				erisTrace(url);
-		
+				
+				var urlArray = url.split('/');
+					
 		  		if (typeof responseJson !== 'undefined' ) { // bei update gibt es keine Antwort
 		  			// ID des gespeicherten erisObjekt aus der Cloud merken
 		  			newMarkerNummer = responseJson.id;
 		  		}
 		    	erisMessage('Speichern erfolgreich.');
+		    	
+		    	if (urlArray[8] === 'update') {
+					// erisTrack
+			    	if (erisTracking) erisTrack('send', {
+						  hitType: 'event',
+						  eventCategory: 'erisMarker',
+						  eventAction: 'update success',
+						  eventLabel: urlArray[11]			// Team
+						});
+		    	} else {
+					// erisTrack
+			    	if (erisTracking) erisTrack('send', {
+						  hitType: 'event',
+						  eventCategory: 'erisMarker',
+						  eventAction: 'store success',
+						  eventLabel: urlArray[11]			// Team
+						});
+		    	}
+
 			})
 		    .error(function( responseJson ) {
+				var urlArray = url.split('/');
 		    	erisTrace(url);
 		    	erisError("ajax erisEvent store error: " + responseJson.status + ' - ' + responseJson.statusText );
 		    	erisError("ajax erisEvent store error: " + responseJson.responseText);
-		    	erisMessage('Speicherfehler, bitte erneut lesen und wiederholen.');
+		    	erisMessage('Speicherfehler, bitte erneut lesen und wiederholen. ' + responseJson.responseJSON.error.code + ' : ' + responseJson.responseJSON.error.message );
+
+		    	if (urlArray[8] === 'update') {
+			    	// erisTrack
+			    	if (erisTracking) erisTrack('send', {
+						  hitType: 'event',
+						  eventCategory: 'erisMarker',
+						  eventAction: 'update error',
+						  eventLabel: msg
+						});
+		    	} else {
+			    	// erisTrack
+			    	if (erisTracking) erisTrack('send', {
+						  hitType: 'event',
+						  eventCategory: 'erisMarker',
+						  eventAction: 'store error',
+						  eventLabel: msg
+						});
+		    	}
 		    });
 			
-			if (typeof newMarkerNummer !== undefined) {
+			if (newMarkerNummer !== undefined) {
 				this.erisCloudId = newMarkerNummer;
 				this.jQueryQtipMarker();
 			}

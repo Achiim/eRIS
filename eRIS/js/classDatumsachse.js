@@ -88,6 +88,7 @@ Datumsachse.prototype.jQueryViewTimeline = function(containerId) {
 		// alte Meldungen entfernen 
 		erisClear();
 		
+
 		// Achtung: this verweist hier auf das jQuery-Objekt '#sliderView'
 		var erisTimeline = $('#sliderView .ui-slider-handle').data('erisTimeline');  // Referenz
 																					  // auf
@@ -96,7 +97,13 @@ Datumsachse.prototype.jQueryViewTimeline = function(containerId) {
 		$("#sliderView").slider( "option", "min", erisDatum2Wert(erisBerechneDatum(erisTimeline.angezeigtesDatum, -5)) );
 		$("#sliderView").slider( "option", "max", erisDatum2Wert(erisBerechneDatum(erisTimeline.angezeigtesDatum, +7)) );
 		
-		
+    	if (erisTracking) erisTrack('send', {
+			  hitType: 'event',
+			  eventCategory: 'erisTimeline',
+			  eventAction: 'change date',
+			  eventLabel: erisTimeline.angezeigtesDatum
+			});
+
 		jQuery.each($('.Marker'), function( index ) {   
 		  delete $(this).data('erisEventMarker'); // Lösche das eris-Objekt zum Marker
 		  this.remove();   // Lösche das jQueryUI-Objekt zum Marker
@@ -132,6 +139,14 @@ Datumsachse.prototype.loadEvents = function(field, datum) {
 		erisTrace("ajax loadEvents success");
 		erisTrace(url);
 	  
+		// erisTrack
+		if (erisTracking) erisTrack('send', {
+			  hitType: 'event',
+			  eventCategory: 'erisMarker',
+			  eventAction: 'load success',
+			  eventLabel: field + ' ' + datum
+			});
+
 		// suche den Platz, für den die Events gerade gelesen werden und mache blur weg
 		for (var a = 0; a < erisPlatzArray.length; a++ ) {
 			if (field === erisPlatzArray[a].platzName) $('#Platz'+erisPlatzArray[a].innerPlatzName).removeClass('verschwommen');
@@ -166,6 +181,15 @@ Datumsachse.prototype.loadEvents = function(field, datum) {
 		erisError("ajax loadEvents error: " + responseJson.status + ' - ' + responseJson.statusText );
 		erisError("ajax loadEvents error: " + responseJson.responseText );
 		erisMessage('Lesenfehler der Belegungen, bitte erneut lesen.');
+
+		// erisTrack
+		if (erisTracking) erisTrack('send', {
+			  hitType: 'event',
+			  eventCategory: 'erisMarker',
+			  eventAction: 'load error',
+			  eventLabel: field + ' ' + datum
+			});
+
 	}); // end error
 }; // end loadEvents
 
@@ -182,6 +206,16 @@ Datumsachse.prototype.loadPlaetze = function(timeline) {
 		.success(function( responseJson ) {
 			erisTrace("ajax loadPlaetze success");
 			erisTrace(url);
+
+			// erisTrack
+			if (erisTracking) erisTrack('send', {
+				  hitType: 'event',
+				  eventCategory: 'erisField',
+				  eventAction: 'load success',
+				  eventLabel: timeline.angezeigtesDatum
+				});
+
+
 			if (typeof responseJson !== 'undefined' ) {
 				erisObjectTrace(responseJson);
 				if (typeof responseJson.items != 'undefined' && responseJson.items.length>0) {
@@ -211,5 +245,14 @@ Datumsachse.prototype.loadPlaetze = function(timeline) {
 			erisError("ajax loadPlaetze error: " + responseJson.status + ' - ' + responseJson.statusText );
 			erisError("ajax loadPlaetze error: " + responseJson.responseText );
 			erisMessage('Lesenfehler der Plätze, bitte erneut lesen.')
+
+			// erisTrack
+			if (erisTracking) erisTrack('send', {
+				  hitType: 'event',
+				  eventCategory: 'erisField',
+				  eventAction: 'load error',
+				  eventLabel: timeline.angezeigtesDatum
+				});
+
 		}); // end error
 }; // end loadPlaetze
