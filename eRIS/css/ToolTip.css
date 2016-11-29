@@ -20,30 +20,43 @@ Styles fuer ToolTip Kalenderblatt
 *******************************************/
 
 #Kalenderblatt {
- width:50px;
- height:50px;
- background:lightGrey; 
- border-radius: 6px; 
- font-family: "Arial", Verdana, san-serif;
+	width: 50px;
+	height: 50px;
+	background: #aed581;					/* Light Green 300 */
+	border-radius: 6px; 
+	font-family: "Arial", Verdana, san-serif;
 }
 
 #Tagname {
- background:red;
- color: white;
- padding:2px;
- font-size: 8px;
- text-align: center;
- border-top-left-radius: 6px; 
- border-top-right-radius: 6px; 
+	background-color: #689f38;				/* Light Green 700 */
+	color: #f1f8e9;							/* Light Green 50 */
+	padding: 2px;
+	font-size: 8px;
+	text-align: center;
+	border-top-left-radius: 6px; 
+	border-top-right-radius: 6px; 
 }
 
 #Tag {
-  font-size: 15px;
-  text-align: center;
+	margin-top: 7px;
+	font-size: 15px;
+	text-align: center;
+	color: #33691e;							/* Light Green 900 */
 }
 
 #Monat {
-  font-size: 8px;
-  text-align: center;
+	font-size: 8px;
+	text-align: center;
+	color: #33691e;							/* Light Green 900 */
 }
 
+.qtip-default {
+	border: 1px solid #f1f8e9;				/* Light Green 50 */
+	background-color: #558b2f;				/* Light Green 800 */
+	color: #f1f8e9;							/* Light Green 50 */
+}
+
+.qtip-default .qtip-titlebar {
+	background-color: #689f38;				/* Light Green 700 */
+	color: #f1f8e9;							/* Light Green 50 */
+}
