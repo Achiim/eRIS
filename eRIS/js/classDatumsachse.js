@@ -151,16 +151,14 @@ var Datumsachse = function (angezeigtesDatum) {
 	Datumsachse.prototype.loadEvents = function(field, datum) {
 	  
 		var url = 'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/event/field/' + field;
-	//	    url += '/time/' + datum + '%2008%3A00/' + datum + '%2022%3A00'; // url mit Datum liefert sporadisch 503
+		    url += '/time/' + datum + '%2008%3A00/' + datum + '%2022%3A00'; // url mit Datum liefert sporadisch 503
 		url = url.replace(/\s/g, '%20'); // maskiere Blank durch %20
-		erisClear(); // alte Meldungen leeren
 		erisMessage('Lesen der Belegungen läuft...');
 	  
 		return $.ajax({ type: "GET", url: url, dataType: 'json', crossDomain : true, contentType: 'text/plain' })
 		.success(function( responseJson ) {
 			erisTrace("ajax loadEvents success");
 			erisTrace(url);
-			erisClear(); // alte Meldungen leeren
 			erisMessage('Lesen der Belegungen erfolgreich.');
 			// erisTrack
 			if (erisTracking) erisTrack('send', {
@@ -207,8 +205,7 @@ var Datumsachse = function (angezeigtesDatum) {
 			erisTrace(url);
 			erisError("ajax loadEvents error: " + responseJson.status + ' - ' + responseJson.statusText );
 			erisError("ajax loadEvents error: " + responseJson.responseText );
-			erisClear(); // alte Meldungen leeren
-			erisMessage('Lesefehler der Belegungen, bitte erneut lesen. ' + responseJson.responseJSON.error.code + ' : ' + responseJson.responseJSON.error.message);
+			erisMessage('Lesefehler der Belegungen, bitte erneut lesen. ' + responseJson.status + ' - ' + responseJson.statusText + ' : ' + responseJson.responseJSON.error.message);
 
 			// erisTrack
 			if (erisTracking) erisTrack('send', {
@@ -217,7 +214,9 @@ var Datumsachse = function (angezeigtesDatum) {
 				  eventAction: 'load error',
 				  eventLabel: field + ' ' + datum
 				});
-
+			
+			$('.Platz').removeClass('verschwommen');
+			
 		}); // end error
 	}; // end loadEvents
 
@@ -234,14 +233,12 @@ var Datumsachse = function (angezeigtesDatum) {
 		var url = 'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/field';
 		url = url.replace(/\s/g, '%20'); // maskiere Blank durch %20
 
-		erisClear(); // alte Meldungen leeren
 		erisMessage('Lesen der Plätze läuft...');
 	  
 		return $.ajax({ type: "GET", url: url, dataType: 'json', crossDomain : true, contentType: 'text/plain' })
 		.success(function( responseJson ) {
 			erisTrace("ajax loadPlaetze success");
 			erisTrace(url);
-			erisClear(); // alte Meldungen leeren
 			erisMessage('Lesen der Plätze erfolgreich.');
 
 			// erisTrack
@@ -281,8 +278,7 @@ var Datumsachse = function (angezeigtesDatum) {
 			erisTrace(url);
 			erisError("ajax loadPlaetze error: " + responseJson.status + ' - ' + responseJson.statusText );
 			erisError("ajax loadPlaetze error: " + responseJson.responseText );
-			erisClear(); // alte Meldungen leeren
-			erisMessage('Lesefehler der Plätze, bitte erneut lesen. '  + responseJson.responseJSON.error.code + ' : ' + responseJson.responseJSON.error.message);
+			erisMessage('Lesefehler der Plätze, bitte erneut lesen. '  + responseJson.status + ' - ' + responseJson.statusText + ' : ' + responseJson.responseJSON.error.message);
 
 			// erisTrack
 			if (erisTracking) erisTrack('send', {

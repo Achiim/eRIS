@@ -46,6 +46,7 @@ function erisObjectTrace(msg) {
  */
 function erisMessage(msg) {
 
+	$( "#MeldungsContainer li" ).remove(); // alte Meldung leeren
 	$( "#MeldungsContainer" ).append( "<li>" + erisTimestamp() + ': eRIS - ' + msg + "</li>" );
 }
 /*******************************************************************************
