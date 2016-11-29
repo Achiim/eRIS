@@ -196,6 +196,9 @@ var ErisEvent = function(inOpts) {
 						  eventLabel: 'existing Event'
 						});
 
+					erisTrace('class ErisEvent - resize stop - neue Höhe = ' + 
+							ui.size.height + ' neue Breite = ' + ui.size.width);
+						
 					// Achtung: this verweist hier auf das jQuery-Objekt 'Marker'
 					var erisEventMarker = $(this).data('erisEventMarker');
 					
@@ -244,8 +247,8 @@ var ErisEvent = function(inOpts) {
 					var anzRaster = Math.round(aktHoehe / minHoehe) + 1; // 
 					var hoehe = anzRaster * minHoehe + anzRaster - (erisMarkerPadding + erisPlatzTeilMargin);
 					
-					if (hoehe !== aktHoehe) erisTrace('class ErisEvent - resize - neue Höhe = ' 
-									+ hoehe + ' AnzRaster = ' + anzRaster);
+//					if (hoehe !== aktHoehe) erisTrace('class ErisEvent - resize - neue Höhe = ' 
+//									+ hoehe + ' AnzRaster = ' + anzRaster);
 					
 					if (hoehe < minHoehe)
 						ui.size.height = minHoehe;
@@ -346,7 +349,7 @@ var ErisEvent = function(inOpts) {
 		ErisEvent.prototype.pixelToMinutes = function(hh) {
 			var anzVirtelstunden = Math.round((hh + erisMarkerPadding + erisPlatzTeilMargin) / 
 							(erisMarkerHeightViertelstunde + 1)); 
-			erisTrace('class ErisEvent - pixelToMinutes - Höhe = ' + hh + ' anzVirtelstunden = ' + anzVirtelstunden);
+//			erisTrace('class ErisEvent - pixelToMinutes - Höhe = ' + hh + ' anzVirtelstunden = ' + anzVirtelstunden);
 			return anzVirtelstunden*15;
 		}; // end pixelToMinutes
 		
