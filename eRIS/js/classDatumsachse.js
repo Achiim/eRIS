@@ -205,7 +205,7 @@ var Datumsachse = function (angezeigtesDatum) {
 			erisTrace(url);
 			erisError("ajax loadEvents error: " + responseJson.status + ' - ' + responseJson.statusText );
 			erisError("ajax loadEvents error: " + responseJson.responseText );
-			erisMessage('Lesefehler der Belegungen, bitte erneut lesen. ' + responseJson.responseJSON.error.code + ' : ' + responseJson.responseJSON.error.message);
+			erisMessage('Lesefehler der Belegungen, bitte erneut lesen. ' + responseJson.status + ' - ' + responseJson.statusText + ' : ' + responseJson.responseJSON.error.message);
 
 			// erisTrack
 			if (erisTracking) erisTrack('send', {
@@ -214,7 +214,9 @@ var Datumsachse = function (angezeigtesDatum) {
 				  eventAction: 'load error',
 				  eventLabel: field + ' ' + datum
 				});
-
+			
+			$('.Platz').removeClass('verschwommen');
+			
 		}); // end error
 	}; // end loadEvents
 
@@ -276,7 +278,7 @@ var Datumsachse = function (angezeigtesDatum) {
 			erisTrace(url);
 			erisError("ajax loadPlaetze error: " + responseJson.status + ' - ' + responseJson.statusText );
 			erisError("ajax loadPlaetze error: " + responseJson.responseText );
-			erisMessage('Lesefehler der Plätze, bitte erneut lesen. '  + responseJson.responseJSON.error.code + ' : ' + responseJson.responseJSON.error.message);
+			erisMessage('Lesefehler der Plätze, bitte erneut lesen. '  + responseJson.status + ' - ' + responseJson.statusText + ' : ' + responseJson.responseJSON.error.message);
 
 			// erisTrack
 			if (erisTracking) erisTrack('send', {
