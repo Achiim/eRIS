@@ -545,7 +545,7 @@ var ErisEvent = function(inOpts) {
 		    	erisTrace(url);
 		    	erisError("ajax erisEvent store error: " + responseJson.status + ' - ' + responseJson.statusText );
 		    	erisError("ajax erisEvent store error: " + responseJson.responseText);
-		    	erisMessage('Speicherfehler, bitte erneut lesen und wiederholen. ' + responseJson.responseJSON.error.code + ' : ' + responseJson.responseJSON.error.message );
+		    	erisMessage('Speicherfehler, bitte erneut lesen und wiederholen. ' + responseJson.status + ' - ' + responseJson.statusText + ' : ' + responseJson.responseJSON.error.message );
 
 		    	if (urlArray[8] === 'update') {
 			    	// erisTrack
