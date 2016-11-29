@@ -151,7 +151,7 @@ var Datumsachse = function (angezeigtesDatum) {
 	Datumsachse.prototype.loadEvents = function(field, datum) {
 	  
 		var url = 'https://1-dot-svn-rest.appspot.com/_ah/api/eventSystem/v1/event/field/' + field;
-	//	    url += '/time/' + datum + '%2008%3A00/' + datum + '%2022%3A00'; // url mit Datum liefert sporadisch 503
+		    url += '/time/' + datum + '%2008%3A00/' + datum + '%2022%3A00'; // url mit Datum liefert sporadisch 503
 		url = url.replace(/\s/g, '%20'); // maskiere Blank durch %20
 		erisMessage('Lesen der Belegungen läuft...');
 	  
