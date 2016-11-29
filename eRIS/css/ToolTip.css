@@ -22,13 +22,13 @@ Styles fuer ToolTip Kalenderblatt
 #Kalenderblatt {
 	width: 50px;
 	height: 50px;
-	background: #aed581;					/* Light Green 300 */
+	background-color: #f1f8e9;				/* Light Green 50 */
 	border-radius: 6px; 
 	font-family: "Arial", Verdana, san-serif;
 }
 
 #Tagname {
-	background-color: #689f38;				/* Light Green 700 */
+	background-color:  #33691e;				/* Light Green 900 */
 	color: #f1f8e9;							/* Light Green 50 */
 	padding: 2px;
 	font-size: 8px;

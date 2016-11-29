@@ -75,6 +75,9 @@
 				function() {
 
 				    erisTrace('doLayout - Beginn');
+				    
+				    $('#dialog-form').hide(); // Detail-Dialog verstecken
+				    
 				    $('#erisViews').tabs({
 				    	beforeActivate: function( event, ui ) {
 				    		  erisTrace('index.html - tabload-beforeActivate on erisViews: ' + ui.newPanel[0].id);

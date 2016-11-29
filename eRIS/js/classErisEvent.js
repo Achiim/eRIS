@@ -266,9 +266,6 @@ var ErisEvent = function(inOpts) {
 					// berechne die neue Dauer des Event
 					erisEventMarker.duration = erisEventMarker.pixelToMinutes(hoehe); 
 					
-					// ToolTip aktualisieren
-					erisEventMarker.jQueryQtipMarker();
-					
 				} // end resize
 			
 			}); // resizeable
@@ -508,7 +505,7 @@ var ErisEvent = function(inOpts) {
 			
 			var newMarkerNummer;
 			
-			erisClear();
+			erisMessage('Speichern der Belegungen läuft...');
 			
 			$.ajax({ type: "GET", url: url, dataType: 'json'})
 		
