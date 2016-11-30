@@ -503,7 +503,8 @@ var ErisEvent = function(inOpts) {
 			
 			url += msg;
 			
-			var newMarkerNummer;
+			// Referenz auf das Marker-Objekt, der gespeichert wird
+			var eirisMarker = this;
 			
 			erisMessage('Speichern der Belegungen läuft...');
 			
@@ -517,7 +518,8 @@ var ErisEvent = function(inOpts) {
 					
 		  		if (typeof responseJson !== 'undefined' ) { // bei update gibt es keine Antwort
 		  			// ID des gespeicherten erisObjekt aus der Cloud merken
-		  			newMarkerNummer = responseJson.id;
+		  			eirisMarker.erisCloudId = responseJson.id;
+		  			eirisMarker.jQueryQtipMarker();
 		  		}
 		    	erisMessage('Speichern erfolgreich.');
 		    	
@@ -539,7 +541,7 @@ var ErisEvent = function(inOpts) {
 						});
 		    	}
 
-			})
+			}) // end success
 		    .error(function( responseJson ) {
 				var urlArray = url.split('/');
 		    	erisTrace(url);
@@ -564,12 +566,8 @@ var ErisEvent = function(inOpts) {
 						  eventLabel: msg
 						});
 		    	}
-		    });
+		    }); // end error
 			
-			if (newMarkerNummer !== undefined) {
-				this.erisCloudId = newMarkerNummer;
-				this.jQueryQtipMarker();
-			}
 		}; // end store
 		
 	//
