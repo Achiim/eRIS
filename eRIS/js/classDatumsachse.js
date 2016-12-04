@@ -48,7 +48,8 @@ var Datumsachse = function (angezeigtesDatum) {
 	// Beginn der Constructor-Funktion für die Datumsachse
 	
 	this.angezeigtesDatum = angezeigtesDatum;				// aktuelles Datum
-	this.markerNummer = 0;									// initialisiere die Nummerierung der Marker	
+	this.markerNummer = 0;									// initialisiere die Nummerierung der Marker
+	var self = this;
 
 	//
 	// Ende der Constructor-Funktion für die Datumsachse
@@ -234,63 +235,78 @@ var Datumsachse = function (angezeigtesDatum) {
 		url = url.replace(/\s/g, '%20'); // maskiere Blank durch %20
 
 		erisMessage('Lesen der Plätze läuft...');
+		
+		
+//		return erisAjaxGet("GET", url, this.erisFieldSuccess, this.erisFieldError);
 	  
 		return $.ajax({ type: "GET", url: url, dataType: 'json', crossDomain : true, contentType: 'text/plain' })
-		.success(function( responseJson ) {
-			erisTrace("ajax loadPlaetze success");
-			erisTrace(url);
-			erisMessage('Lesen der Plätze erfolgreich.');
-
-			// erisTrack
-			if (erisTracking) erisTrack('send', {
-				  hitType: 'event',
-				  eventCategory: 'erisField',
-				  eventAction: 'load success',
-				  eventLabel: timeline.angezeigtesDatum
-				});
-
-
-			if (typeof responseJson !== 'undefined' ) {
-				erisObjectTrace(responseJson);
-				if (typeof responseJson.items != 'undefined' && responseJson.items.length>0) {
-					for (var a = 0; a < responseJson.items.length; a++) {
-				   
-						erisPlatzArray[a] = new Platz(timeline, 	// erzeuge eine Platz mit allen Platzteilen
-							  responseJson.items[a].title, 			// Platzname 
-							  responseJson.items[a].portionName,	// Kürzel für Platzteile
-							  responseJson.items[a].portions);		// Anzahl der Platzteile
-						erisPlatzArray[a].jQueryViewPlatz('PlatzContainer', 'PlatzMitteKopf');
-					}
-
-					// PlatzMitte anpassen, falls wenigerale 6 Plätze vorhanden sind
-					if (responseJson.items.length < erisMaxFieldsInView) {
-						var breite = responseJson.items.length * 125 + 5; /* 125px * 6 Plätze + 5px Abstand zwischen den Plätzen */
-						$('.PlatzMitte').css('width', breite);	// sichtbarer Bereich für Plätze
-						$('.PlatzContainer').css('width', breite);	// unsichbarer Bereich für Plätze -> Scrollbreite
-						$('.KopfContainer').css('width', breite);	// sichtbarer Bereich für Platzkoepfe
-						$('.PlatzMitteKopf').css('width', breite);	// unsichbarer Bereich für Platzkoepfe -> Scrollbreite
-						$('#erisViews').css('width', breite+120);	// gesamter View
-					} // end responseJson verarbeiten
-				} // end responseJson verfügbar
-			}
-		}) // end success
-		.error(function( responseJson ) {
-			erisTrace(url);
-			erisError("ajax loadPlaetze error: " + responseJson.status + ' - ' + responseJson.statusText );
-			erisError("ajax loadPlaetze error: " + responseJson.responseText );
-			erisMessage('Lesefehler der Plätze, bitte erneut lesen. '  + responseJson.status + ' - ' + responseJson.statusText + ' : ' + responseJson.responseJSON.error.message);
-
-			// erisTrack
-			if (erisTracking) erisTrack('send', {
-				  hitType: 'event',
-				  eventCategory: 'erisField',
-				  eventAction: 'load error',
-				  eventLabel: timeline.angezeigtesDatum
-				});
-
-		}); // end error
+		.success(this.erisFieldSuccess) // end success
+		.error(this.erisFieldError); // end error
 	}; // end loadPlaetze
 
+	
+	/**
+	 * @description
+	 * erfolgreich geladene Platzdaten verarbeiten
+	*/
+	Datumsachse.prototype. erisFieldSuccess = function(responseJson, status) {
+		erisTrace("erisFieldSuccess -  success");
+		erisTrace(this.url);
+		erisMessage('Lesen der Plätze erfolgreich.');
+
+		// erisTrack
+		if (erisTracking) erisTrack('send', {
+			  hitType: 'event',
+			  eventCategory: 'erisField',
+			  eventAction: 'load success',
+			  eventLabel: self.angezeigtesDatum
+			});
+
+
+		if (typeof responseJson !== 'undefined' ) {
+			erisObjectTrace(responseJson);
+			if (typeof responseJson.items != 'undefined' && responseJson.items.length>0) {
+				for (var a = 0; a < responseJson.items.length; a++) {
+			   
+					erisPlatzArray[a] = new Platz(self, 		// erzeuge eine Platz mit allen Platzteilen
+						  responseJson.items[a].title, 			// Platzname 
+						  responseJson.items[a].portionName,	// Kürzel für Platzteile
+						  responseJson.items[a].portions);		// Anzahl der Platzteile
+					erisPlatzArray[a].jQueryViewPlatz('PlatzContainer', 'PlatzMitteKopf');
+				}
+
+				// PlatzMitte anpassen, falls wenigerale 6 Plätze vorhanden sind
+				if (responseJson.items.length < erisMaxFieldsInView) {
+					var breite = responseJson.items.length * 125 + 5; /* 125px * 6 Plätze + 5px Abstand zwischen den Plätzen */
+					$('.PlatzMitte').css('width', breite);	// sichtbarer Bereich für Plätze
+					$('.PlatzContainer').css('width', breite);	// unsichbarer Bereich für Plätze -> Scrollbreite
+					$('.KopfContainer').css('width', breite);	// sichtbarer Bereich für Platzkoepfe
+					$('.PlatzMitteKopf').css('width', breite);	// unsichbarer Bereich für Platzkoepfe -> Scrollbreite
+					$('#erisViews').css('width', breite+120);	// gesamter View
+				} // end responseJson verarbeiten
+			} // end responseJson verfügbar
+		}
+	}; // end erisFieldSuccess
+	
+	/**
+	 * @description
+	 * Fehlerbehandlung gescheitertes Laden von Platzdaten 
+	*/
+	Datumsachse.prototype.erisFieldError = function(responseJson, status) {
+		erisTrace(this.url);
+		erisError("erisFieldError: " + responseJson.status + ' - ' + responseJson.statusText );
+		erisError("erisFieldError: " + responseJson.responseText );
+		erisMessage('Lesefehler der Plätze, bitte erneut lesen. '  + responseJson.status + ' - ' + responseJson.statusText + ' : ' + responseJson.responseJSON.error.message);
+
+		// erisTrack
+		if (erisTracking) erisTrack('send', {
+			  hitType: 'event',
+			  eventCategory: 'erisField',
+			  eventAction: 'load error',
+			  eventLabel: self.angezeigtesDatum
+			});
+
+	}; // end erisFieldError
 	//
 	// Ende der Definition der Methoden des Objekts auf dem Prototyp
 	// *************************************************************************
